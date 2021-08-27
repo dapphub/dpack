@@ -1,0 +1,20 @@
+{
+  "name": "dpack",
+  "version": "0.2.0",
+  "main": "index.ts",
+  "author": "nikolai mushegian <mail@nikoli.fyi>",
+  "license": "GPL3",
+  "scripts": {
+    "test": "ts-mocha test/*.ts --timeout=10000"
+  },
+  "dependencies": {
+    "commander": "^8.1.0",
+    "debug": "^4.3.2",
+    "ethers": "^5.4.5",
+    "ipfs": "^0.58.1"
+  },
+  "devDependencies": {
+    "mocha": "^9.1.0",
+    "ts-mocha": "^8.0.0"
+  }
+}
