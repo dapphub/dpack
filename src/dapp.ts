@@ -2,58 +2,66 @@ const debug = require('debug')('dpack')
 const fs = require('fs')
 
 const ethers = require('ethers')
-const { getIpfsJson } = require("../index");
+const { getIpfsJson } = require("./ipfs-util");
 
-export class DPackDapp {
+export class Dapp {
   _raw : any;
   objects : any;
   network : string;
   provider : any;
   signer : any;
+
   private constructor(raw : any) {
     this._raw = raw
     this.objects = {}
     this.network = ''
+    this.signer = new ethers.VoidSigner("0x" + "00".repeat(20));
   }
-  static async loadFromFile(path : string) : Promise<DPackDapp> {
+
+  static async loadFromFile(path : string) : Promise<Dapp> {
     const file = fs.readFileSync(path);
-    const dson = JSON.parse(file);
-    return await DPackDapp.loadFromDson(dson);
+    const json = JSON.parse(file);
+    return await Dapp.loadFromJson(json);
   }
-  static async loadFromDson(dson : any) : Promise<DPackDapp> {
-    const out = JSON.parse(JSON.stringify(dson)); // deep copy
-    for (const key of Object.keys(dson.types)) {
-      const link = dson.types[key].artifacts;
-      const hash = link["/"];
-      const json = await getIpfsJson(hash);
-      out.types[key].artifacts = json;
+
+  static async loadFromJson(json : any) : Promise<Dapp> {
+    const out = JSON.parse(JSON.stringify(json)); // deep copy
+    for (const key of Object.keys(json.types)) {
+      const link = json.types[key].artifacts;
+      if (link["/"]) {
+        const hash = link["/"];
+        const json = await getIpfsJson(hash);
+        out.types[key].artifacts = json;
+      }
     }
-    for (const key of Object.keys(dson.objects)) {
-      const link = dson.objects[key].artifacts;
-      const hash = link["/"];
-      const json = await getIpfsJson(hash);
-      out.objects[key].artifacts = json;
+    for (const key of Object.keys(json.objects)) {
+      const link = json.objects[key].artifacts;
+      if (link["/"]) {
+        const hash = link["/"];
+        const json = await getIpfsJson(hash);
+        out.objects[key].artifacts = json;
+      }
     }
-    return DPackDapp.loadFromJson(out);
+    return new Dapp(out);
   }
-  static loadFromJson(json : any) : DPackDapp {
-    const dapp = new DPackDapp(json);
-    return dapp;
+
+  static async loadFromCid(cid : string) {
+    const json = await getIpfsJson(cid);
+    return await Dapp.loadFromJson(json);
   }
-/*
-  static loadFromCid(cid : string) {
-  }
-*/
-  useNetwork(network : string) {
-    this.network = network
-    this.provider = ethers.getDefaultProvider(network);
+
+  useProvider(provider : any) {
+    this.provider = provider;
+    this.network = this.provider._network.name;
     this._reload();
   }
-  useSigner(hexPrivKey : string) {
-    this.signer = new ethers.Wallet(hexPrivKey, this.provider);
+
+  useSigner(signer : any) {
+    this.signer = signer;
     this._reload();
   }
-  _reload() {
+
+  private _reload() {
     if (this.signer) {
       this.signer = this.signer.connect(this.provider);
     }

@@ -5,14 +5,13 @@ const cli = require('commander');
 const repl = require('repl');
 
 const dpack = require('./index');
-const { DPackDapp } = require('./src/dapp');
 
 const ethers = require('ethers');
 
 let env : any;
 let opts : any;
 
-cli.description('DPack');
+cli.description('dpack');
 cli.option('--env <path>', 'override env file path');
 cli.hook('preAction', () => {
   opts = cli.opts();
@@ -36,28 +35,32 @@ cli.command('show <path>').action(async (path: string) => {
 });
 
 cli.command('resolve <path>').action(async (path: string) => {
-  const json = await dpack.load(path);
-  console.log(JSON.stringify(json, null, 2));
+  const dapp = await dpack.load(path);
+  console.log(JSON.stringify(dapp._raw, null, 2));
   process.exit(0);
 });
 
 cli.command('explore <path>').action(async (path: string) => {
-  const dapp = await DPackDapp.loadFromFile(path);
-//  dapp.useNetwork('ropsten');
-//  dapp.useSigner(env.DEPLOYER_PRIVATE_KEY, dapp.provider)
+  const dapp = await dpack.Dapp.loadFromFile(path);
   console.log(`Loaded ${path}`)
-  console.log(`Use dapp.useNetwork(networkName) to pick a network`)
-  console.log(`Use dapp.useSigner(hexPrivKey) to connect a signer`);
+
+  if (env.NETWORK) {
+    const provider = ethers.getDefaultProvider(env.NETWORK);
+    dapp.useProvider(provider)
+    console.log(`Using default provider for ${env.NETWORK}`)
+  }
+  console.log(`  Use dapp.useProvider(ethers.getDefaultProvider(networkName)) to switch networks`)
+
+  if (env.DEPLOYER_PRIVATE_KEY) {
+    const wallet = new ethers.Wallet(env.DEPLOYER_PRIVATE_KEY);
+    dapp.useSigner(wallet);
+    console.log(`Using DEPLOYER_PRIVATE_KEY with address: ${wallet.address}`);
+  }
+  console.log(`  Use dapp.useSigner(new ethers.Wallet(hexPrivKey)) to switch signers`);
 
   const r = repl.start(`(${path}) > `);
   r.context.dapp = dapp;
-});
-
-cli.command('test2 <path>').action(async (path : string) => {
-  const d = await DPackDapp.loadFromFile(path);
-  d.useNetwork('ropsten');
-  debug(d);
-  process.exit(0);
+  r.context.ethers = ethers;
 });
 
 cli.parseAsync(process.argv)

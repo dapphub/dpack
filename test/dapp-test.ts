@@ -1,12 +1,15 @@
 const debug = require('debug')('dpack')
 const want = require('chai').expect
 
-const { DPackDapp } = require("../src/dapp")
+const { ethers } = require('hardhat')
 
-describe('DPackDapp', () => {
-  it('test', async () => {
-    const dapp = await DPackDapp.loadFromFile('test/sample-pack.json');
-    dapp.useNetwork('ropsten')
+const { Dapp } = require("../index")
+
+describe('Dapp', () => {
+  it('load from file', async () => {
+    const dapp = await Dapp.loadFromFile('test/sample-pack.json');
+    const provider = ethers.getDefaultProvider('ropsten')
+    dapp.useProvider(provider)
     const coin = await dapp.objects.mockToken;
     const mockTokenSupply = await dapp.objects.mockToken.callStatic.totalSupply();
     want(mockTokenSupply.gt(0)).true;
