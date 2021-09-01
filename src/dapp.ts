@@ -18,7 +18,7 @@ export class Dapp {
     this.types = {}
     this.network = ''
     this.signer = new ethers.VoidSigner("0x" + "00".repeat(20));
-    this._reload();
+    this.reload();
   }
 
   static async loadFromFile(path : string) : Promise<Dapp> {
@@ -56,15 +56,15 @@ export class Dapp {
   useProvider(provider : any) {
     this.provider = provider;
     this.network = this.provider._network.name;
-    this._reload();
+    this.reload();
   }
 
   useSigner(signer : any) {
     this.signer = signer;
-    this._reload();
+    this.reload();
   }
 
-  private _reload() {
+  reload() {
     if (this.signer) {
       this.signer = this.signer.connect(this.provider);
     }
@@ -90,7 +90,7 @@ export class Dapp {
 
     for (const key of Object.keys(this._raw.types)) {
       const t = this._raw.types[key];
-      let helper = {};
+      let helper : any = {};
       if (t.bytecode) {
         let factory = new ethers.ContractFactory(t.abi, t.bytecode);
         if (this.signer) {

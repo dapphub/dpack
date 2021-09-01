@@ -1,3 +1,5 @@
+const debug = require('debug')('dpack')
+
 const fs = require('fs')
 const { putIpfsJson } = require('./ipfs-util')
 
@@ -10,8 +12,10 @@ class Mutator {
     this._pack = JSON.parse(JSON.stringify(json)); // deep copy
   }
 
-  async addType(typename: string, artifacts: any) : Promise<string> {
+  async addType(artifacts: any) : Promise<string> {
     const cid = await putIpfsJson(artifacts);
+    debug(`addType ${artifacts}`);
+    const typename = artifacts.contractName;
     this._pack.types[typename] = {
       artifacts: { "/": cid.toString() },
     };
@@ -22,10 +26,9 @@ class Mutator {
     name: string,
     address: string,
     network: string,
-    typename: string,
     artifacts: any
   ) {
-    const old = this._init.objects[name];
+    const old = this._pack.objects[name];
     const cid = await putIpfsJson(artifacts);
     let addresses: any = {};
     if (old?.artifacts["/"] === cid) {
@@ -34,7 +37,7 @@ class Mutator {
     addresses[network] = address;
 
     const obj = old ?? {};
-    obj.typename = typename;
+    obj.typename = artifacts.contractName;
     obj.artifacts = { "/": cid.toString() };
     obj.addresses = addresses;
 
@@ -44,7 +47,7 @@ class Mutator {
 
 export async function initPackFile(path : string, override : boolean = false) : Promise<any> {
   if (fs.existsSync(path) && !override) {
-    throw new Error(`packfile already exists: ${path}`)
+    throw new Error(`initPackFile path already exists: ${path}`)
   }
   const _default = { types : {}, objects: {} };
   fs.writeFileSync(path, JSON.stringify(_default, null, 2));
@@ -52,8 +55,8 @@ export async function initPackFile(path : string, override : boolean = false) : 
 
 export async function mutatePackFile(inpath: string, outpath: string, mutate: Function) : Promise<any> {
   let json: any;
-  if (fs.existsSync(outpath)) {
-    throw new Error(`mutatePackFile output file already exists: ${outpath}`);
+  if (inpath !== outpath && fs.existsSync(outpath)) {
+    throw new Error(`mutatePackFile output file already exists and is not input file: ${outpath}`);
   }
   if (fs.existsSync(inpath)) {
     const file = fs.readFileSync(inpath);
