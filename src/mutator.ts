@@ -1,3 +1,4 @@
+const fs = require('fs')
 const { putIpfsJson } = require('./ipfs-util')
 
 class Mutator {
@@ -9,11 +10,12 @@ class Mutator {
     this._pack = JSON.parse(JSON.stringify(json)); // deep copy
   }
 
-  async addType(typename: string, artifacts: any) {
+  async addType(typename: string, artifacts: any) : Promise<string> {
     const cid = await putIpfsJson(artifacts);
     this._pack.types[typename] = {
       artifacts: { "/": cid.toString() },
     };
+    return Promise.resolve(cid);
   }
 
   async addObject(
@@ -40,16 +42,35 @@ class Mutator {
   }
 }
 
-export async function mutate(inpath: string, outpath: string, mutate: Function) {
+export async function initPackFile(path : string, override : boolean = false) : Promise<any> {
+  if (fs.existsSync(path) && !override) {
+    throw new Error(`packfile already exists: ${path}`)
+  }
+  const _default = { types : {}, objects: {} };
+  fs.writeFileSync(path, JSON.stringify(_default, null, 2));
+}
+
+export async function mutatePackFile(inpath: string, outpath: string, mutate: Function) : Promise<any> {
   let json: any;
+  if (fs.existsSync(outpath)) {
+    throw new Error(`mutatePackFile output file already exists: ${outpath}`);
+  }
   if (fs.existsSync(inpath)) {
     const file = fs.readFileSync(inpath);
     json = JSON.parse(file);
   } else {
     json = { types: {}, objects: {} };
   }
-  const mutator = new Mutator(json);
+  const mutated = await mutatePackObject(json, mutate);
+  fs.writeFileSync(outpath, JSON.stringify(mutated, null, 2));
+  return Promise.resolve(mutated);
+}
+
+export async function mutatePackObject(inpack : any, mutate : Function) : Promise<any> {
+  const mutator = new Mutator(inpack);
   await mutate(mutator);
   const mutated = mutator._pack;
-  fs.writeFileSync(outpath, JSON.stringify(mutated, null, 2));
+  return Promise.resolve(mutated);
 }
+
+

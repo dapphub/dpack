@@ -1,9 +1,10 @@
-const { getIpfsJson } = require('./src/ipfs-util');
-const { Dapp } = require('./src/dapp')
-const { mutate } = require('./src/mutator')
+export { getIpfsJson } from './src/ipfs-util'
+export * from './src/mutator'
 
-async function load(path : string) {
-  return await Dapp.loadFromFile(path);
-}
+import { Dapp } from './src/dapp'
 
-export { Dapp, load, mutate }
+export const loadFromFile = Dapp.loadFromFile;
+export const loadFromJson = Dapp.loadFromJson;
+export const loadFromCid = Dapp.loadFromCid;
+
+export { Dapp }

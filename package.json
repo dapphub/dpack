@@ -11,7 +11,7 @@
     "commander": "^8.1.0",
     "debug": "^4.3.2",
     "ethers": "^5.4.5",
-    "ipfs": "^0.58.1"
+    "ipfs-core": "^0.10.4"
   },
   "devDependencies": {
     "mocha": "^9.1.0",

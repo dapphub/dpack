@@ -35,7 +35,7 @@ cli.command('show <path>').action(async (path: string) => {
 });
 
 cli.command('resolve <path>').action(async (path: string) => {
-  const dapp = await dpack.load(path);
+  const dapp = await dpack.loadFromFile(path);
   console.log(JSON.stringify(dapp._raw, null, 2));
   process.exit(0);
 });

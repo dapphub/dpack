@@ -7,6 +7,7 @@ const { getIpfsJson } = require("./ipfs-util");
 export class Dapp {
   _raw : any;
   objects : any;
+  types : any;
   network : string;
   provider : any;
   signer : any;
@@ -14,8 +15,10 @@ export class Dapp {
   private constructor(raw : any) {
     this._raw = raw
     this.objects = {}
+    this.types = {}
     this.network = ''
     this.signer = new ethers.VoidSigner("0x" + "00".repeat(20));
+    this._reload();
   }
 
   static async loadFromFile(path : string) : Promise<Dapp> {
@@ -65,6 +68,7 @@ export class Dapp {
     if (this.signer) {
       this.signer = this.signer.connect(this.provider);
     }
+
     for (const key of Object.keys(this._raw.objects)) {
       const obj = this._raw.objects[key];
       if( obj && obj.addresses[this.network] ) {
@@ -84,5 +88,22 @@ export class Dapp {
       }
     }
 
+    for (const key of Object.keys(this._raw.types)) {
+      const t = this._raw.types[key];
+      let helper = {};
+      if (t.bytecode) {
+        let factory = new ethers.ContractFactory(t.abi, t.bytecode);
+        if (this.signer) {
+          factory = factory.connect(this.signer);
+        } else if (this.provider) {
+          factory = factory.connect(this.provider);
+        }
+        helper = factory;
+      }
+      helper.artifacts = t.artifacts;
+      this.types[key] = helper;
+    }
+    debug(`reloaded: ${this}`);
   }
+
 }
