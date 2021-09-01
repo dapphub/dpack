@@ -11,7 +11,7 @@ describe('Dapp', () => {
     const provider = ethers.getDefaultProvider('ropsten')
     dapp.useProvider(provider)
     const coin = await dapp.objects.mockToken;
-    const mockTokenSupply = await dapp.objects.mockToken.callStatic.totalSupply();
-    want(mockTokenSupply.gt(0)).true;
+    const decimals = await dapp.objects.mockToken.callStatic.decimals();
+    want(decimals).equal(18);
   });
 });

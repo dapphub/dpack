@@ -1,6 +1,6 @@
 {
   "name": "dpack",
-  "version": "0.2.0",
+  "version": "0.0.3",
   "main": "index.ts",
   "author": "nikolai mushegian <mail@nikoli.fyi>",
   "license": "GPL3",
@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "mocha": "^9.1.0",
-    "ts-mocha": "^8.0.0"
+    "ts-mocha": "^8.0.0",
+    "ts-standard": "^10.0.0"
   }
 }

@@ -1,20 +1,37 @@
-`dpack` is a library for working with deployed objects on EVM chains.
+`dpack` is a tool and library for working with deployed objects on EVM chains.
 
-It bundles named addresses and their type metadata in a way that makes it easy to quickly consume as a library.
+It bundles named addresses and their type metadata in a way that makes it easy to quickly interact with.
+
+This provides a missing part of the dev toolchain that is somewhat unique to blockchain development.
+It is analagous to a *linker* that manipulates *object files*, except the runtime environment is
+universal to everyone and pseudo-content-addressed via contract addresses.
+
+Compare this to package managers, which deal mostly with *source* management. Also compare this to ethPM, which
+makes an ontological error by mapping addresses onto contract types 1:1.
+
+The goal is for it to work as a standalone library, a command line tool, or a hardhat plugin.
 
 ```
 const dapp = await dpack.load("stablecoins.json");
 
-dapp.useNetwork("ropsten");
-dapp.useSigner(env.OPERATOR_KEY);
+dapp.useProvider(ethers.getDefaultProvider( "ropsten" ));
+dapp.useSigner(new ethers.Wallet( env.OPERATOR_KEY ));
 
-const supply = await dapp.objects.USDC.totalSupply();
+const USDC = dapp.objects.USDC;
+
+const supply = USDC.totalSupply();
 debug(`USDC supply: ${supply}`);
+
+const tx_send = await USDC.transfer(...)
+await tx_send.wait()
 ```
 
-It is also a command-line tool for manipulating packs. This is better than manual editing because it does consistency checks.
+It provides a utility to help construct pack files:
 
 ```
-dpack add-type feedbase-pack.json Feedbase artifacts/Feedbase.sol/Feedbase.json
-dpack add-object feedbase-pack.json feedbase 0x0 artifacts/Feedbase.sol/Feedbase.json
+// in file, out file, modifier function
+dapp.mutatePackFile('/dist/base.json', '/dist/extended.json', async (pack) => {
+  pack.addType(...)
+  pack.addObject(...)
+})
 ```

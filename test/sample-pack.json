@@ -1,52 +1,52 @@
 {
   "types": {
-    "Oracle": {
-      "artifacts": {
-        "/": "Qmd6iUpdrxYN9rhrnyJdUgSt2gHmjKren3WScBWWK6zoMp"
-      }
-    },
-    "OracleFactory": {
-      "artifacts": {
-        "/": "QmNaUtwTwFyfgwogR7AdyEQjuoyZCkimXDk3vrZGyZVKyL"
-      }
-    },
     "Feedbase": {
       "artifacts": {
-        "/": "QmcHAE9LcJHWzAj1khigjJrZVxDicmvmiykzeyFGDWwBfe"
+        "/": "QmU8GzPLdJjzA6zeGqKG36oshsgQ28yEu1vKPpzfrKTfiq"
       }
     },
     "MockToken": {
       "artifacts": {
-        "/": "QmZ4JF1jibpHQbJFffjzPjwXFkCnhzpyD3ZuGb4zz46y1S"
+        "/": "QmQcpi4TiBE65oCaMMwUT49ewTQnA9SHVPFPoQnrRHYxRp"
+      }
+    },
+    "BasicReceiver": {
+      "artifacts": {
+        "/": "QmXNGZG1GNSzzWuguUMRvC23QSxfNg3yMkVU7FBZrNAVp7"
+      }
+    },
+    "BasicReceiverFactory": {
+      "artifacts": {
+        "/": "QmbzPLMpi4dxyAnnG54UvbKeZyy5cRemPJDQei4PBA3CQg"
       }
     }
   },
   "objects": {
-    "oracleFactory": {
-      "typename": "OracleFactory",
-      "artifacts": {
-        "/": "QmNaUtwTwFyfgwogR7AdyEQjuoyZCkimXDk3vrZGyZVKyL"
-      },
-      "addresses": {
-        "ropsten": "0x10641cD9122EA0e90e137ca38D04a4E39F06f0F6"
-      }
-    },
     "feedbase": {
       "typename": "Feedbase",
       "artifacts": {
-        "/": "QmcHAE9LcJHWzAj1khigjJrZVxDicmvmiykzeyFGDWwBfe"
+        "/": "QmU8GzPLdJjzA6zeGqKG36oshsgQ28yEu1vKPpzfrKTfiq"
       },
       "addresses": {
-        "ropsten": "0x0919AC42bf744f9A329C5cAE4f716d9989B2ecf6"
+        "ropsten": "0x0C70277b39A407D23b79E838A4b020fbD823D3C6"
+      }
+    },
+    "receiverFactory": {
+      "typename": "BasicReceiverFactory",
+      "artifacts": {
+        "/": "QmbzPLMpi4dxyAnnG54UvbKeZyy5cRemPJDQei4PBA3CQg"
+      },
+      "addresses": {
+        "ropsten": "0xf80Cf634141dEeCB84Af715F02D2A2a84cF52739"
       }
     },
     "mockToken": {
       "typename": "MockToken",
       "artifacts": {
-        "/": "QmZ4JF1jibpHQbJFffjzPjwXFkCnhzpyD3ZuGb4zz46y1S"
+        "/": "QmQcpi4TiBE65oCaMMwUT49ewTQnA9SHVPFPoQnrRHYxRp"
       },
       "addresses": {
-        "ropsten": "0x22Ef64DFBC55B70Abc308Ea43f62AE322F274136"
+        "ropsten": "0x2FAdA92827D0dC2f732F0A538176c0c3293B8Fdb"
       }
     }
   }
