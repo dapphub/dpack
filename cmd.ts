@@ -1,3 +1,5 @@
+#!/usr/bin/env ts-node
+
 const debug = require('debug')('dpack')
 const fs = require('fs')
 
@@ -8,22 +10,11 @@ const dpack = require('./index')
 
 const ethers = require('ethers')
 
-let env: any
 let opts: any
 
 cli.description('dpack')
-cli.option('--env <path>', 'override env file path')
 cli.hook('preAction', () => {
   opts = cli.opts()
-  if (opts.env) {
-    env = require('dotenv').config({ path: opts.env }).parsed
-  } else {
-    env = require('dotenv').config().parsed
-  }
-  if (!env) {
-    console.log('No .env file in working dir, and no override provided.')
-    process.exit(1)
-  }
 })
 cli.showHelpAfterError()
 
@@ -40,22 +31,27 @@ cli.command('resolve <path>').action(async (path: string) => {
   process.exit(0)
 })
 
-cli.command('explore <path>').action(async (path: string) => {
+cli.command('explore <path>')
+.option('--network <network>', 'hh network to connect to')
+.action(async (path: string, opts: any) => {
   const dapp = await dpack.Dapp.loadFromFile(path)
   console.log(`Loaded ${path}`)
+  debug(`opts`, opts)
 
-  if (env.NETWORK) {
-    const provider = ethers.getDefaultProvider(env.NETWORK)
+  if (opts.network) {
+    const provider = ethers.getDefaultProvider(opts.network)
     dapp.useProvider(provider)
-    console.log(`Using default provider for ${env.NETWORK}`)
+    console.log(`Using default provider for ${opts.network}`)
   }
   console.log('  Use dapp.useProvider(ethers.getDefaultProvider(networkName)) to switch networks')
 
+/*
   if (env.DEPLOYER_PRIVATE_KEY) {
     const wallet = new ethers.Wallet(env.DEPLOYER_PRIVATE_KEY)
     dapp.useSigner(wallet)
     console.log(`Using DEPLOYER_PRIVATE_KEY with address: ${wallet.address}`)
   }
+*/
   console.log('  Use dapp.useSigner(new ethers.Wallet(hexPrivKey)) to switch signers')
 
   const r = repl.start(`(${path}) > `)
