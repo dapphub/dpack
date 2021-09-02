@@ -1,6 +1,6 @@
 import { Dapp } from './src/dapp'
 
-export { getIpfsJson } from './src/ipfs-util'
+export { getIpfsJson, putIpfsJson } from './src/ipfs-util'
 export * from './src/mutator'
 
 export const loadFromFile = Dapp.loadFromFile

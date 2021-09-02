@@ -32,31 +32,31 @@ cli.command('resolve <path>').action(async (path: string) => {
 })
 
 cli.command('explore <path>')
-.option('--network <network>', 'hh network to connect to')
-.action(async (path: string, opts: any) => {
-  const dapp = await dpack.Dapp.loadFromFile(path)
-  console.log(`Loaded ${path}`)
-  debug(`opts`, opts)
+  .option('--network <network>', 'hh network to connect to')
+  .action(async (path: string, opts: any) => {
+    const dapp = await dpack.Dapp.loadFromFile(path)
+    console.log(`Loaded ${path}`)
+    debug('opts', opts)
 
-  if (opts.network) {
-    const provider = ethers.getDefaultProvider(opts.network)
-    dapp.useProvider(provider)
-    console.log(`Using default provider for ${opts.network}`)
-  }
-  console.log('  Use dapp.useProvider(ethers.getDefaultProvider(networkName)) to switch networks')
+    if (opts.network) {
+      const provider = ethers.getDefaultProvider(opts.network)
+      dapp.useProvider(provider)
+      console.log(`Using default provider for ${opts.network}`)
+    }
+    console.log('  Use dapp.useProvider(ethers.getDefaultProvider(networkName)) to switch networks')
 
-/*
+    /*
   if (env.DEPLOYER_PRIVATE_KEY) {
     const wallet = new ethers.Wallet(env.DEPLOYER_PRIVATE_KEY)
     dapp.useSigner(wallet)
     console.log(`Using DEPLOYER_PRIVATE_KEY with address: ${wallet.address}`)
   }
 */
-  console.log('  Use dapp.useSigner(new ethers.Wallet(hexPrivKey)) to switch signers')
+    console.log('  Use dapp.useSigner(new ethers.Wallet(hexPrivKey)) to switch signers')
 
-  const r = repl.start(`(${path}) > `)
-  r.context.dapp = dapp
-  r.context.ethers = ethers
-})
+    const r = repl.start(`(${path}) > `)
+    r.context.dapp = dapp
+    r.context.ethers = ethers
+  })
 
 cli.parseAsync(process.argv)

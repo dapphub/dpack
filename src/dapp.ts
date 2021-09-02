@@ -59,6 +59,12 @@ export class Dapp {
     this.reload()
   }
 
+  useDefaultProvider (network: string) {
+    this.provider = ethers.getDefaultProvider(network)
+    this.network = network
+    this.reload()
+  }
+
   useSigner (signer: any) {
     this.signer = signer
     this.reload()
@@ -91,8 +97,8 @@ export class Dapp {
     for (const key of Object.keys(this._raw.types)) {
       const t = this._raw.types[key]
       let helper: any = {}
-      if (t.bytecode) {
-        let factory = new ethers.ContractFactory(t.abi, t.bytecode)
+      if (t && t.artifacts.bytecode) {
+        let factory = new ethers.ContractFactory(t.artifacts.abi, t.artifacts.bytecode)
         if (this.signer) {
           factory = factory.connect(this.signer)
         } else if (this.provider) {
