@@ -1,9 +1,9 @@
 {
   "name": "dpack",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "main": "index.ts",
-  "author": "nikolai mushegian <mail@nikoli.fyi>",
-  "license": "GPL3",
+  "author": "nikolai mushegian <mail@nikolai.fyi>",
+  "license": "GPL-3.0",
   "bin": {
     "dpack": "./cmd.ts"
   },
