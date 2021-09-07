@@ -1,13 +1,18 @@
-`dpack` is a tool and library for working with deployed objects on EVM chains.
+`dpack`
+---
 
-It bundles named addresses and their type metadata in a way that makes it easy to quickly interact with.
+`dpack` is a tool and library for working with deployed objects on EVM chains.
+It is in alpha / active development.
+
+It bundles named addresses and their type metadata in a way that makes it
+easy to quickly set up bindings for entire configurations of contracts.
 
 This provides a missing part of the dev toolchain that is somewhat unique to blockchain development.
 It is analagous to a *linker* that manipulates *object files*, except the runtime environment is
 universal to everyone and pseudo-content-addressed via contract addresses.
 
-Compare this to package managers, which deal mostly with *source* management. Also compare this to ethPM, which
-makes an ontological error by mapping addresses onto contract types 1:1.
+Compare this to package managers, which deal mostly with *source* management. Also compare this to ethPM
+and similar package managers, which make an ontological error by mapping addresses onto contract types 1:1.
 
 The goal is for it to work as a standalone library, a command line tool, or a hardhat plugin.
 
