@@ -1,6 +1,6 @@
 {
   "name": "dpack",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "main": "index.ts",
   "author": "nikolai mushegian <mail@nikolai.fyi>",
   "license": "GPL-3.0",
