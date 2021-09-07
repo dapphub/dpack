@@ -1,5 +1,3 @@
-#!/usr/bin/env ts-node
-
 const debug = require('debug')('dpack')
 const fs = require('fs')
 
@@ -60,3 +58,5 @@ cli.command('explore <path>')
   })
 
 cli.parseAsync(process.argv)
+
+export {}

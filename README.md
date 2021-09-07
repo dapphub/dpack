@@ -2,7 +2,9 @@
 ---
 
 `dpack` is a tool and library for working with deployed objects on EVM chains.
-It is in alpha / active development.
+It is in alpha / active development. It is currently distributed via this repo:
+
+`npm i dapphub/dpack`
 
 It bundles named addresses and their type metadata in a way that makes it
 easy to quickly set up bindings for entire configurations of contracts.
