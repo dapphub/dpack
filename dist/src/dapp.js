@@ -56,6 +56,7 @@ var Dapp = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        debug("loadFromFile " + path);
                         file = fs.readFileSync(path);
                         json = JSON.parse(file);
                         return [4 /*yield*/, Dapp.loadFromJson(json)];
@@ -70,6 +71,7 @@ var Dapp = /** @class */ (function () {
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
+                        debug("loadFromJson " + JSON.stringify(json));
                         out = JSON.parse(JSON.stringify(json)) // deep copy
                         ;
                         _i = 0, _a = Object.keys(json.types);
@@ -105,7 +107,7 @@ var Dapp = /** @class */ (function () {
                     case 7:
                         _b++;
                         return [3 /*break*/, 5];
-                    case 8: return [2 /*return*/, new Dapp(out)];
+                    case 8: return [2 /*return*/, Promise.resolve(new Dapp(out))];
                 }
             });
         });

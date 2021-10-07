@@ -1,10 +1,9 @@
 {
   "name": "dpack",
-  "version": "0.0.8",
-  "main": "index.ts",
+  "version": "0.0.9",
+  "main": "./dist/index.js",
   "author": "nikolai mushegian <mail@nikolai.fyi>",
   "license": "GPL-3.0",
-  "main": "./dist/index.js",
   "bin": {
     "dpack": "./dist/cmd.js"
   },
@@ -17,10 +16,11 @@
     "commander": "^8.1.0",
     "debug": "^4.3.2",
     "ethers": "^5.4.5",
-    "ipfs-core": "^0.10.4"
+    "ipfs-http-client": "^53.0.1"
   },
   "devDependencies": {
     "@types/mocha": "^9.0.0",
+    "chai": "^4.3.4",
     "ts-mocha": "^8.0.0",
     "ts-standard": "^10.0.0",
     "typescript": "^4.4.2"

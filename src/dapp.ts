@@ -22,12 +22,14 @@ export class Dapp {
   }
 
   static async loadFromFile (path: string): Promise<Dapp> {
+    debug(`loadFromFile ${path}`)
     const file = fs.readFileSync(path)
     const json = JSON.parse(file)
     return await Dapp.loadFromJson(json)
   }
 
   static async loadFromJson (json: any): Promise<Dapp> {
+    debug(`loadFromJson ${JSON.stringify(json)}`)
     const out = JSON.parse(JSON.stringify(json)) // deep copy
     for (const key of Object.keys(json.types)) {
       const link = json.types[key].artifacts
@@ -45,7 +47,7 @@ export class Dapp {
         out.objects[key].artifacts = json
       }
     }
-    return new Dapp(out)
+    return Promise.resolve(new Dapp(out))
   }
 
   static async loadFromCid (cid: string) {

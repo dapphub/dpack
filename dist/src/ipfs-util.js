@@ -45,8 +45,8 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
 exports.__esModule = true;
 exports.putIpfsJson = exports.getIpfsJson = void 0;
 var debug = require('debug')('dpack');
-var IPFS = require('ipfs-core');
-var node;
+var IPFS = require('ipfs-http-client');
+var node = IPFS.create();
 function getIpfsJson(hash) {
     var e_1, _a;
     return __awaiter(this, void 0, void 0, function () {
@@ -54,53 +54,42 @@ function getIpfsJson(hash) {
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    if (!!node) return [3 /*break*/, 2];
-                    return [4 /*yield*/, IPFS.create({ silent: true, start: false })];
-                case 1:
-                    node = _b.sent();
-                    _b.label = 2;
-                case 2: return [4 /*yield*/, node.start()];
-                case 3:
-                    _b.sent();
-                    debug("resolving " + hash);
+                    debug("get " + hash);
                     return [4 /*yield*/, node.cat(hash)];
-                case 4:
+                case 1:
                     blob = _b.sent();
                     s = '';
-                    _b.label = 5;
-                case 5:
-                    _b.trys.push([5, 10, 11, 16]);
+                    _b.label = 2;
+                case 2:
+                    _b.trys.push([2, 7, 8, 13]);
                     blob_1 = __asyncValues(blob);
-                    _b.label = 6;
-                case 6: return [4 /*yield*/, blob_1.next()];
-                case 7:
-                    if (!(blob_1_1 = _b.sent(), !blob_1_1.done)) return [3 /*break*/, 9];
+                    _b.label = 3;
+                case 3: return [4 /*yield*/, blob_1.next()];
+                case 4:
+                    if (!(blob_1_1 = _b.sent(), !blob_1_1.done)) return [3 /*break*/, 6];
                     chunk = blob_1_1.value;
                     s += chunk;
-                    _b.label = 8;
-                case 8: return [3 /*break*/, 6];
-                case 9: return [3 /*break*/, 16];
-                case 10:
+                    _b.label = 5;
+                case 5: return [3 /*break*/, 3];
+                case 6: return [3 /*break*/, 13];
+                case 7:
                     e_1_1 = _b.sent();
                     e_1 = { error: e_1_1 };
-                    return [3 /*break*/, 16];
-                case 11:
-                    _b.trys.push([11, , 14, 15]);
-                    if (!(blob_1_1 && !blob_1_1.done && (_a = blob_1["return"]))) return [3 /*break*/, 13];
+                    return [3 /*break*/, 13];
+                case 8:
+                    _b.trys.push([8, , 11, 12]);
+                    if (!(blob_1_1 && !blob_1_1.done && (_a = blob_1["return"]))) return [3 /*break*/, 10];
                     return [4 /*yield*/, _a.call(blob_1)];
-                case 12:
+                case 9:
                     _b.sent();
-                    _b.label = 13;
-                case 13: return [3 /*break*/, 15];
-                case 14:
+                    _b.label = 10;
+                case 10: return [3 /*break*/, 12];
+                case 11:
                     if (e_1) throw e_1.error;
                     return [7 /*endfinally*/];
-                case 15: return [7 /*endfinally*/];
-                case 16:
+                case 12: return [7 /*endfinally*/];
+                case 13:
                     json = JSON.parse(s);
-                    return [4 /*yield*/, node.stop()];
-                case 17:
-                    _b.sent();
                     return [2 /*return*/, json];
             }
         });
@@ -113,23 +102,11 @@ function putIpfsJson(obj) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (!!node) return [3 /*break*/, 2];
-                    return [4 /*yield*/, IPFS.create({ silent: true, start: false })];
-                case 1:
-                    node = _a.sent();
-                    _a.label = 2;
-                case 2: return [4 /*yield*/, node.start()];
-                case 3:
-                    _a.sent();
                     str = JSON.stringify(obj);
                     return [4 /*yield*/, node.add(str)];
-                case 4:
+                case 1:
                     cid = (_a.sent()).cid;
-                    require('fs').writeFileSync('/tmp/ipfs/' + cid, str);
-                    debug(cid);
-                    return [4 /*yield*/, node.stop()];
-                case 5:
-                    _a.sent();
+                    debug("put " + cid);
                     return [2 /*return*/, cid];
             }
         });
