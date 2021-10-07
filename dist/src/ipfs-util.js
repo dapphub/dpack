@@ -43,19 +43,19 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
 exports.__esModule = true;
-exports.putIpfsJson = exports.getIpfsJson = void 0;
+exports.pinIpfsCid = exports.putIpfsJson = exports.getIpfsJson = void 0;
 var debug = require('debug')('dpack');
 var IPFS = require('ipfs-http-client');
 var node = IPFS.create();
-function getIpfsJson(hash) {
+function getIpfsJson(cid) {
     var e_1, _a;
     return __awaiter(this, void 0, void 0, function () {
         var blob, s, blob_1, blob_1_1, chunk, e_1_1, json;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    debug("get " + hash);
-                    return [4 /*yield*/, node.cat(hash)];
+                    debug("get " + cid);
+                    return [4 /*yield*/, node.cat(cid)];
                 case 1:
                     blob = _b.sent();
                     s = '';
@@ -96,7 +96,8 @@ function getIpfsJson(hash) {
     });
 }
 exports.getIpfsJson = getIpfsJson;
-function putIpfsJson(obj) {
+function putIpfsJson(obj, pin) {
+    if (pin === void 0) { pin = false; }
     return __awaiter(this, void 0, void 0, function () {
         var str, cid;
         return __generator(this, function (_a) {
@@ -106,6 +107,12 @@ function putIpfsJson(obj) {
                     return [4 /*yield*/, node.add(str)];
                 case 1:
                     cid = (_a.sent()).cid;
+                    if (!pin) return [3 /*break*/, 3];
+                    return [4 /*yield*/, pinIpfsCid(cid)];
+                case 2:
+                    _a.sent();
+                    _a.label = 3;
+                case 3:
                     debug("put " + cid);
                     return [2 /*return*/, cid];
             }
@@ -113,3 +120,17 @@ function putIpfsJson(obj) {
     });
 }
 exports.putIpfsJson = putIpfsJson;
+function pinIpfsCid(cid) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, node.pin.add(cid)];
+                case 1:
+                    _a.sent();
+                    console.log("pinned " + cid);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.pinIpfsCid = pinIpfsCid;

@@ -13,7 +13,7 @@ class Mutator {
   }
 
   async addType (artifacts: any): Promise<string> {
-    const cid = await putIpfsJson(artifacts, pin=true)
+    const cid = await putIpfsJson(artifacts, true)
     debug(`addType ${artifacts}`)
     const typename = artifacts.contractName
     this._pack.types[typename] = {
@@ -29,7 +29,7 @@ class Mutator {
     artifacts: any
   ) {
     const old = this._pack.objects[name]
-    const cid = await putIpfsJson(artifacts, pin=true)
+    const cid = await putIpfsJson(artifacts, true)
     let addresses: any = {}
     if (old?.artifacts['/'] === cid) {
       addresses = old.addresses

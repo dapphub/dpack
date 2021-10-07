@@ -47,7 +47,7 @@ export class Dapp {
         out.objects[key].artifacts = json
       }
     }
-    return Promise.resolve(new Dapp(out))
+    return await Promise.resolve(new Dapp(out))
   }
 
   static async loadFromCid (cid: string) {

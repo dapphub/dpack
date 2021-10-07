@@ -107,7 +107,8 @@ var Dapp = /** @class */ (function () {
                     case 7:
                         _b++;
                         return [3 /*break*/, 5];
-                    case 8: return [2 /*return*/, Promise.resolve(new Dapp(out))];
+                    case 8: return [4 /*yield*/, Promise.resolve(new Dapp(out))];
+                    case 9: return [2 /*return*/, _d.sent()];
                 }
             });
         });

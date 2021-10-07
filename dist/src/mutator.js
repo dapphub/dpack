@@ -50,7 +50,7 @@ var Mutator = /** @class */ (function () {
             var cid, typename;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, putIpfsJson(artifacts)];
+                    case 0: return [4 /*yield*/, putIpfsJson(artifacts, true)];
                     case 1:
                         cid = _a.sent();
                         debug("addType " + artifacts);
@@ -71,7 +71,7 @@ var Mutator = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         old = this._pack.objects[name];
-                        return [4 /*yield*/, putIpfsJson(artifacts)];
+                        return [4 /*yield*/, putIpfsJson(artifacts, true)];
                     case 1:
                         cid = _a.sent();
                         addresses = {};
