@@ -1,28 +1,69 @@
 {
   "name": "dpack",
+  "description": "dpack is a tool and library for working with deployed objects on EVM chains",
   "version": "0.0.11",
-  "main": "./dist/index.js",
   "author": "nikolai mushegian <mail@nikolai.fyi>",
   "license": "GPL-3.0",
+  "main": "lib/index.js",
   "bin": {
-    "dpack": "./dist/cmd.js"
+    "dpack": "./bin/run"
   },
-  "scripts": {
-    "build": "tsc",
-    "test": "ts-mocha test/*.ts --timeout=10000",
-    "fmt": "ts-standard --fix"
-  },
+  "bugs": "https://github.com/dapphub/dpack/issues",
   "dependencies": {
     "commander": "^8.1.0",
     "debug": "^4.3.2",
     "ethers": "^5.4.5",
-    "ipfs-http-client": "^53.0.1"
+    "ipfs-http-client": "^53.0.1",
+    "@oclif/command": "^1.8.0",
+    "@oclif/config": "^1.17.0",
+    "@oclif/plugin-help": "^2.2.3",
+    "tslib": "^1.14.1"
   },
   "devDependencies": {
+    "@oclif/dev-cli": "^1.26.0",
+    "@oclif/test": "^1.2.8",
+    "@types/chai": "^4.2.22",
     "@types/mocha": "^9.0.0",
+    "@types/node": "^10.17.60",
     "chai": "^4.3.4",
-    "ts-mocha": "^8.0.0",
+    "eslint": "^5.16.0",
+    "eslint-config-oclif": "^3.1.0",
+    "eslint-config-oclif-typescript": "^0.1.0",
+    "globby": "^10.0.2",
+    "mocha": "^5.2.0",
+    "nyc": "^14.1.1",
+    "ts-node": "^8.10.2",
     "ts-standard": "^10.0.0",
     "typescript": "^4.4.2"
-  }
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "/bin",
+    "/lib",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "homepage": "https://github.com//dpack",
+  "keywords": [
+    "oclif"
+  ],
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "dpack",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "repository": "dapphub/dpack",
+  "scripts": {
+    "postpack": "rm -f oclif.manifest.json",
+    "posttest": "eslint . --ext .ts --config .eslintrc",
+    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
+    "version": "oclif-dev readme && git add README.md",
+    "fmt": "ts-standard --fix"
+  },
+  "types": "lib/index.d.ts"
 }
