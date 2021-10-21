@@ -12,7 +12,7 @@ export class Dapp {
   provider: any
   signer: any
 
-  private constructor (raw: any) {
+  private constructor(raw: any) {
     this._raw = raw
     this.objects = {}
     this.types = {}
@@ -21,16 +21,17 @@ export class Dapp {
     this.reload()
   }
 
-  static async loadFromFile (path: string): Promise<Dapp> {
+  static async loadFromFile(path: string): Promise<Dapp> {
     debug(`loadFromFile ${path}`)
     const file = fs.readFileSync(path)
     const json = JSON.parse(file)
     return await Dapp.loadFromJson(json)
   }
 
-  static async loadFromJson (json: any): Promise<Dapp> {
+  static async loadFromJson(json: any): Promise<Dapp> {
     debug(`loadFromJson ${JSON.stringify(json)}`)
     const out = JSON.parse(JSON.stringify(json)) // deep copy
+
     for (const key of Object.keys(json.types)) {
       const link = json.types[key].artifacts
       if (link['/']) {
@@ -39,6 +40,7 @@ export class Dapp {
         out.types[key].artifacts = json
       }
     }
+
     for (const key of Object.keys(json.objects)) {
       const link = json.objects[key].artifacts
       if (link['/']) {
@@ -47,32 +49,33 @@ export class Dapp {
         out.objects[key].artifacts = json
       }
     }
+
     return await Promise.resolve(new Dapp(out))
   }
 
-  static async loadFromCid (cid: string) {
+  static async loadFromCid(cid: string) {
     const json = await getIpfsJson(cid)
     return await Dapp.loadFromJson(json)
   }
 
-  useProvider (provider: any) {
+  useProvider(provider: any) {
     this.provider = provider
     this.network = this.provider._network.name
     this.reload()
   }
 
-  useDefaultProvider (network: string) {
+  useDefaultProvider(network: string) {
     this.provider = ethers.getDefaultProvider(network)
     this.network = network
     this.reload()
   }
 
-  useSigner (signer: any) {
+  useSigner(signer: any) {
     this.signer = signer
     this.reload()
   }
 
-  reload () {
+  reload() {
     if (this.signer) {
       this.signer = this.signer.connect(this.provider)
     }
