@@ -1,8 +1,8 @@
 const debug = require('debug')('dpack')
-const fs = require('fs')
+import * as fs from 'fs-extra'
+import { ethers } from 'ethers'
 
-const ethers = require('ethers')
-const { getIpfsJson } = require('./ipfs-util')
+import { getIpfsJson } from './ipfs-util'
 
 export class Dapp {
   _raw: any
@@ -23,14 +23,22 @@ export class Dapp {
 
   static async loadFromFile(path: string): Promise<Dapp> {
     debug(`loadFromFile ${path}`)
-    const file = fs.readFileSync(path)
-    const json = JSON.parse(file)
-    return await Dapp.loadFromJson(json)
+    const json = await fs.readJson(path)
+    return Dapp.loadFromJson(json)
   }
 
   static async loadFromJson(json: any): Promise<Dapp> {
     debug(`loadFromJson ${JSON.stringify(json)}`)
     const out = JSON.parse(JSON.stringify(json)) // deep copy
+    // const dappTypes = Object.keys(json.types).reduce(async (acc, key) => {
+    //   const o = await acc
+    //   const link = json.types[key].artifacts
+    //   if (link['/']) {
+    //     const hash = link['/']
+    //     o[key].artifacts = await getIpfsJson(hash)
+    //   }
+    //   return o
+    // }, out.types)
 
     for (const key of Object.keys(json.types)) {
       const link = json.types[key].artifacts
@@ -50,12 +58,12 @@ export class Dapp {
       }
     }
 
-    return await Promise.resolve(new Dapp(out))
+    return Promise.resolve(new Dapp(out))
   }
 
   static async loadFromCid(cid: string) {
     const json = await getIpfsJson(cid)
-    return await Dapp.loadFromJson(json)
+    return Dapp.loadFromJson(json)
   }
 
   useProvider(provider: any) {

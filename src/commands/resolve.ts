@@ -1,4 +1,5 @@
 import { Command, flags } from '@oclif/command'
+import { Dapp } from '../dapp'
 
 export default class Resolve extends Command {
   static description = 'describe the command here'
@@ -17,7 +18,7 @@ export default class Resolve extends Command {
     const { args, flags } = this.parse(Resolve)
 
     if (args.file) {
-      const dapp = await dpack.loadFromFile(args.file)
+      const dapp = await Dapp.loadFromFile(args.file)
       this.log(JSON.stringify(dapp._raw, null, 2))
     }
   }

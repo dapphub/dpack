@@ -17,6 +17,7 @@ export default class Explore extends Command {
   async run() {
     const { args, flags } = this.parse(Explore)
 
+    // TODO: check env and set a default network
     const network = flags.network
 
     if (args.file) {

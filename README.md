@@ -21,3 +21,17 @@ universal to everyone and pseudo-content-addressed via contract addresses.
 
 Compare this to package managers, which deal mostly with *source* management. Also compare this to ethPM
 and similar package managers, which make an ontological error by mapping addresses onto contract types 1:1.
+
+
+### Installation
+
+1. Install [IPFS](https://docs.ipfs.io/install/command-line/#official-distributions)
+2. Run `ipfs init`
+3. Run `ipfs daemon`
+
+### Usage
+
+```sh
+# Show object
+/bin/run show test/sample-pack.json
+```
