@@ -13,7 +13,7 @@ describe('ipfs utils', () => {
 
   it('IpfsJson put', async () => {
     const ipfs = new IpfsJson()
-    const obj = { 'key': 'val' }
+    const obj = { key: 'val' }
     const cid = await ipfs.put(obj)
     const blob = ipfs.client.cat(cid)
 
@@ -28,7 +28,7 @@ describe('ipfs utils', () => {
 
   it('IpfsJson get', async () => {
     const ipfs = new IpfsJson()
-    const obj = { 'key': 'val' }
+    const obj = { key: 'val' }
     const cid = await ipfs.put(obj)
     const res = await ipfs.get(cid)
     expect(res).to.deep.equal(obj)
@@ -36,7 +36,7 @@ describe('ipfs utils', () => {
 
   it('IpfsJson pin', async () => {
     const ipfs = new IpfsJson()
-    const obj = { 'key': 'val' }
+    const obj = { key: 'val' }
     const cid = await ipfs.put(obj)
     let pins = []
 

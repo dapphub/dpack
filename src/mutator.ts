@@ -1,9 +1,9 @@
 const debug = require('debug')('dpack')
 
-import fs from 'fs'
+import * as fs from 'fs-extra'
 import { IpfsJson } from './ipfs-json'
 
-class Mutator {
+export class Mutator {
   _init: any
 
   _pack: any
@@ -16,14 +16,14 @@ class Mutator {
     this.ipfs = new IpfsJson()
   }
 
-  async addType(artifacts: any): Promise<string> {
-    const cid = await this.ipfs.put(artifacts, true)
-    debug(`addType ${artifacts}`)
-    const typename = artifacts.contractName
+  async addType(artifact: any): Promise<string> {
+    const cid = await this.ipfs.put(artifact, true)
+    debug(`addType ${artifact}`)
+    const typename = artifact.contractName
     this._pack.types[typename] = {
       artifacts: { '/': cid.toString() }
     }
-    return Promise.resolve(cid)
+    return Promise.resolve(cid.toString())
   }
 
   async addObject(
@@ -47,10 +47,18 @@ class Mutator {
 
     this._pack.objects[name] = obj
   }
+
+  get init() {
+    return this._init
+  }
+
+  get pack() {
+    return this._pack
+  }
 }
 
-export async function initPackFile(path: string, override = false): Promise<any> {
-  if (fs.existsSync(path) && !override) {
+export async function initPackFile(path: string, overwrite = false): Promise<any> {
+  if (fs.existsSync(path) && !overwrite) {
     throw new Error(`initPackFile path already exists: ${path}`)
   }
   const _default = { types: {}, objects: {} }
@@ -60,8 +68,7 @@ export async function initPackFile(path: string, override = false): Promise<any>
 export async function mutatePackObject(inpack: any, mutate: Function): Promise<any> {
   const mutator = new Mutator(inpack)
   await mutate(mutator)
-  const mutated = mutator._pack
-  return Promise.resolve(mutated)
+  return Promise.resolve(mutator._pack)
 }
 
 export async function mutatePackFile(inpath: string, outpath: string, mutate: Function): Promise<any> {
@@ -70,8 +77,7 @@ export async function mutatePackFile(inpath: string, outpath: string, mutate: Fu
     throw new Error(`mutatePackFile output file already exists and is not input file: ${outpath}`)
   }
   if (fs.existsSync(inpath)) {
-    const file = fs.readFileSync(inpath)
-    json = JSON.parse(file)
+    json = await fs.readJson(inpath)
   } else {
     json = { types: {}, objects: {} }
   }
