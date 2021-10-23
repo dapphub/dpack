@@ -1,32 +1,35 @@
 const debug = require('debug')('dpack')
 
-const IPFS = require('ipfs-http-client')
-const node = IPFS.create()
+import * as IPFS from 'ipfs-http-client'
 
-export async function getIpfsJson(cid: string) {
-  debug(`get ${cid}`)
+export class IpfsJson {
+  client: IPFS.IPFSHTTPClient
 
-  const blob = await node.cat(cid)
-  let s = ''
-  for await (const chunk of blob) {
-    s += chunk
+  constructor() {
+    this.client = IPFS.create()
   }
 
-  const json = JSON.parse(s)
-  return json
-}
-
-export async function putIpfsJson(obj: any, pin: boolean = false): Promise<string> {
-  const str = JSON.stringify(obj)
-  const { cid } = await node.add(str)
-  if (pin) {
-    await pinIpfsCid(cid)
+  async put(obj: any, pin = false): Promise<IPFS.CID> {
+    const str = JSON.stringify(obj)
+    const { cid } = await this.client.add(str, { pin })
+    debug(`IpfsJson::put => ${cid}`)
+    return cid
   }
-  debug(`put ${cid}`)
-  return cid
-}
 
-export async function pinIpfsCid(cid: string) {
-  await node.pin.add(cid)
-  console.log(`pinned ${cid}`)
+  async get(cid: IPFS.CID): Promise<any> {
+    debug(`IpfsJson::get(${cid})`)
+
+    const blob = this.client.cat(cid)
+    let s = ''
+    for await (const chunk of blob) {
+      s += chunk
+    }
+    debug('IpfsJson::client.cat => ', s)
+    return JSON.parse(s)
+  }
+
+  async pin(cid: IPFS.CID): Promise<IPFS.CID> {
+    debug(`IpfsJson::pin(${cid})`)
+    return this.client.pin.add(cid)
+  }
 }

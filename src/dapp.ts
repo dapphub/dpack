@@ -2,15 +2,22 @@ const debug = require('debug')('dpack')
 import * as fs from 'fs-extra'
 import { ethers } from 'ethers'
 
-import { getIpfsJson } from './ipfs-util'
+import { IpfsJson } from './ipfs-util'
 
 export class Dapp {
   _raw: any
+
   objects: any
+
   types: any
+
   network: string
+
   provider: any
+
   signer: any
+
+  ipfs: IpfsJson
 
   private constructor(raw: any) {
     this._raw = raw
@@ -19,6 +26,7 @@ export class Dapp {
     this.network = ''
     this.signer = new ethers.VoidSigner('0x' + '00'.repeat(20))
     this.reload()
+    this.ipfs = new IpfsJson()
   }
 
   static async loadFromFile(path: string): Promise<Dapp> {
@@ -40,20 +48,20 @@ export class Dapp {
     //   return o
     // }, out.types)
 
-    for (const key of Object.keys(json.types)) {
+    for await (const key of Object.keys(json.types)) {
       const link = json.types[key].artifacts
       if (link['/']) {
         const hash = link['/']
-        const json = await getIpfsJson(hash)
+        const json = await this.ipfs.get(hash)
         out.types[key].artifacts = json
       }
     }
 
-    for (const key of Object.keys(json.objects)) {
+    for await (const key of Object.keys(json.objects)) {
       const link = json.objects[key].artifacts
       if (link['/']) {
         const hash = link['/']
-        const json = await getIpfsJson(hash)
+        const json = await this.ipfs.get(hash)
         out.objects[key].artifacts = json
       }
     }
@@ -62,7 +70,7 @@ export class Dapp {
   }
 
   static async loadFromCid(cid: string) {
-    const json = await getIpfsJson(cid)
+    const json = await this.ipfs.get(cid)
     return Dapp.loadFromJson(json)
   }
 
