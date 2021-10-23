@@ -2,7 +2,7 @@ const debug = require('debug')('dpack')
 import * as fs from 'fs-extra'
 import { ethers } from 'ethers'
 
-import { IpfsJson } from './ipfs-util'
+import { IpfsJson } from './ipfs-json'
 
 export class Dapp {
   _raw: any

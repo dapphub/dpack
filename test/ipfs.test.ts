@@ -2,7 +2,7 @@ const debug = require('debug')('dpack')
 const want = require('chai').expect
 
 import { expect } from '@oclif/test'
-import { IpfsJson } from '../src/ipfs-util'
+import { IpfsJson } from '../src/ipfs-json'
 
 describe('ipfs utils', () => {
 

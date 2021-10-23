@@ -1,7 +1,7 @@
 const debug = require('debug')('dpack')
 
 import fs from 'fs'
-import { IpfsJson } from './ipfs-util'
+import { IpfsJson } from './ipfs-json'
 
 class Mutator {
   _init: any

@@ -5,14 +5,15 @@ const fs = require('fs')
 
 const ethers = require('ethers')
 
-const { Dapp } = require('../index')
-const { putIpfsJson } = require('../src/ipfs-util')
+import { Dapp } from '../index'
+import { IpfsJson } from '../src/ipfs-json'
 
 describe('Dapp', () => {
   it('load from file', async () => {
+    const ipfs = new IpfsJson()
     const json = JSON.parse(fs.readFileSync('test/sample-pack.json'))
     debug(json)
-    const cid = await putIpfsJson(json);
+    const cid = await ipfs.put(json)
     debug(cid)
     const dapp = await Dapp.loadFromFile('test/sample-pack.json')
     debug('dapp loaded')
