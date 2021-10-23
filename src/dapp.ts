@@ -38,15 +38,6 @@ export class Dapp {
   static async loadFromJson(json: any): Promise<Dapp> {
     debug(`loadFromJson ${JSON.stringify(json)}`)
     const out = JSON.parse(JSON.stringify(json)) // deep copy
-    // const dappTypes = Object.keys(json.types).reduce(async (acc, key) => {
-    //   const o = await acc
-    //   const link = json.types[key].artifacts
-    //   if (link['/']) {
-    //     const hash = link['/']
-    //     o[key].artifacts = await getIpfsJson(hash)
-    //   }
-    //   return o
-    // }, out.types)
 
     for await (const key of Object.keys(json.types)) {
       const link = json.types[key].artifacts
@@ -102,13 +93,16 @@ export class Dapp {
         const abi = obj.artifacts.abi
         const addr = obj.addresses[this.network]
         let instance = new ethers.Contract(addr, abi)
+
         if (this.signer) {
           instance = instance.connect(this.signer)
         } else if (this.provider) {
           instance = instance.connect(this.provider)
         }
+
         instance.typename = obj.typename
         instance.artifacts = obj.artifacts
+
         this.objects[key] = instance
       } else {
         debug(`NOTE no address for object ${key} on network ${this.network}`)
@@ -118,6 +112,7 @@ export class Dapp {
     for (const key of Object.keys(this._raw.types)) {
       const t = this._raw.types[key]
       let helper: any = {}
+
       if (t && t.artifacts.bytecode) {
         let factory = new ethers.ContractFactory(t.artifacts.abi, t.artifacts.bytecode)
         if (this.signer) {
