@@ -26,7 +26,7 @@
     "@types/chai": "^4.2.22",
     "@types/fs-extra": "^9.0.13",
     "@types/mocha": "^9.0.0",
-    "@types/node": "^10.17.60",
+    "@types/node": "^16.11.4",
     "chai": "^4.3.4",
     "eslint": "^5.16.0",
     "eslint-config-oclif": "^3.1.0",
@@ -61,7 +61,7 @@
   "repository": "dapphub/dpack",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
-    "posttest": "eslint . --ext .ts --config .eslintrc",
+    "posttest": "npm run fmt",
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md",
