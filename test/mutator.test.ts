@@ -1,9 +1,9 @@
-const debug = require('debug')('dpack')
-
 import * as fs from 'fs-extra'
 import { expect } from 'chai'
 import { Mutator } from '../src/mutator'
 import artifact from './mocks/artifact.json'
+
+const debug = require('debug')('dpack')
 
 describe('Mutator', () => {
   it('new instance', async () => {

@@ -1,11 +1,10 @@
-const debug = require('debug')('dpack')
-const want = require('chai').expect
-
 import { expect } from '@oclif/test'
 import { IpfsJson } from '../src/ipfs-json'
 
-describe('ipfs utils', () => {
+const debug = require('debug')('dpack')
+const want = require('chai').expect
 
+describe('ipfs utils', () => {
   it('new IpfsJson instance', async () => {
     const ipfs = new IpfsJson()
     expect(ipfs.constructor.name).to.equal('IpfsJson')

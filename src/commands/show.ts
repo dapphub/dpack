@@ -11,7 +11,7 @@ export default class Show extends Command {
 
   static args = [{ name: 'file' }]
 
-  async run() {
+  async run () {
     const { args } = this.parse(Show)
 
     if (args.file) {

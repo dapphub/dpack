@@ -9,12 +9,12 @@ export default class Explore extends Command {
   static flags = {
     help: flags.help({ char: 'h' }),
     // flag with a value (-n, --network=VALUE)
-    network: flags.string({ char: 'n', description: 'network to connect to' }),
+    network: flags.string({ char: 'n', description: 'network to connect to' })
   }
 
   static args = [{ name: 'file' }]
 
-  async run() {
+  async run(): Promise<void> {
     const { args, flags } = this.parse(Explore)
 
     // TODO: check env and set a default network

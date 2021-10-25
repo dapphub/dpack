@@ -1,8 +1,9 @@
-const debug = require('debug')('dpack')
 import * as fs from 'fs-extra'
 import { ethers } from 'ethers'
 
 import { IpfsJson } from './ipfs-json'
+import * as IPFS from 'ipfs-http-client'
+const debug = require('debug')('dpack')
 
 export class Dapp {
   _raw: any
@@ -17,25 +18,24 @@ export class Dapp {
 
   signer: any
 
-  ipfs: IpfsJson
+  static ipfs = new IpfsJson()
 
-  private constructor(raw: any) {
+  private constructor (raw: any) {
     this._raw = raw
     this.objects = {}
     this.types = {}
     this.network = ''
     this.signer = new ethers.VoidSigner('0x' + '00'.repeat(20))
     this.reload()
-    this.ipfs = new IpfsJson()
   }
 
-  static async loadFromFile(path: string): Promise<Dapp> {
+  static async loadFromFile (path: string): Promise<Dapp> {
     debug(`loadFromFile ${path}`)
     const json = await fs.readJson(path)
-    return Dapp.loadFromJson(json)
+    return await Dapp.loadFromJson(json)
   }
 
-  static async loadFromJson(json: any): Promise<Dapp> {
+  static async loadFromJson (json: any): Promise<Dapp> {
     debug(`loadFromJson ${JSON.stringify(json)}`)
     const out = JSON.parse(JSON.stringify(json)) // deep copy
 
@@ -43,8 +43,7 @@ export class Dapp {
       const link = json.types[key].artifacts
       if (link['/']) {
         const hash = link['/']
-        const json = await this.ipfs.get(hash)
-        out.types[key].artifacts = json
+        out.types[key].artifacts = await Dapp.ipfs.get(hash)
       }
     }
 
@@ -52,37 +51,36 @@ export class Dapp {
       const link = json.objects[key].artifacts
       if (link['/']) {
         const hash = link['/']
-        const json = await this.ipfs.get(hash)
-        out.objects[key].artifacts = json
+        out.objects[key].artifacts = await Dapp.ipfs.get(hash)
       }
     }
 
-    return Promise.resolve(new Dapp(out))
+    return await Promise.resolve(new Dapp(out))
   }
 
-  static async loadFromCid(cid: string) {
-    const json = await this.ipfs.get(cid)
-    return Dapp.loadFromJson(json)
+  static async loadFromCid (cid: IPFS.CID): Promise<Dapp> {
+    const json = await Dapp.ipfs.get(cid)
+    return await Dapp.loadFromJson(json)
   }
 
-  useProvider(provider: any) {
+  useProvider (provider: any): void {
     this.provider = provider
     this.network = this.provider._network.name
     this.reload()
   }
 
-  useDefaultProvider(network: string) {
+  useDefaultProvider (network: string): void {
     this.provider = ethers.getDefaultProvider(network)
     this.network = network
     this.reload()
   }
 
-  useSigner(signer: any) {
+  useSigner (signer: any): void {
     this.signer = signer
     this.reload()
   }
 
-  reload() {
+  reload (): void {
     if (this.signer) {
       this.signer = this.signer.connect(this.provider)
     }
@@ -100,10 +98,11 @@ export class Dapp {
           instance = instance.connect(this.provider)
         }
 
-        instance.typename = obj.typename
-        instance.artifacts = obj.artifacts
-
-        this.objects[key] = instance
+        this.objects[key] = {
+          ...instance,
+          typename: obj.typename,
+          artifacts: obj.artifacts
+        }
       } else {
         debug(`NOTE no address for object ${key} on network ${this.network}`)
       }

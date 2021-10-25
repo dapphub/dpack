@@ -1,7 +1,7 @@
-const debug = require('debug')('dpack')
-
 import * as fs from 'fs-extra'
 import { IpfsJson } from './ipfs-json'
+
+const debug = require('debug')('dpack')
 
 export class Mutator {
   _init: any
@@ -23,7 +23,7 @@ export class Mutator {
     this._pack.types[typename] = {
       artifacts: { '/': cid.toString() }
     }
-    return Promise.resolve(cid.toString())
+    return await Promise.resolve(cid.toString())
   }
 
   async addObject(
@@ -68,7 +68,7 @@ export async function initPackFile(path: string, overwrite = false): Promise<any
 export async function mutatePackObject(inpack: any, mutate: Function): Promise<any> {
   const mutator = new Mutator(inpack)
   await mutate(mutator)
-  return Promise.resolve(mutator._pack)
+  return await Promise.resolve(mutator._pack)
 }
 
 export async function mutatePackFile(inpath: string, outpath: string, mutate: Function): Promise<any> {
@@ -83,6 +83,5 @@ export async function mutatePackFile(inpath: string, outpath: string, mutate: Fu
   }
   const mutated = await mutatePackObject(json, mutate)
   fs.writeFileSync(outpath, JSON.stringify(mutated, null, 2))
-  return Promise.resolve(mutated)
+  return await Promise.resolve(mutated)
 }
-
