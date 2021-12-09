@@ -25,10 +25,19 @@ A dpack is a JSON file with these fields:
 ```
 {
   "format": "dpack-1",
+  "network" "ethereum",
   "types": { ... },
   "objects": { ... }
 }
 ```
+
+### format
+
+`format` is currently `dpack-1`
+
+### network
+
+`network` is the name of the network on which the objects in this dpack are deployed. Future formats will support multi-network packs.
 
 ### types
 
