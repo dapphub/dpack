@@ -45,21 +45,21 @@ A dpack is a JSON file with these fields:
 
 ```
 "MyToken": {
-  "typename": "MyToken",
   "artifacts": {"/": "<CID>"}
 }
 ```
 
-`typename` is a string, usually the solidity class name.
 `artifacts` is an DAG-JSON link to the 'artifacts' json file (output of solc/truffle/hardhat).
 
 ### objects
 
-`objects` is a collection of named objects. Objects redundantly store their type info.
+`objects` is a collection of named EVM contract instances.
+These object descriptors store the type information as well (artifacts and typename).
+If the type name matches one of the types declared in this same scope (the same dpack),
+or if multiple objects have the same typename, then the artifacts must also match.
 
 ```
 "mytoken": {
-  "objectname": "mytoken",
   "address": "<ETH address>"
   "typename": "MyToken",
   "artifacts": {"/": "<CID>"}

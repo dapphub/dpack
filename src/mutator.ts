@@ -16,6 +16,9 @@ class Mutator {
     const cid = await putIpfsJson(artifacts, true)
     debug(`addType ${artifacts}`)
     const typename = artifacts.contractName
+    if (this._pack.types[typename] !== undefined) {
+      return await Promise.reject(new Error(`Typename already exists in pack: ${typename}`));
+    }
     this._pack.types[typename] = {
       artifacts: { '/': cid.toString() }
     }
@@ -28,18 +31,14 @@ class Mutator {
     network: string,
     artifacts: any
   ) {
-    const old = this._pack.objects[name]
-    const cid = await putIpfsJson(artifacts, true)
-    let addresses: any = {}
-    if (old?.artifacts['/'] === cid) {
-      addresses = old.addresses
+    if (this._pack.objects[name] !== undefined) {
+      return await Promise.reject(new Error(`Object name already exists in pack: ${name}`));
     }
-    addresses[network] = address
-
-    const obj = old ?? {}
+    const cid = await putIpfsJson(artifacts, true)
+    const obj = {}
     obj.typename = artifacts.contractName
     obj.artifacts = { '/': cid.toString() }
-    obj.addresses = addresses
+    obj.address = address
 
     this._pack.objects[name] = obj
   }
