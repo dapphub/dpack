@@ -5,19 +5,18 @@ const ethers = require('ethers')
 const { getIpfsJson } = require('./ipfs-util')
 
 export class Dapp {
-  _raw: any
+  _pack: any
   objects: any
   types: any
-  network: string
   provider: any
   signer: any
 
-  private constructor (raw: any) {
-    this._raw = raw
+  private constructor (pack: any) {
+    this._pack = pack
     this.objects = {}
     this.types = {}
-    this.network = ''
     this.signer = new ethers.VoidSigner('0x' + '00'.repeat(20))
+    this.useDefaultProvider();
     this.reload()
   }
 
@@ -57,13 +56,11 @@ export class Dapp {
 
   useProvider (provider: any) {
     this.provider = provider
-    this.network = this.provider._network.name
     this.reload()
   }
 
-  useDefaultProvider (network: string) {
-    this.provider = ethers.getDefaultProvider(network)
-    this.network = network
+  useDefaultProvider () {
+    this.provider = ethers.getDefaultProvider(this._pack.network)
     this.reload()
   }
 
@@ -77,39 +74,35 @@ export class Dapp {
       this.signer = this.signer.connect(this.provider)
     }
 
-    for (const key of Object.keys(this._raw.objects)) {
-      const obj = this._raw.objects[key]
-      if (obj && obj.addresses[this.network]) {
-        const abi = obj.artifacts.abi
-        const addr = obj.addresses[this.network]
-        let instance = new ethers.Contract(addr, abi)
-        if (this.signer) {
-          instance = instance.connect(this.signer)
-        } else if (this.provider) {
-          instance = instance.connect(this.provider)
-        }
-        instance.typename = obj.typename
-        instance.artifacts = obj.artifacts
-        this.objects[key] = instance
-      } else {
-        debug(`NOTE no address for object ${key} on network ${this.network}`)
+    for (const key of Object.keys(this._pack.objects)) {
+      const obj = this._pack.objects[key]
+      const abi = obj.artifacts.abi
+      const addr = obj.address
+      let instance = new ethers.Contract(addr, abi)
+      if (this.signer) {
+        instance = instance.connect(this.signer)
+      } else if (this.provider) {
+        instance = instance.connect(this.provider)
       }
+      instance.typename = obj.typename
+      instance.artifacts = obj.artifacts
+      this.objects[key] = instance
     }
 
-    for (const key of Object.keys(this._raw.types)) {
-      const t = this._raw.types[key]
-      let helper: any = {}
-      if (t && t.artifacts.bytecode) {
+    for (const key of Object.keys(this._pack.types)) {
+      const t = this._pack.types[key]
+      let typeinfo: any = {}
+      if (t.artifacts.bytecode) {
         let factory = new ethers.ContractFactory(t.artifacts.abi, t.artifacts.bytecode)
         if (this.signer) {
           factory = factory.connect(this.signer)
         } else if (this.provider) {
           factory = factory.connect(this.provider)
         }
-        helper = factory
+        typeinfo = factory
       }
-      helper.artifacts = t.artifacts
-      this.types[key] = helper
+      typeinfo.artifacts = t.artifacts
+      this.types[key] = typeinfo
     }
     debug(`reloaded: ${this}`)
   }
