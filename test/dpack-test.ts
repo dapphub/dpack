@@ -4,10 +4,17 @@ const { dpack } = require('../src/dpack');
 describe('libdpack', ()=>{
   it('blank', ()=>{
     console.log(dpack);
-    const dp = dpack.blank();
-    want(dp.format).exists;
-    want(dp.network).exists;
-    want(dp.objects).exists;
-    want(dp.types).exists;
+    const p = dpack.blank();
+    want(p.format).exists;
+    want(p.network).exists;
+    want(p.objects).exists;
+    want(p.types).exists;
   });
+
+  it('addType valid', ()=>{
+    const p = dpack.blank();
+    const p2 = dpack.addType(p, "Feedbase", {
+      artifact: {}
+    });
+  })
 });
