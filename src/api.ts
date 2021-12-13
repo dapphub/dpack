@@ -1,4 +1,3 @@
-
 type pack = any;
 type typeinfo = any;
 type objectinfo = any;
@@ -16,3 +15,4 @@ interface libdpack {
   resolve(p : pack) : json;
   connect(p : pack) : dapp;
 }
+
