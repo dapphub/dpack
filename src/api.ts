@@ -16,3 +16,7 @@ interface libdpack {
   connect(p : pack) : dapp;
 }
 
+export {
+  pack, typeinfo, objectinfo, dapp, json,
+  libdpack
+}

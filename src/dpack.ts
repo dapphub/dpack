@@ -1,4 +1,4 @@
-import { libdpack, pack, typeinfo } from './api';
+import { libdpack, pack, typeinfo, objectinfo, dapp, json } from './api';
 
 let _ethers; // lazy loaded if not injected
 
@@ -10,7 +10,8 @@ function need(b, s) {
   if (!b) throw new Error(s);
 }
 
-export static class dpack implements libdpack {
+export class dpack { //implements libdpack {
+  constructor() { throw new Error(`Do not instantiate this class`); }
   static blank() : pack {
     return copy({
       format: 'dpack-1',
@@ -37,7 +38,7 @@ export static class dpack implements libdpack {
     need(o.artifact, `dpack.addObject() - object info is missing artifact`)
 
     const p2 = copy(p);
-    p2.objects[n] = objectinfo;
+    p2.objects[n] = o;
     this.assertValid(p2);
 
     return p2;
@@ -74,7 +75,7 @@ export static class dpack implements libdpack {
       ethers = _ethers;
     }
 
-    const j = this.resolve(pack);
+    const j = this.resolve(p);
     const d = {}; 
     // for object in pack, instantiate and connect
     //   d.o[objectname] = ethers.connect(...)

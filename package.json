@@ -9,14 +9,14 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "ts-mocha test/*.ts --timeout=10000",
+    "test": "npm run build && ts-mocha test/*.ts --timeout=10000",
     "fmt": "ts-standard --fix"
   },
   "dependencies": {
     "commander": "^8.1.0",
     "debug": "^4.3.2",
     "ethers": "^5.4.5",
-    "ipfs-http-client": "^53.0.1"
+    "ipfs-http-client": "^54.0.2"
   },
   "devDependencies": {
     "@types/mocha": "^9.0.0",
