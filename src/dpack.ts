@@ -10,7 +10,7 @@ function need(b, s) {
   if (!b) throw new Error(s);
 }
 
-export static class dpack implements libdpack {
+export class dpack implements libdpack {
   static blank() : pack {
     return copy({
       format: 'dpack-1',
@@ -21,7 +21,7 @@ export static class dpack implements libdpack {
   }
 
   static addType(p : pack, n : string, t : typeinfo) : pack {
-    need(t.artifact, `dpack.addType() - given typeinfo has not 'artifact' field`)
+    need(t.artifacts, `dpack.addType() - given typeinfo has no 'artifacts' field`)
     need(!(p.types[n]), `dpack.addType() - typename already exists: ${n}`)
 
     const p2 = copy(p);
@@ -34,7 +34,7 @@ export static class dpack implements libdpack {
   static addObject(p : pack, n : string, o : objectinfo) : pack {
     need(o.typename, `dpack.addObject() - object info is missing typename`)
     need(o.address, `dpack.addObject() - object info is missing address`)
-    need(o.artifact, `dpack.addObject() - object info is missing artifact`)
+    need(o.artifacts, `dpack.addObject() - object info is missing artifacts`)
 
     const p2 = copy(p);
     p2.objects[n] = objectinfo;
