@@ -1,7 +1,9 @@
 const debug = require('debug')('dpack')
 
 const IPFS = require('ipfs-http-client')
+debug('starting node')
 const node = IPFS.create()
+debug('started node')
 
 export async function getIpfsJson (cid: string) {
   debug(`get ${cid}`)
@@ -16,7 +18,9 @@ export async function getIpfsJson (cid: string) {
 
 export async function putIpfsJson (obj: any, pin: boolean = false): Promise<string> {
   const str = JSON.stringify(obj)
+  debug(`adding ${str}`);
   const { cid } = await node.add(str)
+  debug(`added ${str}`);
   if (pin) {
     await pinIpfsCid(cid)
   }

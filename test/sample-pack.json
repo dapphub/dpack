@@ -1,4 +1,6 @@
 {
+  "format": "dpack-1",
+  "network": "ropsten",
   "types": {
     "Feedbase": {
       "artifacts": {
@@ -19,20 +21,16 @@
   "objects": {
     "feedbase": {
       "typename": "Feedbase",
+      "address": "0x035A66fE6010ae0d5B934E0B1D863cbb8bb28B06",
       "artifacts": {
         "/": "QmfHtSUDFz1tVzeXSthEf2APCKo6iZCWHM64EaUU9zprcv"
-      },
-      "addresses": {
-        "ropsten": "0x035A66fE6010ae0d5B934E0B1D863cbb8bb28B06"
       }
     },
     "receiverFactory": {
       "typename": "BasicReceiverFactory",
+      "address": "0x6403bD57C5c447B4058eA0C8eE5a83A008aFeFb0",
       "artifacts": {
         "/": "QmS258HYWaBy2zWZpRyUE6xLQZT7KAkTFcMSwn2QHyknWH"
-      },
-      "addresses": {
-        "ropsten": "0x6403bD57C5c447B4058eA0C8eE5a83A008aFeFb0"
       }
     }
   }
