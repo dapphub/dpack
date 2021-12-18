@@ -8,14 +8,12 @@ function need(b, s) {
   if (!b) throw new Error(s);
 }
 
-export function assertValid() {
-}
-
 export class dpack {
   readonly format : string
   readonly network : string
   readonly types : any
   readonly objects : any
+  readonly _bundle: any
 }
 
 

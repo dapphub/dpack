@@ -9,8 +9,7 @@ function copy(a : any) : any {
   return JSON.parse(JSON.stringify(a));
 }
 
-
-export class PackBuilder { //implements libdpack {
+export class PackBuilder {
   format : string = 'dpack-1'
   network : string = ''
   types : any = {}
@@ -36,7 +35,6 @@ export class PackBuilder { //implements libdpack {
   merge(p2 : dpack) {
     need(this.format == p2.format, `dpack.merge(): argment packs have different 'format' fields`)
     need(this.network == p2.network, `dpack.merge(): argment packs have different 'network' fields`)
-    this.assertValid();
     for (const tkey of Object.keys(p2.types)) {
       this.addType(tkey, p2.types[tkey]);
     }
@@ -49,7 +47,7 @@ export class PackBuilder { //implements libdpack {
   assertValid() {
   }
 
-  pack() : pack {
+  pack() : dpack {
     return copy({
       'format': 'dpack-1',
       'network': this.network,

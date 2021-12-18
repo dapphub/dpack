@@ -1,8 +1,9 @@
+const debug = require('debug')('dpack:test')
 const want = require('chai').expect
 const { dpack } = require('../src/dpack');
 const { PackBuilder } = require('../src/builder');
 
-describe('libdpack', ()=>{
+describe('PackBuilder', ()=>{
   it('blank', ()=>{
     const pb = new PackBuilder();
     const p = pb.pack();
@@ -18,5 +19,6 @@ describe('libdpack', ()=>{
       artifact: {}
     });
     const p = pb.pack();
+    debug(p)
   })
 });
