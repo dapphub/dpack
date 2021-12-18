@@ -15,7 +15,8 @@ describe('PackBuilder', ()=>{
 
   it('addType valid', ()=>{
     const pb = new PackBuilder();
-    pb.addType("GemFab", {
+    pb.addType({
+      typename: "GemFab",
       artifact: {}
     });
     const p = pb.pack();

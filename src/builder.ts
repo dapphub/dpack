@@ -1,4 +1,3 @@
-import { libdpack, pack, typeinfo, objectinfo, dapp, json } from './api';
 import { dpack } from './dpack'
 
 function need(b, s) {
@@ -10,50 +9,46 @@ function copy(a : any) : any {
 }
 
 export class PackBuilder {
-  format : string = 'dpack-1'
-  network : string = ''
-  types : any = {}
-  objects : any = {}
+  _pack : dpack = new dpack({
+    format: 'dpack-1',
+    network: '',
+    types: {},
+    objects: {}
+  })
 
-  addType(n : string, t : typeinfo) {
+  addType(t : any) {
+    need(t.typename, `dpack.addType() - given typeinfo has no 'typename', field`)
     need(t.artifact, `dpack.addType() - given typeinfo has no 'artifact' field`)
-    need(!(this.types[n]), `dpack.addType() - typename already exists: ${n}`)
+    need(!(this._pack.types[t.typename]), `dpack.addType() - typename already exists: ${t.typename}`)
 
-    this.types[n] = t;
-    this.assertValid();
+    this._pack.types[t.typename] = t;
+    this._pack.assertValid();
   }
 
-  addObject(n : string, o : objectinfo) {
+  addObject(o : any) {
+    need(o.objectname, `dpack.addObject() - object info is missing objectname`)
     need(o.typename, `dpack.addObject() - object info is missing typename`)
     need(o.address, `dpack.addObject() - object info is missing address`)
     need(o.artifact, `dpack.addObject() - object info is missing artifact`)
 
-    this.objects[n] = o;
-    this.assertValid();
+    this._pack.objects[o.objectname] = o;
+    this._pack.assertValid();
   }
 
   merge(p2 : dpack) {
-    need(this.format == p2.format, `dpack.merge(): argment packs have different 'format' fields`)
-    need(this.network == p2.network, `dpack.merge(): argment packs have different 'network' fields`)
+    need(this._pack.format == p2.format, `dpack.merge(): argment packs have different 'format' fields`)
+    need(this._pack.network == p2.network, `dpack.merge(): argment packs have different 'network' fields`)
     for (const tkey of Object.keys(p2.types)) {
-      this.addType(tkey, p2.types[tkey]);
+      this.addType(p2.types[tkey]);
     }
     for (const okey of Object.keys(p2.objects)) {
-      this.addObject(okey, p2.objects[okey]);
+      this.addObject(p2.objects[okey]);
     }
-    this.assertValid();
-  }
-
-  assertValid() {
+    this._pack.assertValid();
   }
 
   pack() : dpack {
-    return copy({
-      'format': 'dpack-1',
-      'network': this.network,
-      'types': this.types,
-      'objects': this.objects
-    })
+    return copy(this._pack);
   }
 
 }
