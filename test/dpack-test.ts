@@ -3,8 +3,7 @@ const { dpack } = require('../src/dpack');
 
 describe('libdpack', ()=>{
   it('blank', ()=>{
-    console.log(dpack);
-    const p = dpack.blank();
+    const p = new dpack();
     want(p.format).exists;
     want(p.network).exists;
     want(p.objects).exists;
@@ -12,8 +11,8 @@ describe('libdpack', ()=>{
   });
 
   it('addType valid', ()=>{
-    const p = dpack.blank();
-    const p2 = dpack.addType(p, "Feedbase", {
+    const p = new dpack();
+    p.addType("GemFab", {
       artifact: {}
     });
   })

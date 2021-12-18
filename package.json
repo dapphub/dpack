@@ -1,6 +1,6 @@
 {
   "name": "dpack",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "main": "./dist/index.js",
   "author": "nikolai mushegian <mail@nikolai.fyi>",
   "license": "GPL-3.0",
