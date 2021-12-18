@@ -1,6 +1,5 @@
 import { libdpack, pack, typeinfo, objectinfo, dapp, json } from './api';
 
->>>>>>> 8a80985de3cdb127925a37e2bfc0663581d934e6
 function copy(a : any) : any {
   return JSON.parse(JSON.stringify(a));
 }
