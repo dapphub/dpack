@@ -45,6 +45,6 @@ export class Dapp {
       typeinfo.artifact = t.artifact
       this.t[key] = typeinfo
     }
-    debug(`reloaded: ${this}`)
   }
+
 }

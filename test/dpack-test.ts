@@ -4,22 +4,22 @@ const { dpack } = require('../src/dpack');
 const { PackBuilder } = require('../src/builder');
 
 describe('PackBuilder', ()=>{
-  it('blank', ()=>{
+  it('blank', async ()=>{
     const pb = new PackBuilder();
-    const p = pb.pack();
+    const p = await pb.pack();
     want(p.format).exists;
     want(p.network).exists;
     want(p.objects).exists;
     want(p.types).exists;
   });
 
-  it('addType valid', ()=>{
+  it('addType valid', async ()=>{
     const pb = new PackBuilder();
     pb.addType({
       typename: "GemFab",
-      artifact: {}
+      artifact: {abi:{}}
     });
-    const p = pb.pack();
-    debug(p)
+    const p = await pb.pack();
+    debug(JSON.stringify(p, null, 2))
   })
 });
