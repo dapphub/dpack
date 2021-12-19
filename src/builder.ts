@@ -13,12 +13,17 @@ function copy(a : any) : any {
 }
 
 export class PackBuilder {
-  _pack : dpack = new dpack({
-    format: 'dpack-1',
-    network: '',
-    types: {},
-    objects: {}
-  })
+  _pack : dpack
+  constructor(network : string) {
+    need(network, `new PackBuilder(network) - network must be defined`)
+    this._pack = new dpack({
+      format: 'dpack-1',
+      network: network,
+      types: {},
+      objects: {}
+    })
+    this._pack.assertValid();
+  }
 
   addType(t : any) {
     need(t.typename, `dpack.addType() - given typeinfo has no 'typename', field`)
@@ -54,18 +59,20 @@ export class PackBuilder {
   }
 
   async pack() : Promise<any> { // TODO make sync, put in bundle
+    this._pack.assertValid();
     const p = copy(this._pack);
-    debug(p)
     for (const tkey of Object.keys(p.types)) {
       const t = p.types[tkey];
-      debug(tkey)
-      debug(t)
       const json = JSON.stringify(t.artifact);
       const cid = (await putIpfsJson(json)).toString();
-      debug(cid)
       t.artifact = {"/":cid}
     }
-    debug(p)
+    for (const okey of Object.keys(p.objects)) {
+      const o = p.objects[okey];
+      const json = JSON.stringify(o.artifact);
+      const cid = (await putIpfsJson(json)).toString();
+      o.artifact = {"/":cid}
+    }
     return Promise.resolve(p);
   }
 

@@ -5,7 +5,7 @@ const { PackBuilder } = require('../src/builder');
 
 describe('PackBuilder', ()=>{
   it('blank', async ()=>{
-    const pb = new PackBuilder();
+    const pb = new PackBuilder('testenv');
     const p = await pb.pack();
     want(p.format).exists;
     want(p.network).exists;
@@ -14,7 +14,7 @@ describe('PackBuilder', ()=>{
   });
 
   it('addType valid', async ()=>{
-    const pb = new PackBuilder();
+    const pb = new PackBuilder('testenv');
     pb.addType({
       typename: "GemFab",
       artifact: {abi:{}}
