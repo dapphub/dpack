@@ -62,6 +62,7 @@ export class PackBuilder {
   async pack() : Promise<any> { // TODO make sync, put in bundle
     this._pack.assertValid();
     const p = copy(this._pack);
+    delete p._bundle; delete p._resolved;
     for (const tkey of Object.keys(p.types)) {
       const t = p.types[tkey];
       const json = JSON.stringify(t.artifact);
