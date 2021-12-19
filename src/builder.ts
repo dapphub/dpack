@@ -16,6 +16,7 @@ export class PackBuilder {
   _pack : dpack
   constructor(network : string) {
     need(network, `new PackBuilder(network) - network must be defined`)
+    need(typeof(network) == 'string', `new PackBuilder(network) - network must be a string`)
     this._pack = new dpack({
       format: 'dpack-1',
       network: network,
