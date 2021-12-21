@@ -1,4 +1,8 @@
+const debug = require('debug')('dpack:builder')
+
 import { dpack } from './dpack'
+
+import { putIpfsJson } from './ipfs-util' // TODO replace with sync for `pack`
 
 function need(b, s) {
   if (!b) throw new Error(s);
@@ -9,17 +13,25 @@ function copy(a : any) : any {
 }
 
 export class PackBuilder {
-  _pack : dpack = new dpack({
-    format: 'dpack-1',
-    network: '',
-    types: {},
-    objects: {}
-  })
+  _pack : dpack
+  constructor(network : string) {
+    need(network, `new PackBuilder(network) - network must be defined`)
+    need(typeof(network) == 'string', `new PackBuilder(network) - network must be a string`)
+    this._pack = new dpack({
+      format: 'dpack-1',
+      network: network,
+      types: {},
+      objects: {}
+    })
+    this._pack.assertValid();
+  }
 
   addType(t : any) {
     need(t.typename, `dpack.addType() - given typeinfo has no 'typename', field`)
     need(t.artifact, `dpack.addType() - given typeinfo has no 'artifact' field`)
     need(!(this._pack.types[t.typename]), `dpack.addType() - typename already exists: ${t.typename}`)
+
+    need(t.artifact.abi, `dpack.addType(): given typeinfo.artifact is missing 'abi' field`);
 
     this._pack.types[t.typename] = t;
     this._pack.assertValid();
@@ -47,8 +59,23 @@ export class PackBuilder {
     this._pack.assertValid();
   }
 
-  pack() : dpack {
-    return copy(this._pack);
+  async pack() : Promise<any> { // TODO make sync, put in bundle
+    this._pack.assertValid();
+    const p = copy(this._pack);
+    delete p._bundle; delete p._resolved;
+    for (const tkey of Object.keys(p.types)) {
+      const t = p.types[tkey];
+      const json = JSON.stringify(t.artifact);
+      const cid = (await putIpfsJson(json)).toString();
+      t.artifact = {"/":cid}
+    }
+    for (const okey of Object.keys(p.objects)) {
+      const o = p.objects[okey];
+      const json = JSON.stringify(o.artifact);
+      const cid = (await putIpfsJson(json)).toString();
+      o.artifact = {"/":cid}
+    }
+    return Promise.resolve(p);
   }
 
 }
