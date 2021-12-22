@@ -8,9 +8,8 @@ export class Dapp {
   _pack: any
   o: any
   t: any
-  signerOrProvider: any
 
-  constructor (pack: any, provider: any, signer: any) {
+  constructor (pack: any, provider: any = undefined, signer: any = undefined) {
     this._pack = pack
     this.o = {}
     this.t = {}

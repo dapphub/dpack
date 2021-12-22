@@ -1,18 +1,32 @@
 const debug = require('debug')('dpack')
 
-function copy(a : any) : any {
-  return JSON.parse(JSON.stringify(a));
+import { copy, need } from './util'
+import { assertValidPack as _assertValidPack } from './pure'
+
+export interface typeinfo {
+  typename : string
+  artifact : any
 }
 
-function need(b, s) {
-  if (!b) throw new Error(s);
+export interface objectinfo {
+  objectname : string
+  address : string
+  typename : string
+  artifact : any
 }
 
-export class dpack {
+export interface dpack {
+  format : string
+  network : string
+  types : {[typename:string]:typeinfo}
+  objects : {[objectname:string]:objectinfo}
+}
+
+export class dpack implements dpack {
   format : string = 'dpack-1'
   network : string
-  types : any
-  objects : any
+  types : {[typename:string]:typeinfo}
+  objects : {[objectname:string]:objectinfo}
   _bundle: any
   _resolved : boolean
 
@@ -26,6 +40,7 @@ export class dpack {
   }
 
   assertValid() {
+    _assertValidPack(this);
   }
 
   // fills _bundle from ipfs
