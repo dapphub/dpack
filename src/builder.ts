@@ -1,7 +1,7 @@
 const debug = require('debug')('dpack:builder')
 
 import { dpack } from './dpack'
-
+import { need, copy } from './util'
 import { putIpfsJson } from './ipfs-util' // TODO replace with sync for `pack`
 import {
   blank,
@@ -11,13 +11,6 @@ import {
   assertValidPack
 } from './pure'
 
-function need(b, s) {
-  if (!b) throw new Error(s);
-}
-
-function copy(a : any) : any {
-  return JSON.parse(JSON.stringify(a));
-}
 
 export class PackBuilder {
   _pack : dpack

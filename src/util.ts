@@ -7,7 +7,9 @@ export function need(b, s) {
 }
 
 export function omap(o : any, f : Function) {
+  const out = {};
   for (const [k,v] of Object.entries(o)) {
-    o[k] = f(v);
+    out[k] = f(v);
   }
+  return out;
 }
