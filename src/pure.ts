@@ -1,5 +1,5 @@
 import { copy, need, omap } from './util'
-import { TypeInfo, ObjectInfo, Dpack, ResolvedDpack } from './types'
+import { Artifact, TypeInfo, ObjectInfo, Dpack, ResolvedPack } from './types'
 import * as schema from './schema'
 export { schema }
 
@@ -15,15 +15,29 @@ export function assertValidPack (p: Dpack): void {
 }
 
 export function assertValidType (t: TypeInfo): void {
-  need(schema.isWellFormedResolvedType(t),
-    `dpack.addType() - not well formed resolved type: ${t}`
+  need(schema.isWellFormedType(t),
+    `dpack.addType() - not well formed type: ${t}`
   )
 }
 
 export function assertValidObject (o: ObjectInfo): void {
-  need(schema.isWellFormedResolvedObject(o),
-    `dpack.addType() - not well formed resolved object: ${o}`
+  need(schema.isWellFormedObject(o),
+    `dpack.addType() - not well formed object: ${o}`
   )
+}
+
+export function assertValidArtifact (a: Artifact): void {
+  need(schema.isWellFormedArtifact(a),
+    `dpack.addType() - not well formed artifact: ${a}`
+  )
+}
+
+export function assertValidResolvedPack (rp: ResolvedPack): void {
+  need(schema.isWellFormedResolvedPack(rp),
+    `dpack.addType() - not well formed resolved pack: ${rp}`
+  )
+  // for each type/object, assert bundle has artifact
+  // for each artifact, assert is valid
 }
 
 export function addType (pack: Dpack, type: TypeInfo): Dpack {
@@ -86,7 +100,7 @@ export function blank (): Dpack {
   return pack
 }
 
-export async function resolve (pack: Dpack, ipfs: any = undefined): Promise<ResolvedDpack> {
+export async function resolve (pack: Dpack, ipfs: any = undefined): Promise<ResolvedPack> {
   async function _resolve (link): Promise<any> {
     need(link, 'panic: bad DAG-JSON link')
     need(link['/'], 'panic: bad DAG-JSON link')
@@ -94,11 +108,12 @@ export async function resolve (pack: Dpack, ipfs: any = undefined): Promise<Reso
   }
   assertValidPack(pack)
   const out = copy(pack)
+  out._bundle = {}
   for (const key of Object.keys(this.types)) {
-    out[key].artifact = await _resolve(this.types[key].artifact)
+    out._bundle[key] = await _resolve(this.types[key].artifact)
   }
   for (const key of Object.keys(this.objects)) {
-    out[key].artifact = await _resolve(this.objects[key].artifact)
+    out._bundle[key] = await _resolve(this.objects[key].artifact)
   }
   return await Promise.resolve(out)
 }

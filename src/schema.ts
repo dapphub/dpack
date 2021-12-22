@@ -42,44 +42,28 @@ const packSchema = {
   }
 }
 
+const bundleSchema = {
+  values: { type: 'string' }
+}
+
 const artifactSchema = {
   bytecode: { nullable: true },
   abi: { nullable: true },
   additionalProperties: true
 }
 
-const resolvedTypeSchema = {
-  properties: {
-    typename: { type: 'string' },
-    artifact: { ref: 'artifactSchema' }
-  },
-  definitions: {
-    artifactSchema
-  }
-}
-
-const resolvedObjectSchema = {
-  properties: {
-    objectname: { type: 'string' },
-    address: { type: 'string' },
-    typename: { type: 'string' },
-    artifact: { ref: 'artifactSchema' }
-  },
-  definitions: {
-    artifactSchema
-  }
-}
-
 const resolvedPackSchema = {
   properties: {
     format: { type: 'string' },
     network: { type: 'string' },
-    types: { values: { ref: 'resolvedTypeSchema' } },
-    objects: { values: { ref: 'resolvedObjectSchema' } }
+    types: { values: { ref: 'typeSchema' } },
+    objects: { values: { ref: 'objectSchema' } },
+    _bundle: { ref: 'bundleSchema' }
   },
   definitions: {
-    resolvedTypeSchema,
-    resolvedObjectSchema
+    typeSchema,
+    objectSchema,
+    bundleSchema
   }
 }
 
@@ -87,8 +71,6 @@ export const isWellFormedLink = ajv.compile(linkSchema)
 export const isWellFormedObject = ajv.compile(objectSchema)
 export const isWellFormedType = ajv.compile(typeSchema)
 export const isWellFormedPack = ajv.compile(packSchema)
-
+export const isWellFormedBundle = ajv.compile(bundleSchema)
 export const isWellFormedArtifact = ajv.compile(artifactSchema)
-export const isWellFormedResolvedObject = ajv.compile(resolvedObjectSchema)
-export const isWellFormedResolvedType = ajv.compile(resolvedTypeSchema)
 export const isWellFormedResolvedPack = ajv.compile(resolvedPackSchema)

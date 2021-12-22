@@ -24,21 +24,9 @@ export interface Dpack {
 export interface Artifact {
 }
 
-export interface ResolvedTypeInfo {
-  typename: string
-  artifact: Artifact
-}
+export type base64str = string
+export interface Bundle {[cid: string]: base64str}
 
-export interface ResolvedObjectInfo {
-  objectname: string
-  address: string
-  typename: string
-  artifact: Artifact
-}
-
-export interface ResolvedDpack {
-  format: string
-  network: string
-  types: {[typename: string]: ResolvedTypeInfo}
-  objects: {[objectname: string]: ResolvedObjectInfo}
+export interface ResolvedPack extends Dpack {
+  _bundle: Bundle
 }
