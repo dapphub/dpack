@@ -1,6 +1,5 @@
 const debug = require('debug')('dpack:test')
 const want = require('chai').expect
-const { dpack } = require('../src/dpack');
 const { PackBuilder } = require('../src/builder');
 
 describe('PackBuilder', ()=>{

@@ -1,4 +1,6 @@
-import { dpack } from './dpack'
+const debug = require('debug')('Dpack:builder')
+
+import { Dpack } from './types'
 import { need, copy } from './util'
 import { putIpfsJson } from './ipfs-util' // TODO replace with sync for `pack`
 import {
@@ -9,10 +11,8 @@ import {
   assertValidPack
 } from './pure'
 
-const debug = require('debug')('dpack:builder')
-
 export class PackBuilder {
-  _pack: dpack
+  _pack: Dpack
   constructor (network: string) {
     need(network, 'new PackBuilder(network) - network must be defined')
     need(typeof (network) === 'string', 'new PackBuilder(network) - network must be a string')
@@ -32,7 +32,7 @@ export class PackBuilder {
     return this
   }
 
-  merge (...packs: dpack[]): PackBuilder {
+  merge (...packs: Dpack[]): PackBuilder {
     this._pack = _merge(this._pack, ...packs)
     assertValidPack(this._pack)
     return this
