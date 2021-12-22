@@ -5,6 +5,7 @@ import { dpack } from './dpack'
 import { putIpfsJson } from './ipfs-util' // TODO replace with sync for `pack`
 import {
   blank,
+  merge as _merge,
   addType as _addType,
   addObject as _addObject,
   assertValidPack
@@ -37,15 +38,8 @@ export class PackBuilder {
     assertValidPack(this._pack);
   }
 
-  merge(p2 : dpack) {
-    need(this._pack.format == p2.format, `dpack.merge(): argment packs have different 'format' fields`)
-    need(this._pack.network == p2.network, `dpack.merge(): argment packs have different 'network' fields`)
-    for (const tkey of Object.keys(p2.types)) {
-      this.addType(p2.types[tkey]);
-    }
-    for (const okey of Object.keys(p2.objects)) {
-      this.addObject(p2.objects[okey]);
-    }
+  merge(...packs : dpack[]) {
+    this._pack = _merge(this._pack, ...packs);
     assertValidPack(this._pack);
   }
 

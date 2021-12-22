@@ -44,7 +44,24 @@ export function addObject(pack: dpack, obj : any) : dpack {
 }
 
 export function merge(...packs : dpack[]) : dpack {
-  return packs[0];
+  const head = packs[0];
+  const rest = packs.slice(1);
+  packs.map((p) => {
+    assertValidPack(p)
+    need(p.format == head.format, `dpack.merge() - two packs have different 'format' fields`)
+    need(p.network == head.network, `dpack.merge() - two packs have different 'network' fields`)
+  });
+  let out = copy(head);
+  for (const pack of rest) {
+    for (const tkey of Object.keys(pack.types)) {
+      out = addType(out, pack.types[tkey]);
+    }
+    for (const okey of Object.keys(pack.objects)) {
+      out = addObject(out, pack.objects[okey])
+    }
+  }
+  assertValidPack(out);
+  return out;
 }
 
 export function blank() : dpack {
