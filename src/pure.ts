@@ -3,10 +3,8 @@ import { typeinfo, objectinfo, dpack } from './dpack'
 import * as schema from './schema'
 
 export function assertValidPack(p : dpack) {
+  need(schema.isWellFormedPack(p), `dpack.assertValidPack(): pack fails schema validation: ${schema.isWellFormedPack.errors}`);
   need(p.format == 'dpack-1', `dpack.assertValidPack() - unrecognized 'format' field: ${p.format}`);
-  need(p.network !== undefined, `dpack.assertValidPack() - 'network' field must be defined: ${p.network}`);
-  need(p.objects, `dpack.assertValidPack() - missing 'objects' field`);
-  need(p.types, `dpack.assertValidPack() - missing 'types' field`);
   omap(p.objects, (o)=>{ assertValidObject(o); return o})
   omap(p.types, (t)=>{ assertValidType(t); return t})
 }
