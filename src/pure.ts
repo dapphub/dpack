@@ -1,5 +1,6 @@
 import { copy, need, omap } from './util'
 import { typeinfo, objectinfo, dpack } from './dpack'
+import * as schema from './schema'
 
 export function assertValidPack(p : dpack) {
   need(p.format == 'dpack-1', `dpack.assertValidPack() - unrecognized 'format' field: ${p.format}`);
