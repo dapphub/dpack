@@ -1,5 +1,5 @@
 export interface IpfsLink {
-  "/": string
+  '/': string
 }
 
 export interface TypeInfo {

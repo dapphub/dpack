@@ -3,17 +3,17 @@
   "network": "ropsten",
   "types": {
     "Feedbase": {
-      "artifacts": {
+      "artifact": {
         "/": "QmfHtSUDFz1tVzeXSthEf2APCKo6iZCWHM64EaUU9zprcv"
       }
     },
     "BasicReceiver": {
-      "artifacts": {
+      "artifact": {
         "/": "QmNhvGDhg5pH6Ekt8ZTRC2CXDEagsogPRnzdKJS6aTHaRc"
       }
     },
     "BasicReceiverFactory": {
-      "artifacts": {
+      "artifact": {
         "/": "QmS258HYWaBy2zWZpRyUE6xLQZT7KAkTFcMSwn2QHyknWH"
       }
     }
@@ -22,14 +22,14 @@
     "feedbase": {
       "typename": "Feedbase",
       "address": "0x035A66fE6010ae0d5B934E0B1D863cbb8bb28B06",
-      "artifacts": {
+      "artifact": {
         "/": "QmfHtSUDFz1tVzeXSthEf2APCKo6iZCWHM64EaUU9zprcv"
       }
     },
     "receiverFactory": {
       "typename": "BasicReceiverFactory",
       "address": "0x6403bD57C5c447B4058eA0C8eE5a83A008aFeFb0",
-      "artifacts": {
+      "artifact": {
         "/": "QmS258HYWaBy2zWZpRyUE6xLQZT7KAkTFcMSwn2QHyknWH"
       }
     }

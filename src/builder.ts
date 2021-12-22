@@ -1,5 +1,3 @@
-const debug = require('debug')('Dpack:builder')
-
 import { Dpack } from './types'
 import { need, copy } from './util'
 import { putIpfsJson } from './ipfs-util' // TODO replace with sync for `pack`
@@ -10,6 +8,8 @@ import {
   addObject as _addObject,
   assertValidPack
 } from './pure'
+
+const debug = require('debug')('Dpack:builder')
 
 export class PackBuilder {
   _pack: Dpack
@@ -38,7 +38,7 @@ export class PackBuilder {
     return this
   }
 
-  async pack (): Promise<any> { // TODO make sync, put in bundle
+  async build (): Promise<any> { // TODO make sync, put in bundle
     assertValidPack(this._pack)
     const p = copy(this._pack)
     delete p._bundle; delete p._resolved
