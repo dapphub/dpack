@@ -22,7 +22,7 @@ export interface dpack {
   objects : {[objectname:string]:objectinfo}
 }
 
-export class dpack implements dpack {
+export class PackHandler implements dpack {
   format : string = 'dpack-1'
   network : string
   types : {[typename:string]:typeinfo}

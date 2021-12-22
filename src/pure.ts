@@ -3,7 +3,7 @@ import { typeinfo, objectinfo, dpack } from './dpack'
 
 export function assertValidPack(p : dpack) {
   need(p.format == 'dpack-1', `dpack.assertValidPack() - unrecognized 'format' field: ${p.format}`);
-  need(p.network, `dpack.assertValidPack() - 'network' field must be defined: ${p.network}`);
+  need(p.network !== undefined, `dpack.assertValidPack() - 'network' field must be defined: ${p.network}`);
   need(p.objects, `dpack.assertValidPack() - missing 'objects' field`);
   need(p.types, `dpack.assertValidPack() - missing 'types' field`);
   omap(p.objects, (o)=>{ assertValidObject(o); return o})
@@ -41,6 +41,21 @@ export function addObject(pack: dpack, obj : any) : dpack {
   out.objects[obj.objectname] = obj;
   assertValidPack(pack);
   return out;
+}
+
+export function merge(...packs : dpack[]) : dpack {
+  return packs[0];
+}
+
+export function blank() : dpack {
+  const pack = {
+    format: 'dpack-1',
+    network: '',
+    types: {},
+    objects: {}
+  }
+  assertValidPack(pack);
+  return pack;
 }
 
 /*

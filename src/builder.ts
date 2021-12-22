@@ -3,8 +3,8 @@ const debug = require('debug')('dpack:builder')
 import { dpack } from './dpack'
 
 import { putIpfsJson } from './ipfs-util' // TODO replace with sync for `pack`
-
 import {
+  blank,
   addType as _addType,
   addObject as _addObject,
   assertValidPack
@@ -23,12 +23,7 @@ export class PackBuilder {
   constructor(network : string) {
     need(network, `new PackBuilder(network) - network must be defined`)
     need(typeof(network) == 'string', `new PackBuilder(network) - network must be a string`)
-    this._pack = new dpack({
-      format: 'dpack-1',
-      network: network,
-      types: {},
-      objects: {}
-    })
+    this._pack = blank();
     assertValidPack(this._pack);
   }
 
