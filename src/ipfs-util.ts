@@ -5,7 +5,7 @@ debug('starting node')
 const node = IPFS.create('/ip4/127.0.0.1/tcp/5001')
 debug('started node')
 
-export async function getIpfsJson (cid: string) {
+export async function getIpfsJson (cid: string): Promise<any> {
   debug(`get ${cid}`)
   const blob = await node.cat(cid)
   let s = ''
@@ -18,9 +18,9 @@ export async function getIpfsJson (cid: string) {
 
 export async function putIpfsJson (obj: any, pin: boolean = false): Promise<string> {
   const str = JSON.stringify(obj)
-  debug(`adding ${str}`);
+  debug(`adding ${str}`)
   const { cid } = await node.add(str)
-  debug(`added ${str}`);
+  debug(`added ${str}`)
   if (pin) {
     await pinIpfsCid(cid)
   }
@@ -28,7 +28,7 @@ export async function putIpfsJson (obj: any, pin: boolean = false): Promise<stri
   return cid
 }
 
-export async function pinIpfsCid (cid: string) {
+export async function pinIpfsCid (cid: string): Promise<void> {
   await node.pin.add(cid)
   console.log(`pinned ${cid}`)
 }

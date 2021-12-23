@@ -1,16 +1,13 @@
 const debug = require('debug')('dpack')
-const fs = require('fs')
 
 const ethers = require('ethers')
-const { getIpfsJson } = require('./ipfs-util')
 
 export class Dapp {
   _pack: any
   o: any
   t: any
-  signerOrProvider: any
 
-  constructor (pack: any, provider: any, signer: any) {
+  constructor (pack: any, provider: any = undefined, signer: any = undefined) {
     this._pack = pack
     this.o = {}
     this.t = {}
@@ -20,9 +17,9 @@ export class Dapp {
       const abi = obj.artifact.abi
       const addr = obj.address
       let instance = new ethers.Contract(addr, abi)
-      if (signer) {
+      if (signer !== undefined) {
         instance = instance.connect(signer)
-      } else if (provider) {
+      } else if (provider !== undefined) {
         instance = instance.connect(provider)
       }
       instance.typename = obj.typename
@@ -33,11 +30,11 @@ export class Dapp {
     for (const key of Object.keys(this._pack.types)) {
       const t = this._pack.types[key]
       let typeinfo: any = {}
-      if (t.artifact.bytecode) {
+      if (t.artifact.bytecode !== undefined) {
         let factory = new ethers.ContractFactory(t.artifact.abi, t.artifact.bytecode)
-        if (signer) {
+        if (signer !== undefined) {
           factory = factory.connect(signer)
-        } else if (provider) {
+        } else if (provider !== undefined) {
           factory = factory.connect(provider)
         }
         typeinfo = factory
@@ -46,5 +43,4 @@ export class Dapp {
       this.t[key] = typeinfo
     }
   }
-
 }

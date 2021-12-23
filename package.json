@@ -1,6 +1,6 @@
 {
   "name": "dpack",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "main": "./dist/index.js",
   "author": "nikolai mushegian <mail@nikolai.fyi>",
   "license": "GPL-3.0",
@@ -13,6 +13,7 @@
     "fmt": "ts-standard --fix"
   },
   "dependencies": {
+    "ajv": "^6.12.6",
     "commander": "^8.1.0",
     "debug": "^4.3.2",
     "ethers": "^5.4.5",
