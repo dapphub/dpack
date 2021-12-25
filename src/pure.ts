@@ -1,9 +1,9 @@
 import { copy, need, omap } from './util'
-import { Artifact, TypeInfo, ObjectInfo, Dpack, ResolvedPack } from './types'
+import { Artifact, TypeInfo, ObjectInfo, DPack, ResolvedPack } from './types'
 import * as schema from './schema'
 export { schema }
 
-export function assertValidPack (p: Dpack): void {
+export function assertValidPack (p: DPack): void {
   need(schema.isWellFormedPack(p),
     `dpack.assertValidPack(): pack fails schema validation: ${schema.isWellFormedPack.errors}`
   )
@@ -40,7 +40,7 @@ export function assertValidResolvedPack (rp: ResolvedPack): void {
   // for each artifact, assert is valid
 }
 
-export function addType (pack: Dpack, type: TypeInfo): Dpack {
+export function addType (pack: DPack, type: TypeInfo): DPack {
   assertValidPack(pack)
   assertValidType(type)
   need(!(pack.types[type.typename]),
@@ -52,7 +52,7 @@ export function addType (pack: Dpack, type: TypeInfo): Dpack {
   return out
 }
 
-export function addObject (pack: Dpack, obj: any): Dpack {
+export function addObject (pack: DPack, obj: any): DPack {
   assertValidPack(pack)
   assertValidObject(obj)
   need(!(pack.objects[obj.objectname]),
@@ -64,7 +64,7 @@ export function addObject (pack: Dpack, obj: any): Dpack {
   return out
 }
 
-export function merge (...packs: Dpack[]): Dpack {
+export function merge (...packs: DPack[]): DPack {
   const head = packs[0]
   const rest = packs.slice(1)
   packs.map((p) => {
@@ -89,7 +89,7 @@ export function merge (...packs: Dpack[]): Dpack {
   return out
 }
 
-export function blank (): Dpack {
+export function blank (): DPack {
   const pack = {
     format: 'dpack-1',
     network: '',
@@ -100,7 +100,7 @@ export function blank (): Dpack {
   return pack
 }
 
-export async function resolve (pack: Dpack, ipfs: any = undefined): Promise<ResolvedPack> {
+export async function resolve (pack: DPack, ipfs: any = undefined): Promise<ResolvedPack> {
   async function _resolve (link): Promise<any> {
     need(link, 'panic: bad DAG-JSON link')
     need(link['/'], 'panic: bad DAG-JSON link')
@@ -118,13 +118,13 @@ export async function resolve (pack: Dpack, ipfs: any = undefined): Promise<Reso
   return await Promise.resolve(out)
 }
 
-export function fromObject (obj: any): Dpack {
+export function fromObject (obj: any): DPack {
   assertValidPack(obj)
-  return obj as Dpack
+  return obj as DPack
 }
 
 /*
-export function fromJsonString(s : any) : Dpack
-export function fromCidString(s : any) : Dpack
-export function toJsonString(p : Dpack) : string
+export function fromJsonString(s : any) : DPack
+export function fromCidString(s : any) : DPack
+export function toJsonString(p : DPack) : string
 */
