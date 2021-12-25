@@ -1,3 +1,6 @@
+export type base64str = string
+export interface Bundle {[cid: string]: base64str}
+
 export interface IpfsLink {
   '/': string
 }
@@ -14,7 +17,7 @@ export interface ObjectInfo {
   artifact: IpfsLink
 }
 
-export interface Dpack {
+export interface DPack {
   format: string
   network: string
   types: {[typename: string]: TypeInfo}
@@ -24,9 +27,7 @@ export interface Dpack {
 export interface Artifact {
 }
 
-export type base64str = string
-export interface Bundle {[cid: string]: base64str}
-
-export interface ResolvedPack extends Dpack {
+export interface ResolvedPack extends DPack {
   _bundle: Bundle
+  _resolved: boolean
 }
