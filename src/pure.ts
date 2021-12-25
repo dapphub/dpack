@@ -52,7 +52,7 @@ export function addType (pack: DPack, type: TypeInfo): DPack {
   return out
 }
 
-export function addObject (pack: DPack, obj: ObjectInfo): DPack {
+export function addObject (pack: DPack, obj: any): DPack {
   assertValidPack(pack)
   assertValidObject(obj)
   need(!(pack.objects[obj.objectname]),
