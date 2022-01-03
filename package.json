@@ -1,12 +1,8 @@
 {
   "name": "dpack",
-  "version": "0.0.13",
-  "main": "./dist/index.js",
+  "version": "0.0.14",
   "author": "nikolai mushegian <mail@nikolai.fyi>",
   "license": "GPL-3.0",
-  "bin": {
-    "dpack": "./dist/cmd.js"
-  },
   "scripts": {
     "build": "tsc",
     "test": "npm run build && ts-mocha test/*.ts --timeout=10000",
@@ -14,7 +10,6 @@
   },
   "dependencies": {
     "ajv": "^6.12.6",
-    "commander": "^8.1.0",
     "debug": "^4.3.2",
     "ethers": "^5.4.5",
     "ipfs-http-client": "^54.0.2"
