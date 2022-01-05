@@ -54,12 +54,12 @@ var PackBuilder = /** @class */ (function () {
     function PackBuilder(network) {
         (0, util_1.need)(network, 'new PackBuilder(network) - network must be defined');
         (0, util_1.need)(typeof (network) === 'string', 'new PackBuilder(network) - network must be a string');
-        this._pack = (0, pure_1.blank)();
+        this._pack = (0, pure_1.blank)(network);
         (0, pure_1.assertValidPack)(this._pack);
     }
     PackBuilder.prototype.packType = function (t) {
         return __awaiter(this, void 0, void 0, function () {
-            var json, cid, packed;
+            var json, cid, info;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -67,24 +67,22 @@ var PackBuilder = /** @class */ (function () {
                         return [4 /*yield*/, (0, ipfs_util_1.putIpfsJson)(json)];
                     case 1:
                         cid = (_a.sent()).toString();
-                        packed = (0, util_1.copy)(t);
-                        packed.artifact = { '/': cid };
-                        this.addType(packed);
-                        (0, pure_1.assertValidPack)(this._pack);
+                        info = (0, util_1.copy)(t);
+                        info.artifact = { '/': cid };
+                        this._pack = (0, pure_1.addType)(this._pack, info);
                         return [2 /*return*/, Promise.resolve(this)];
                 }
             });
         });
     };
     PackBuilder.prototype.addType = function (t) {
-        (0, pure_1.assertValidType)(t);
         this._pack = (0, pure_1.addType)(this._pack, t);
-        (0, pure_1.assertValidPack)(this._pack);
         return this;
     };
-    PackBuilder.prototype.packObject = function (o) {
+    PackBuilder.prototype.packObject = function (o, alsoPackType) {
+        if (alsoPackType === void 0) { alsoPackType = true; }
         return __awaiter(this, void 0, void 0, function () {
-            var json, cid, packed;
+            var json, cid, info, pack;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -92,10 +90,16 @@ var PackBuilder = /** @class */ (function () {
                         return [4 /*yield*/, (0, ipfs_util_1.putIpfsJson)(json)];
                     case 1:
                         cid = (_a.sent()).toString();
-                        packed = (0, util_1.copy)(o);
-                        packed.artifact = { '/': cid };
-                        this.addObject(packed);
-                        (0, pure_1.assertValidPack)(this._pack);
+                        info = (0, util_1.copy)(o);
+                        info.artifact = { '/': cid };
+                        pack = (0, pure_1.addObject)(this._pack, info);
+                        if (alsoPackType) {
+                            pack = (0, pure_1.addType)(pack, {
+                                typename: info.typename,
+                                artifact: info.artifact
+                            });
+                        }
+                        this._pack = pack;
                         return [2 /*return*/, Promise.resolve(this)];
                 }
             });
@@ -103,7 +107,6 @@ var PackBuilder = /** @class */ (function () {
     };
     PackBuilder.prototype.addObject = function (o) {
         this._pack = (0, pure_1.addObject)(this._pack, o);
-        (0, pure_1.assertValidPack)(this._pack);
         return this;
     };
     PackBuilder.prototype.merge = function () {
@@ -112,20 +115,11 @@ var PackBuilder = /** @class */ (function () {
             packs[_i] = arguments[_i];
         }
         this._pack = pure_1.merge.apply(void 0, __spreadArray([this._pack], packs, false));
-        (0, pure_1.assertValidPack)(this._pack);
         return this;
     };
     PackBuilder.prototype.build = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var p;
-            return __generator(this, function (_a) {
-                (0, pure_1.assertValidPack)(this._pack);
-                p = (0, util_1.copy)(this._pack);
-                delete p._bundle;
-                delete p._resolved;
-                return [2 /*return*/, Promise.resolve(p)];
-            });
-        });
+        (0, pure_1.assertValidPack)(this._pack);
+        return (0, util_1.copy)(this._pack);
     };
     return PackBuilder;
 }());

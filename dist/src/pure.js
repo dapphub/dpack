@@ -36,39 +36,34 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.fromObject = exports.resolve = exports.blank = exports.merge = exports.addObject = exports.addType = exports.assertValidResolvedPack = exports.assertValidArtifact = exports.assertValidObject = exports.assertValidType = exports.assertValidPack = exports.schema = void 0;
+exports.fromObject = exports.resolve = exports.blank = exports.merge = exports.addObject = exports.addType = exports.assertValidArtifact = exports.assertValidObject = exports.assertValidType = exports.assertValidPack = exports.schema = void 0;
 var util_1 = require("./util");
 var schema = require("./schema");
 exports.schema = schema;
 function assertValidPack(p) {
-    (0, util_1.need)(schema.isWellFormedPack(p), "dpack.assertValidPack(): pack fails schema validation: " + schema.isWellFormedPack.errors);
-    (0, util_1.need)(p.format === 'dpack-1', "dpack.assertValidPack() - unrecognized 'format' field: " + p.format);
+    (0, util_1.need)(schema.isWellFormedPack(p), "dpack.assertValidPack(): pack fails schema validation: ".concat(schema.isWellFormedPack.errors));
+    (0, util_1.need)(p.network != '', "dpack.assertValidPack() - 'network' field cannot be empty");
+    (0, util_1.need)(p.format === 'dpack-1', "dpack.assertValidPack() - unrecognized 'format' field: ".concat(p.format));
     (0, util_1.omap)(p.objects, function (o) { assertValidObject(o); return o; });
     (0, util_1.omap)(p.types, function (t) { assertValidType(t); return t; });
 }
 exports.assertValidPack = assertValidPack;
 function assertValidType(t) {
-    (0, util_1.need)(schema.isWellFormedType(t), "dpack.addType() - not well formed type: " + t);
+    (0, util_1.need)(schema.isWellFormedType(t), "dpack.assertValidType() - not well formed type: ".concat(t));
 }
 exports.assertValidType = assertValidType;
 function assertValidObject(o) {
-    (0, util_1.need)(schema.isWellFormedObject(o), "dpack.addType() - not well formed object: " + o);
+    (0, util_1.need)(schema.isWellFormedObject(o), "dpack.assertValidObject() - not well formed object: ".concat(o));
 }
 exports.assertValidObject = assertValidObject;
 function assertValidArtifact(a) {
-    (0, util_1.need)(schema.isWellFormedArtifact(a), "dpack.addType() - not well formed artifact: " + a);
+    (0, util_1.need)(schema.isWellFormedArtifact(a), "dpack.assertValidArtifact() - not well formed artifact: ".concat(a));
 }
 exports.assertValidArtifact = assertValidArtifact;
-function assertValidResolvedPack(rp) {
-    (0, util_1.need)(schema.isWellFormedResolvedPack(rp), "dpack.addType() - not well formed resolved pack: " + rp);
-    // for each type/object, assert bundle has artifact
-    // for each artifact, assert is valid
-}
-exports.assertValidResolvedPack = assertValidResolvedPack;
 function addType(pack, type) {
     assertValidPack(pack);
     assertValidType(type);
-    (0, util_1.need)(!(pack.types[type.typename]), "dpack.addType() - typename already exists: " + type.typename);
+    (0, util_1.need)(!(pack.types[type.typename]), "dpack.addType() - typename already exists: ".concat(type.typename));
     var out = (0, util_1.copy)(pack);
     out.types[type.typename] = type;
     assertValidPack(out);
@@ -78,7 +73,7 @@ exports.addType = addType;
 function addObject(pack, obj) {
     assertValidPack(pack);
     assertValidObject(obj);
-    (0, util_1.need)(!(pack.objects[obj.objectname]), "dpack.addObject() - objectname already exists: " + obj.objectname);
+    (0, util_1.need)(!(pack.objects[obj.objectname]), "dpack.addObject() - objectname already exists: ".concat(obj.objectname));
     var out = (0, util_1.copy)(pack);
     out.objects[obj.objectname] = obj;
     assertValidPack(pack);
@@ -113,10 +108,10 @@ function merge() {
     return out;
 }
 exports.merge = merge;
-function blank() {
+function blank(network) {
     var pack = {
         format: 'dpack-1',
-        network: '',
+        network: network,
         types: {},
         objects: {}
     };

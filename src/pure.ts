@@ -7,6 +7,7 @@ export function assertValidPack (p: DPack): void {
   need(schema.isWellFormedPack(p),
     `dpack.assertValidPack(): pack fails schema validation: ${schema.isWellFormedPack.errors}`
   )
+  need(p.network != '', `dpack.assertValidPack() - 'network' field cannot be empty`)
   need(p.format === 'dpack-1',
     `dpack.assertValidPack() - unrecognized 'format' field: ${p.format}`
   )
@@ -16,28 +17,20 @@ export function assertValidPack (p: DPack): void {
 
 export function assertValidType (t: TypeInfo): void {
   need(schema.isWellFormedType(t),
-    `dpack.addType() - not well formed type: ${t}`
+    `dpack.assertValidType() - not well formed type: ${t}`
   )
 }
 
 export function assertValidObject (o: ObjectInfo): void {
   need(schema.isWellFormedObject(o),
-    `dpack.addType() - not well formed object: ${o}`
+    `dpack.assertValidObject() - not well formed object: ${o}`
   )
 }
 
 export function assertValidArtifact (a: Artifact): void {
   need(schema.isWellFormedArtifact(a),
-    `dpack.addType() - not well formed artifact: ${a}`
+    `dpack.assertValidArtifact() - not well formed artifact: ${a}`
   )
-}
-
-export function assertValidResolvedPack (rp: ResolvedPack): void {
-  need(schema.isWellFormedResolvedPack(rp),
-    `dpack.addType() - not well formed resolved pack: ${rp}`
-  )
-  // for each type/object, assert bundle has artifact
-  // for each artifact, assert is valid
 }
 
 export function addType (pack: DPack, type: TypeInfo): DPack {
@@ -89,10 +82,10 @@ export function merge (...packs: DPack[]): DPack {
   return out
 }
 
-export function blank (): DPack {
+export function blank (network: string): DPack {
   const pack = {
     format: 'dpack-1',
-    network: '',
+    network: network,
     types: {},
     objects: {}
   }

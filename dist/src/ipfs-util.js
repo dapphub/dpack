@@ -56,7 +56,7 @@ function getIpfsJson(cid) {
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    debug("get " + cid);
+                    debug("get ".concat(cid));
                     return [4 /*yield*/, node.cat(cid)];
                 case 1:
                     blob = _b.sent();
@@ -106,18 +106,18 @@ function putIpfsJson(obj, pin) {
             switch (_a.label) {
                 case 0:
                     str = JSON.stringify(obj);
-                    debug("adding " + str);
+                    debug("adding ".concat(str));
                     return [4 /*yield*/, node.add(str)];
                 case 1:
                     cid = (_a.sent()).cid;
-                    debug("added " + str);
+                    debug("added ".concat(str));
                     if (!pin) return [3 /*break*/, 3];
                     return [4 /*yield*/, pinIpfsCid(cid)];
                 case 2:
                     _a.sent();
                     _a.label = 3;
                 case 3:
-                    debug("put " + cid);
+                    debug("put ".concat(cid));
                     return [2 /*return*/, cid];
             }
         });
@@ -131,7 +131,7 @@ function pinIpfsCid(cid) {
                 case 0: return [4 /*yield*/, node.pin.add(cid)];
                 case 1:
                     _a.sent();
-                    console.log("pinned " + cid);
+                    console.log("pinned ".concat(cid));
                     return [2 /*return*/];
             }
         });
