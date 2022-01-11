@@ -1,6 +1,5 @@
 const debug = require('debug')('dpack')
 
-import { resolve } from './pure'
 import { getIpfsJson } from './ipfs-util'
 
 export class Dapp {
