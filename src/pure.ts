@@ -115,9 +115,3 @@ export function fromObject (obj: any): DPack {
   assertValidPack(obj)
   return obj as DPack
 }
-
-/*
-export function fromJsonString(s : any) : DPack
-export function fromCidString(s : any) : DPack
-export function toJsonString(p : DPack) : string
-*/
