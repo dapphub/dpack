@@ -1,46 +1,53 @@
 const debug = require('debug')('dpack')
 
-const ethers = require('ethers')
+import { resolve } from './pure'
+import { getIpfsJson } from './ipfs-util'
 
 export class Dapp {
-  _pack: any
-  o: any
-  t: any
+  _ethers: any
+  _pack_original: any
+  _pack_resolved: any
+  objects: any
+  types: any
 
-  constructor (pack: any, provider: any = undefined, signer: any = undefined) {
-    this._pack = pack
-    this.o = {}
-    this.t = {}
+  static async loadFromPack(pack: any, ethers : any = undefined) : Promise<Dapp> {
+    const dapp = new Dapp();
+    if (ethers != undefined) {
+      dapp._ethers = ethers;
+    } else {
+      dapp._ethers = require('ethers')
+    }
 
-    for (const key of Object.keys(this._pack.objects)) {
-      const obj = this._pack.objects[key]
-      const abi = obj.artifact.abi
+    dapp._pack_original = pack
+
+    for (const key of Object.keys(dapp._pack_original.objects)) {
+      const obj = dapp._pack_original.objects[key]
+      const cid = obj.artifact["/"];
+      const artifact = await getIpfsJson(cid);
+      const abi = artifact.abi
       const addr = obj.address
       let instance = new ethers.Contract(addr, abi)
-      if (signer !== undefined) {
-        instance = instance.connect(signer)
-      } else if (provider !== undefined) {
-        instance = instance.connect(provider)
-      }
+      instance = instance.connect(ethers.provider)
+      instance.objectname = obj.typename
+      // instance.address already exists
       instance.typename = obj.typename
       instance.artifact = obj.artifact
-      this.o[key] = instance
+      dapp.objects[key] = instance
     }
 
-    for (const key of Object.keys(this._pack.types)) {
-      const t = this._pack.types[key]
-      let typeinfo: any = {}
-      if (t.artifact.bytecode !== undefined) {
-        let factory = new ethers.ContractFactory(t.artifact.abi, t.artifact.bytecode)
-        if (signer !== undefined) {
-          factory = factory.connect(signer)
-        } else if (provider !== undefined) {
-          factory = factory.connect(provider)
-        }
-        typeinfo = factory
-      }
-      typeinfo.artifact = t.artifact
-      this.t[key] = typeinfo
+    for (const key of Object.keys(dapp._pack_original.types)) {
+      const typ = dapp._pack_original.types[key]
+      const cid = typ.artifact["/"];
+      const artifact = await getIpfsJson(cid);
+      const abi = artifact.abi
+      let deployer = new ethers.ContractFactory(abi)
+      deployer = deployer.connect(ethers.provider)
+      deployer.typename = typ.typename
+      deployer.artifact = typ.artifact
+      dapp.types[key] = deployer
     }
+
+    return dapp;
   }
+
 }
