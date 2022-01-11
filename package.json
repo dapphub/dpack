@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "test": "npm run build && ts-mocha test/*.ts --timeout=10000",
-    "fmt": "ts-standard --fix"
+    "fmt": "ts-standard --fix src index.ts"
   },
   "dependencies": {
     "ajv": "^6.12.6",

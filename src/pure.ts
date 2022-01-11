@@ -1,6 +1,7 @@
 import { copy, need, omap } from './util'
 import { Artifact, TypeInfo, ObjectInfo, DPack, ResolvedPack } from './types'
 import * as schema from './schema'
+
 export { schema }
 
 export function assertValidPack (p: DPack): void {
