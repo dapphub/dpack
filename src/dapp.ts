@@ -1,6 +1,6 @@
-const debug = require('debug')('dpack')
-
 import { getIpfsJson } from './ipfs-util'
+
+const debug = require('debug')('dpack')
 
 export class Dapp {
   _ethers: any
@@ -8,10 +8,11 @@ export class Dapp {
   objects: any
   types: any
 
-  static async loadFromPack(pack: any, ethers : any = undefined) : Promise<Dapp> {
-    const dapp = new Dapp();
+  private constructor () {}
+  static async loadFromPack (pack: any, ethers: any = undefined): Promise<Dapp> {
+    const dapp = new Dapp()
     if (ethers != undefined) {
-      dapp._ethers = ethers;
+      dapp._ethers = ethers
     } else {
       dapp._ethers = require('ethers')
     }
@@ -20,8 +21,8 @@ export class Dapp {
 
     for (const key of Object.keys(dapp._pack.objects)) {
       const obj = dapp._pack.objects[key]
-      const cid = obj.artifact["/"];
-      const artifact = await getIpfsJson(cid);
+      const cid = obj.artifact['/']
+      const artifact = await getIpfsJson(cid)
       const abi = artifact.abi
       const addr = obj.address
       let instance = new ethers.Contract(addr, abi)
@@ -35,8 +36,8 @@ export class Dapp {
 
     for (const key of Object.keys(dapp._pack.types)) {
       const typ = dapp._pack.types[key]
-      const cid = typ.artifact["/"];
-      const artifact = await getIpfsJson(cid);
+      const cid = typ.artifact['/']
+      const artifact = await getIpfsJson(cid)
       const abi = artifact.abi
       let deployer = new ethers.ContractFactory(abi)
       deployer = deployer.connect(ethers.provider)
@@ -45,7 +46,6 @@ export class Dapp {
       dapp.types[key] = deployer
     }
 
-    return dapp;
+    return dapp
   }
-
 }

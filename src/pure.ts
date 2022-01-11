@@ -7,7 +7,7 @@ export function assertValidPack (p: DPack): void {
   need(schema.isWellFormedPack(p),
     `dpack.assertValidPack(): pack fails schema validation: ${schema.isWellFormedPack.errors}`
   )
-  need(p.network != '', `dpack.assertValidPack() - 'network' field cannot be empty`)
+  need(p.network != '', 'dpack.assertValidPack() - \'network\' field cannot be empty')
   need(p.format === 'dpack-1',
     `dpack.assertValidPack() - unrecognized 'format' field: ${p.format}`
   )
