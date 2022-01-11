@@ -42,7 +42,7 @@ var schema = require("./schema");
 exports.schema = schema;
 function assertValidPack(p) {
     (0, util_1.need)(schema.isWellFormedPack(p), "dpack.assertValidPack(): pack fails schema validation: ".concat(schema.isWellFormedPack.errors));
-    (0, util_1.need)(p.network != '', "dpack.assertValidPack() - 'network' field cannot be empty");
+    (0, util_1.need)(p.network != '', 'dpack.assertValidPack() - \'network\' field cannot be empty');
     (0, util_1.need)(p.format === 'dpack-1', "dpack.assertValidPack() - unrecognized 'format' field: ".concat(p.format));
     (0, util_1.omap)(p.objects, function (o) { assertValidObject(o); return o; });
     (0, util_1.omap)(p.types, function (t) { assertValidType(t); return t; });
@@ -183,8 +183,3 @@ function fromObject(obj) {
     return obj;
 }
 exports.fromObject = fromObject;
-/*
-export function fromJsonString(s : any) : DPack
-export function fromCidString(s : any) : DPack
-export function toJsonString(p : DPack) : string
-*/

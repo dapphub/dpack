@@ -70,7 +70,8 @@ var PackBuilder = /** @class */ (function () {
                         info = (0, util_1.copy)(t);
                         info.artifact = { '/': cid };
                         this._pack = (0, pure_1.addType)(this._pack, info);
-                        return [2 /*return*/, Promise.resolve(this)];
+                        return [4 /*yield*/, Promise.resolve(this)];
+                    case 2: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -100,7 +101,8 @@ var PackBuilder = /** @class */ (function () {
                             });
                         }
                         this._pack = pack;
-                        return [2 /*return*/, Promise.resolve(this)];
+                        return [4 /*yield*/, Promise.resolve(this)];
+                    case 2: return [2 /*return*/, _a.sent()];
                 }
             });
         });

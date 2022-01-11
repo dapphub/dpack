@@ -3,6 +3,7 @@ const want = require('chai').expect
 const fs = require('fs')
 
 import { PackBuilder } from '../src/builder';
+import { Dapp } from '../src/dapp';
 import * as dpack from '../src/pure'
 
 const fbpack = JSON.parse(fs.readFileSync('test/sample-pack.json'))
@@ -40,5 +41,20 @@ describe('PackBuilder', ()=>{
     });
     const p = pb.build();
     debug(JSON.stringify(p, null, 2))
+  })
+});
+
+describe('Dapp', ()=>{
+  it('Dapp loadFromPack sample-pack', async () => {
+    const pack = require('./sample-pack.json')
+    const dapp = await Dapp.loadFromPack(pack);
+    debug(Object.keys(dapp));
+    want(dapp.types).exists
+    want(dapp.types.Feedbase).exists
+    want(dapp.objects).exists
+    want(dapp.objects.feedbase).exists
+
+    want(dapp.objects.feedbase.push).exists
+    want(dapp.types.Feedbase.deploy).exists
   })
 });

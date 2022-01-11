@@ -11,13 +11,14 @@ export class Dapp {
   private constructor () {}
   static async loadFromPack (pack: any, ethers: any = undefined): Promise<Dapp> {
     const dapp = new Dapp()
+    dapp.objects = {}
+    dapp.types = {}
+    dapp._pack = pack
     if (ethers != undefined) {
       dapp._ethers = ethers
     } else {
       dapp._ethers = require('ethers')
     }
-
-    dapp._pack = pack
 
     for (const key of Object.keys(dapp._pack.objects)) {
       const obj = dapp._pack.objects[key]
@@ -25,8 +26,8 @@ export class Dapp {
       const artifact = await getIpfsJson(cid)
       const abi = artifact.abi
       const addr = obj.address
-      let instance = new ethers.Contract(addr, abi)
-      instance = instance.connect(ethers.provider)
+      let instance = new dapp._ethers.Contract(addr, abi)
+      instance = instance.connect(dapp._ethers.provider)
       instance.objectname = obj.typename
       // instance.address already exists
       instance.typename = obj.typename
@@ -39,8 +40,9 @@ export class Dapp {
       const cid = typ.artifact['/']
       const artifact = await getIpfsJson(cid)
       const abi = artifact.abi
-      let deployer = new ethers.ContractFactory(abi)
-      deployer = deployer.connect(ethers.provider)
+      const code = artifact.bytecode
+      let deployer = new dapp._ethers.ContractFactory(abi, code)
+      deployer = deployer.connect(dapp._ethers.provider)
       deployer.typename = typ.typename
       deployer.artifact = typ.artifact
       dapp.types[key] = deployer
