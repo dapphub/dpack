@@ -1,13 +1,14 @@
 import { copy, need, omap } from './util'
 import { Artifact, TypeInfo, ObjectInfo, DPack, ResolvedPack } from './types'
 import * as schema from './schema'
+
 export { schema }
 
 export function assertValidPack (p: DPack): void {
   need(schema.isWellFormedPack(p),
     `dpack.assertValidPack(): pack fails schema validation: ${schema.isWellFormedPack.errors}`
   )
-  need(p.network != '', `dpack.assertValidPack() - 'network' field cannot be empty`)
+  need(p.network != '', 'dpack.assertValidPack() - \'network\' field cannot be empty')
   need(p.format === 'dpack-1',
     `dpack.assertValidPack() - unrecognized 'format' field: ${p.format}`
   )
@@ -115,9 +116,3 @@ export function fromObject (obj: any): DPack {
   assertValidPack(obj)
   return obj as DPack
 }
-
-/*
-export function fromJsonString(s : any) : DPack
-export function fromCidString(s : any) : DPack
-export function toJsonString(p : DPack) : string
-*/

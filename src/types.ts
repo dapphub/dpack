@@ -1,5 +1,5 @@
 export type base64str = string
-export interface Bundle {[cid: string]: base64str}
+export interface Bundle {[cid: string]: any}
 
 export interface IpfsLink {
   '/': string

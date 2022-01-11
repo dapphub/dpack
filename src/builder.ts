@@ -21,35 +21,35 @@ export class PackBuilder {
     assertValidPack(this._pack)
   }
 
-  async packType (t: any) : Promise<PackBuilder> {
-    const json = JSON.stringify(t.artifact);
-    const cid = (await putIpfsJson(json)).toString();
-    const info = copy(t);
-    info.artifact = {'/':cid}
+  async packType (t: any): Promise<PackBuilder> {
+    const json = JSON.stringify(t.artifact)
+    const cid = (await putIpfsJson(json)).toString()
+    const info = copy(t)
+    info.artifact = { '/': cid }
     this._pack = _addType(this._pack, info)
-    return Promise.resolve(this);
+    return await Promise.resolve(this)
   }
 
   addType (t: any): PackBuilder {
-    this._pack = _addType(this._pack, t);
+    this._pack = _addType(this._pack, t)
     return this
   }
 
-  async packObject (o: any, alsoPackType : boolean = true) : Promise<PackBuilder> {
-    const json = JSON.stringify(o.artifact);
-    const cid = (await putIpfsJson(json)).toString();
-    const info = copy(o);
-    info.artifact = {'/':cid}
+  async packObject (o: any, alsoPackType: boolean = true): Promise<PackBuilder> {
+    const json = JSON.stringify(o.artifact)
+    const cid = (await putIpfsJson(json)).toString()
+    const info = copy(o)
+    info.artifact = { '/': cid }
 
-    let pack = _addObject(this._pack, info);
+    let pack = _addObject(this._pack, info)
     if (alsoPackType) {
       pack = _addType(pack, {
         typename: info.typename,
         artifact: info.artifact
       })
     }
-    this._pack = pack;
-    return Promise.resolve(this);
+    this._pack = pack
+    return await Promise.resolve(this)
   }
 
   addObject (o: any): PackBuilder {
