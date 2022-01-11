@@ -5,8 +5,7 @@ import { getIpfsJson } from './ipfs-util'
 
 export class Dapp {
   _ethers: any
-  _pack_original: any
-  _pack_resolved: any
+  _pack: any
   objects: any
   types: any
 
@@ -18,10 +17,10 @@ export class Dapp {
       dapp._ethers = require('ethers')
     }
 
-    dapp._pack_original = pack
+    dapp._pack = pack
 
-    for (const key of Object.keys(dapp._pack_original.objects)) {
-      const obj = dapp._pack_original.objects[key]
+    for (const key of Object.keys(dapp._pack.objects)) {
+      const obj = dapp._pack.objects[key]
       const cid = obj.artifact["/"];
       const artifact = await getIpfsJson(cid);
       const abi = artifact.abi
@@ -35,8 +34,8 @@ export class Dapp {
       dapp.objects[key] = instance
     }
 
-    for (const key of Object.keys(dapp._pack_original.types)) {
-      const typ = dapp._pack_original.types[key]
+    for (const key of Object.keys(dapp._pack.types)) {
+      const typ = dapp._pack.types[key]
       const cid = typ.artifact["/"];
       const artifact = await getIpfsJson(cid);
       const abi = artifact.abi
