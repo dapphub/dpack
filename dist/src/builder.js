@@ -59,12 +59,10 @@ var PackBuilder = /** @class */ (function () {
     }
     PackBuilder.prototype.packType = function (t) {
         return __awaiter(this, void 0, void 0, function () {
-            var json, cid, info;
+            var cid, info;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        json = JSON.stringify(t.artifact);
-                        return [4 /*yield*/, (0, ipfs_util_1.putIpfsJson)(json)];
+                    case 0: return [4 /*yield*/, (0, ipfs_util_1.putIpfsJson)(t.artifact)];
                     case 1:
                         cid = (_a.sent()).toString();
                         info = (0, util_1.copy)(t);
@@ -83,12 +81,10 @@ var PackBuilder = /** @class */ (function () {
     PackBuilder.prototype.packObject = function (o, alsoPackType) {
         if (alsoPackType === void 0) { alsoPackType = true; }
         return __awaiter(this, void 0, void 0, function () {
-            var json, cid, info, pack;
+            var cid, info, pack;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        json = JSON.stringify(o.artifact);
-                        return [4 /*yield*/, (0, ipfs_util_1.putIpfsJson)(json)];
+                    case 0: return [4 /*yield*/, (0, ipfs_util_1.putIpfsJson)(o.artifact)];
                     case 1:
                         cid = (_a.sent()).toString();
                         info = (0, util_1.copy)(o);
