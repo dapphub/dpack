@@ -22,8 +22,7 @@ export class PackBuilder {
   }
 
   async packType (t: any): Promise<PackBuilder> {
-    const json = JSON.stringify(t.artifact)
-    const cid = (await putIpfsJson(json)).toString()
+    const cid = (await putIpfsJson(t.artifact)).toString()
     const info = copy(t)
     info.artifact = { '/': cid }
     this._pack = _addType(this._pack, info)
@@ -36,8 +35,7 @@ export class PackBuilder {
   }
 
   async packObject (o: any, alsoPackType: boolean = true): Promise<PackBuilder> {
-    const json = JSON.stringify(o.artifact)
-    const cid = (await putIpfsJson(json)).toString()
+    const cid = (await putIpfsJson(o.artifact)).toString()
     const info = copy(o)
     info.artifact = { '/': cid }
 
