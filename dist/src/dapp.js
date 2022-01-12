@@ -42,7 +42,7 @@ var debug = require('debug')('dpack');
 var Dapp = /** @class */ (function () {
     function Dapp() {
     }
-    Dapp.loadFromPack = function (pack, ethers) {
+    Dapp.loadFromPack = function (pack, signer, ethers) {
         if (ethers === void 0) { ethers = undefined; }
         return __awaiter(this, void 0, void 0, function () {
             var dapp, _i, _a, key, obj, cid, artifact, abi, addr, instance, _b, _c, key, typ, cid, artifact, abi, code, deployer;
@@ -71,8 +71,7 @@ var Dapp = /** @class */ (function () {
                         artifact = _d.sent();
                         abi = artifact.abi;
                         addr = obj.address;
-                        instance = new dapp._ethers.Contract(addr, abi);
-                        instance = instance.connect(dapp._ethers.provider);
+                        instance = new dapp._ethers.Contract(addr, abi, signer);
                         instance.objectname = obj.typename;
                         // instance.address already exists
                         instance.typename = obj.typename;
@@ -96,7 +95,7 @@ var Dapp = /** @class */ (function () {
                         abi = artifact.abi;
                         code = artifact.bytecode;
                         deployer = new dapp._ethers.ContractFactory(abi, code);
-                        deployer = deployer.connect(dapp._ethers.provider);
+                        deployer = deployer.connect(signer);
                         deployer.typename = typ.typename;
                         deployer.artifact = typ.artifact;
                         dapp.types[key] = deployer;
