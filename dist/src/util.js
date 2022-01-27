@@ -1,8 +1,10 @@
 "use strict";
 exports.__esModule = true;
 exports.omap = exports.need = exports.copy = void 0;
+var v8 = require('v8');
 function copy(a) {
-    return JSON.parse(JSON.stringify(a));
+    return v8.deserialize(v8.serialize(a));
+    //  return JSON.parse(JSON.stringify(a))
 }
 exports.copy = copy;
 function need(b, s) {
