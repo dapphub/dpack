@@ -1,6 +1,6 @@
 {
   "name": "dpack",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "author": "nikolai mushegian <mail@nikolai.fyi>",
   "license": "GPL-3.0",
   "main": "./dist/index.js",
@@ -13,13 +13,13 @@
     "ajv": "^6.12.6",
     "debug": "^4.3.2",
     "ethers": "^5.4.5",
-    "ipfs-http-client": "^54.0.2"
+    "ipfs-http-client": "^55.0.0"
   },
   "devDependencies": {
-    "@types/mocha": "^9.0.0",
+    "@types/mocha": "^9.1.0",
     "chai": "^4.3.4",
-    "ts-mocha": "^8.0.0",
-    "ts-standard": "^10.0.0",
+    "ts-mocha": "^9.0.2",
+    "ts-standard": "^11.0.0",
     "typescript": "^4.4.2"
   }
 }
