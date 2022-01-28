@@ -1,20 +1,61 @@
 `dpack`
 ===
 
-A dpack is a lockfile for a set of named addresses and artifacts.
-Use the `dpack` library in this repo to load an entire collection of ethers.js objects from a published dpack,
-or to assemble your own packs and distribute them.
+A dpack is a file with a collection of EVM addresses and artifacts (ABIs).
+
+This repo is a lightweight javascript package which lets you
+- assemble dpacks from your deployment info
+- easily load and instantiate bindings for dapps
 
 This is one piece of the secure software supply chain puzzle for web3/defi.
-It leverages IPFS and IPLD (it's just a JSON file using DAG-JSON convention for IPFS links).
-Together with `dmap` (ENS alternative oriented around ssc verification), this can replace
-the ad-hoc and insecure distribution of addresses and metadata via the node registry and/or github.
+You still have to figure out which pack you want, and make sure it's legit.
 
-`dpack` is in alpha / active development. It is currently distributed via this repo:
+**NEVER TRUST A MUTABLE OR CENTRALIZED REGISTRY AS YOUR SOURCE OF TRUTH FOR PACKS.
+NOT GITHUB, NOT NPM.** This means that for the time being, you must manually verify your packs!
+Fortunately, the dpack format is designed so that you can *easily compare packs at a glance*, like
+we can compare addresses with our eyes without having to copy/diff them.
+
+`dpack` is in alpha / active development. It is currently distributed via this repo, which means we are 'pre-bootstrap'. Eventually we want the equivalent of nix packages with hashes in dmap to secure binary distributions.
 
 `npm i dapphub/dpack`
 
 It currently requires `ipfs daemon` to be running.
+
+Basic Usage
+---
+
+Loading a dpack:
+```
+const dpack = require('dpack');
+const my_pack = require('./packs/my_pack.dpack.json')
+const dapp = dpack.Dapp.loadFromJson(my_pack);  // also have loadFromFile, loadFromCID
+
+dapp.objects // all instantiated contract *objects* from this pack
+dapp.types   // all artifacts plus ethers.js 'factories'; JS-level objects that deploy new instances of contracts
+
+await dapp.objects.WETH.wrap(...)
+```
+
+Putting together a dpack:
+```
+const dpack = require('dpack')
+const pb = new dpack.PackBuilder('kovan');
+
+await pb.addType({
+  typename: 'Gem',
+  artifact: require('./artifact/sol/Gem.sol:Gem.json')
+})
+await pb.addObject({
+  typename: 'GemFab',
+  artifact: require('./artifacts/sol/Gem.sol:Gem.json'),
+  objectname: 'gemfab',
+  address: '0x...'
+}, alsoAddType=true)  // alsoAddType argument defaults to true, adds GemFab+artifact to types
+
+const pack = await pb.build();
+const pretty = JSON.stringify(pack, null, 2);
+console.log(pretty);
+```
 
 
 `dpack` format description
@@ -80,3 +121,15 @@ some typenames and CID's will be recorded redundantly in the pack.
 * `artifact` is a DAG-JSON link to this object's type's "artifacts" json file (output of solc/truffle/hardhat)
 
 Note that 'objectname' is redundant with key used to name this object in this pack.
+n
+
+
+Discussion
+---
+
+Much of the Ethereum toolchain ecosystem confuses types and objects just because we call both "contracts".
+
+The prime example of this is the keyword `contract` in solidity referring to a contract *class*.
+
+The dpack format makes a clear distinction and is very explicit. You cannot name an object the same as a type.
+g
