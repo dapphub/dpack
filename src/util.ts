@@ -1,5 +1,8 @@
+const v8 = require('v8')
+
 export function copy (a: any): any {
-  return JSON.parse(JSON.stringify(a))
+  return v8.deserialize(v8.serialize(a))
+//  return JSON.parse(JSON.stringify(a))
 }
 
 export function need (b: any, s: string): void {
