@@ -17,6 +17,8 @@ export class PackBuilder {
   constructor (network: string) {
     need(network, 'new PackBuilder(network) - network must be defined')
     need(typeof (network) === 'string', 'new PackBuilder(network) - network must be a string')
+    need(network !== 'mainnet', `You may not use 'mainnet' as a network name. You might mean 'ethereum'.`)
+    need(network !== '', `Network name cannot be empty.`)
     this._pack = blank(network)
     assertValidPack(this._pack)
   }
