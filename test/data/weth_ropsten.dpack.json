@@ -1,0 +1,30 @@
+{
+  "format": "dpack-1",
+  "network": "ropsten",
+  "types": {
+    "WETH9": {
+      "typename": "WETH9",
+      "artifact": {
+        "/": "QmTNEPay2xpRrh5n1TCuQK3fZgvwhkXxR7qXx8Zsew71dZ"
+      }
+    }
+  },
+  "objects": {
+    "weth": {
+      "objectname": "weth",
+      "address": "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+      "typename": "WETH9",
+      "artifact": {
+        "/": "QmTNEPay2xpRrh5n1TCuQK3fZgvwhkXxR7qXx8Zsew71dZ"
+      }
+    },
+    "weth9": {
+      "objectname": "weth9",
+      "address": "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+      "typename": "WETH9",
+      "artifact": {
+        "/": "QmTNEPay2xpRrh5n1TCuQK3fZgvwhkXxR7qXx8Zsew71dZ"
+      }
+    }
+  }
+}

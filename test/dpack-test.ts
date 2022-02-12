@@ -46,7 +46,7 @@ describe('PackBuilder', ()=>{
 
 describe('Dapp', ()=>{
   it('Dapp loadFromPack sample-pack', async () => {
-    const pack = require('./sample-pack.json')
+    const pack = require('./data/weth_ropsten.dpack.json')
     const dapp = await Dapp.loadFromPack(pack);
     debug(Object.keys(dapp));
     want(dapp.types).exists

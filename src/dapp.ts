@@ -1,24 +1,30 @@
+import { need } from './util'
 import { getIpfsJson } from './ipfs-util'
 
 const debug = require('debug')('dpack')
+const default_ethers = require('ethers')
 
 export class Dapp {
   _ethers: any
   _pack: any
-  objects: any
-  types: any
+  _objects: any
+  _types: any
 
   private constructor () {}
-  static async loadFromPack (pack: any, signer: any, ethers: any = undefined): Promise<Dapp> {
+  static async loadFromPack (pack: any, ethers: any = undefined): Promise<Dapp> {
     const dapp = new Dapp()
-    dapp.objects = {}
-    dapp.types = {}
-    dapp._pack = pack
+
     if (ethers != undefined) {
       dapp._ethers = ethers
     } else {
-      dapp._ethers = require('ethers')
+      dapp._ethers = default_ethers
     }
+    const signer = dapp._ethers.getDefaultProvider()
+
+    dapp._objects = {}
+    dapp._types = {}
+    
+    dapp._pack = pack
 
     for (const key of Object.keys(dapp._pack.objects)) {
       const obj = dapp._pack.objects[key]
@@ -31,7 +37,9 @@ export class Dapp {
       // instance.address already exists
       instance.typename = obj.typename
       instance.artifact = obj.artifact
-      dapp.objects[key] = instance
+      dapp._objects[key] = instance
+      need(dapp[key] == undefined, 'Panic: name collision on dapp object.')
+      dapp[key] = instance
     }
 
     for (const key of Object.keys(dapp._pack.types)) {
@@ -44,7 +52,7 @@ export class Dapp {
       deployer = deployer.connect(signer)
       deployer.typename = typ.typename
       deployer.artifact = typ.artifact
-      dapp.types[key] = deployer
+      dapp._types[key] = deployer
     }
 
     return dapp

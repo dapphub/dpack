@@ -37,28 +37,31 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.Dapp = void 0;
+var util_1 = require("./util");
 var ipfs_util_1 = require("./ipfs-util");
 var debug = require('debug')('dpack');
+var default_ethers = require('ethers');
 var Dapp = /** @class */ (function () {
     function Dapp() {
     }
-    Dapp.loadFromPack = function (pack, signer, ethers) {
+    Dapp.loadFromPack = function (pack, ethers) {
         if (ethers === void 0) { ethers = undefined; }
         return __awaiter(this, void 0, void 0, function () {
-            var dapp, _i, _a, key, obj, cid, artifact, abi, addr, instance, _b, _c, key, typ, cid, artifact, abi, code, deployer;
+            var dapp, signer, _i, _a, key, obj, cid, artifact, abi, addr, instance, _b, _c, key, typ, cid, artifact, abi, code, deployer;
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
                         dapp = new Dapp();
-                        dapp.objects = {};
-                        dapp.types = {};
-                        dapp._pack = pack;
                         if (ethers != undefined) {
                             dapp._ethers = ethers;
                         }
                         else {
-                            dapp._ethers = require('ethers');
+                            dapp._ethers = default_ethers;
                         }
+                        signer = dapp._ethers.getDefaultProvider();
+                        dapp._objects = {};
+                        dapp._types = {};
+                        dapp._pack = pack;
                         _i = 0, _a = Object.keys(dapp._pack.objects);
                         _d.label = 1;
                     case 1:
@@ -76,7 +79,9 @@ var Dapp = /** @class */ (function () {
                         // instance.address already exists
                         instance.typename = obj.typename;
                         instance.artifact = obj.artifact;
-                        dapp.objects[key] = instance;
+                        dapp._objects[key] = instance;
+                        (0, util_1.need)(dapp[key] == undefined, 'Panic: name collision on dapp object.');
+                        dapp[key] = instance;
                         _d.label = 3;
                     case 3:
                         _i++;
@@ -98,7 +103,7 @@ var Dapp = /** @class */ (function () {
                         deployer = deployer.connect(signer);
                         deployer.typename = typ.typename;
                         deployer.artifact = typ.artifact;
-                        dapp.types[key] = deployer;
+                        dapp._types[key] = deployer;
                         _d.label = 7;
                     case 7:
                         _b++;

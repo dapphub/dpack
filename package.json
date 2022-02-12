@@ -6,7 +6,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc",
-    "test": "npm run build && ts-mocha test/*.ts --timeout=10000",
+    "test": "ipfs add -r test/data && npm run build && ts-mocha test/*.ts --timeout=10000",
     "fmt": "ts-standard --fix src index.ts"
   },
   "dependencies": {
