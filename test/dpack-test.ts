@@ -49,12 +49,12 @@ describe('Dapp', ()=>{
     const pack = require('./data/weth_ropsten.dpack.json')
     const dapp = await Dapp.loadFromPack(pack);
     debug(Object.keys(dapp));
-    want(dapp.types).exists
-    want(dapp.types.Feedbase).exists
-    want(dapp.objects).exists
-    want(dapp.objects.feedbase).exists
+    want(dapp._types).exists
+    want(dapp._types.WETH9).exists
+    want(dapp._objects).exists
+    want(dapp._objects.weth).exists
 
-    want(dapp.objects.feedbase.push).exists
-    want(dapp.types.Feedbase.deploy).exists
+    want(dapp._objects.weth.deposit).exists
+    want(dapp._types.WETH9.deploy).exists
   })
 });

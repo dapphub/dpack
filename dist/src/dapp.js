@@ -58,7 +58,7 @@ var Dapp = /** @class */ (function () {
                         else {
                             dapp._ethers = default_ethers;
                         }
-                        signer = dapp._ethers.getDefaultProvider();
+                        signer = dapp._ethers.getDefaultProvider().signer;
                         dapp._objects = {};
                         dapp._types = {};
                         dapp._pack = pack;

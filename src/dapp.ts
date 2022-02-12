@@ -19,7 +19,7 @@ export class Dapp {
     } else {
       dapp._ethers = default_ethers
     }
-    const signer = dapp._ethers.getDefaultProvider()
+    const signer = dapp._ethers.getDefaultProvider().signer
 
     dapp._objects = {}
     dapp._types = {}
