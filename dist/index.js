@@ -8,12 +8,13 @@ exports.Dapp = dapp_1.Dapp;
 var ipfs_util_1 = require("./src/ipfs-util");
 exports.getIpfsJson = ipfs_util_1.getIpfsJson;
 exports.putIpfsJson = ipfs_util_1.putIpfsJson;
-var load = function () {
-    var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-    }
-    //Dapp.loadFromJson
+var load = function (arg, ethers) {
+    if (ethers === void 0) { ethers = undefined; }
+    // if arg is a string
+    //   if arg is a cid, load json from ipfs
+    //   if arg is a path, load json from path
+    // else arg must be object
+    // return Dapp.loadFromJson
 };
 exports.load = load;
 var builder = function (network) { return new builder_1.PackBuilder(network); };
