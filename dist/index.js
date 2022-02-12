@@ -10,6 +10,12 @@ exports.getIpfsJson = ipfs_util_1.getIpfsJson;
 exports.putIpfsJson = ipfs_util_1.putIpfsJson;
 var load = function (arg, ethers) {
     if (ethers === void 0) { ethers = undefined; }
+    var json = arg;
+    if (typeof (arg) == 'string') {
+        json = require(arg);
+    }
+    return dapp_1.Dapp.loadFromPack(arg);
+    // TODO actually
     // if arg is a string
     //   if arg is a cid, load json from ipfs
     //   if arg is a path, load json from path

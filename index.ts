@@ -3,6 +3,12 @@ import { Dapp } from './src/dapp'
 import { getIpfsJson, putIpfsJson } from './src/ipfs-util'
 
 export const load = (arg, ethers=undefined) => {
+    let json = arg
+    if (typeof(arg) == 'string') {
+        json = require(arg)
+    }
+    return Dapp.loadFromPack(arg)
+    // TODO actually
     // if arg is a string
     //   if arg is a cid, load json from ipfs
     //   if arg is a path, load json from path
