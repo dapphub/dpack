@@ -34,7 +34,7 @@ dapp._types   // all artifacts plus ethers.js 'factories'; JS-level objects that
 
 // objects are also loaded directly onto the dapp object
 await dapp.weth.transfer(...)
-await dapp._objects.WETH.transfer(...)   // equivalent, its the same reference
+await dapp._objects.weth.transfer(...)   // equivalent, its the same reference
 ```
 
 Putting together a dpack:
