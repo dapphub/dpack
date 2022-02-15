@@ -13,17 +13,22 @@ export class Dapp {
   private constructor () {}
   static async loadFromPack (pack: any, ethers: any = undefined): Promise<Dapp> {
     const dapp = new Dapp()
+    let signer
 
     if (ethers != undefined) {
       dapp._ethers = ethers
     } else {
       dapp._ethers = default_ethers
     }
-    const signer = dapp._ethers.getDefaultProvider().signer
+
+    try {
+      [signer] = await dapp._ethers.getSigners()
+    } catch {
+      signer = dapp._ethers.Wallet.createRandom()
+    }
 
     dapp._objects = {}
     dapp._types = {}
-    
     dapp._pack = pack
 
     for (const key of Object.keys(dapp._pack.objects)) {
@@ -32,7 +37,7 @@ export class Dapp {
       const artifact = await getIpfsJson(cid)
       const abi = artifact.abi
       const addr = obj.address
-      let instance = new dapp._ethers.Contract(addr, abi, signer)
+      const instance = new dapp._ethers.Contract(addr, abi, signer)
       instance.objectname = obj.typename
       // instance.address already exists
       instance.typename = obj.typename

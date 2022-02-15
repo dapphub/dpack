@@ -27,7 +27,7 @@ Basic Usage
 Loading a dpack:
 ```
 const dpack = require('dpack');
-const dapp = dpack.load('./pack/weth_ropsten.dpack.json')
+const dapp = dpack.load(require('./pack/weth_ropsten.dpack.json'))
 
 dapp._objects // all instantiated contract *objects* from this pack
 dapp._types   // all artifacts plus ethers.js 'factories'; JS-level objects that deploy new instances of contracts
@@ -43,13 +43,13 @@ const dpack = require('dpack')
 const pb = new dpack.PackBuilder('kovan')
 // you can also say `const pb = dpack.builder()`
 
-await pb.addType({
+await pb.packType({
   typename: 'Gem',
-  artifact: require('./artifact/sol/Gem.sol:Gem.json')
+  artifact: require('./artifact/sol/Gem.sol/Gem.json')
 })
-await pb.addObject({
+await pb.packObject({
   typename: 'GemFab',
-  artifact: require('./artifacts/sol/Gem.sol:Gem.json'),
+  artifact: require('./artifacts/sol/Gem.sol/Gem.json'),
   objectname: 'gemfab',
   address: '0x...'
 }, alsoAddType=true)  // alsoAddType argument defaults to true, adds GemFab+artifact to types
@@ -136,4 +136,3 @@ Much of the Ethereum toolchain ecosystem confuses types and objects just because
 The prime example of this is the keyword `contract` in solidity referring to a contract *class*.
 
 The dpack format makes a clear distinction and is very explicit. You cannot name an object the same as a type.
-g

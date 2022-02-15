@@ -1,19 +1,14 @@
 import { PackBuilder } from './src/builder'
 import { Dapp } from './src/dapp'
-import { getIpfsJson, putIpfsJson } from './src/ipfs-util'
+import { getIpfsJson, putIpfsJson, isCid } from './src/ipfs-util'
+import { need } from './src/util'
 
-export const load = (arg, ethers=undefined) => {
-    let json = arg
-    if (typeof(arg) == 'string') {
-        json = require(arg)
-    }
-    return Dapp.loadFromPack(arg)
-    // TODO actually
-    // if arg is a string
-    //   if arg is a cid, load json from ipfs
-    //   if arg is a path, load json from path
-    // else arg must be object
-    // return Dapp.loadFromJson
+export const load = async (arg, ethers = undefined) => {
+  if (typeof arg === 'string') {
+    arg = (isCid(arg)) ? await getIpfsJson(arg) : require(arg)
+  }
+  need(typeof arg === 'object' && Object.keys(arg).length, 'Could not find a pack from provided source.')
+  return await Dapp.loadFromPack(arg, ethers)
 }
 export const builder = (network) => new PackBuilder(network)
 
