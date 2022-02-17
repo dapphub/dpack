@@ -43,7 +43,7 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
 exports.__esModule = true;
-exports.pinIpfsCid = exports.putIpfsJson = exports.getIpfsJson = void 0;
+exports.isCid = exports.pinIpfsCid = exports.putIpfsJson = exports.getIpfsJson = void 0;
 var debug = require('debug')('dpack');
 var IPFS = require('ipfs-http-client');
 debug('starting node');
@@ -52,7 +52,7 @@ debug('started node');
 function getIpfsJson(cid) {
     var e_1, _a;
     return __awaiter(this, void 0, void 0, function () {
-        var blob, s, blob_1, blob_1_1, chunk, e_1_1, json;
+        var blob, s, blob_1, blob_1_1, chunk, e_1_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -90,9 +90,7 @@ function getIpfsJson(cid) {
                     if (e_1) throw e_1.error;
                     return [7 /*endfinally*/];
                 case 12: return [7 /*endfinally*/];
-                case 13:
-                    json = JSON.parse(s);
-                    return [2 /*return*/, json];
+                case 13: return [2 /*return*/, JSON.parse(s)];
             }
         });
     });
@@ -138,3 +136,13 @@ function pinIpfsCid(cid) {
     });
 }
 exports.pinIpfsCid = pinIpfsCid;
+function isCid(cidStr) {
+    try {
+        IPFS.CID.parse(cidStr);
+        return true;
+    }
+    catch (_a) {
+        return false;
+    }
+}
+exports.isCid = isCid;

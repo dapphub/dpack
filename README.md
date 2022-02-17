@@ -27,27 +27,29 @@ Basic Usage
 Loading a dpack:
 ```
 const dpack = require('dpack');
-const my_pack = require('./packs/my_pack.dpack.json')
-const dapp = dpack.Dapp.loadFromJson(my_pack);  // also have loadFromFile, loadFromCID
+const dapp = dpack.load(require('./pack/weth_ropsten.dpack.json'))
 
-dapp.objects // all instantiated contract *objects* from this pack
-dapp.types   // all artifacts plus ethers.js 'factories'; JS-level objects that deploy new instances of contracts
+dapp._objects // all instantiated contract *objects* from this pack
+dapp._types   // all artifacts plus ethers.js 'factories'; JS-level objects that deploy new instances of contracts
 
-await dapp.objects.WETH.wrap(...)
+// objects are also loaded directly onto the dapp object
+await dapp.weth.transfer(...)
+await dapp._objects.weth.transfer(...)   // equivalent, its the same reference
 ```
 
 Putting together a dpack:
 ```
 const dpack = require('dpack')
-const pb = new dpack.PackBuilder('kovan');
+const pb = new dpack.PackBuilder('kovan')
+// you can also say `const pb = dpack.builder()`
 
-await pb.addType({
+await pb.packType({
   typename: 'Gem',
-  artifact: require('./artifact/sol/Gem.sol:Gem.json')
+  artifact: require('./artifact/sol/Gem.sol/Gem.json')
 })
-await pb.addObject({
+await pb.packObject({
   typename: 'GemFab',
-  artifact: require('./artifacts/sol/Gem.sol:Gem.json'),
+  artifact: require('./artifacts/sol/Gem.sol/Gem.json'),
   objectname: 'gemfab',
   address: '0x...'
 }, alsoAddType=true)  // alsoAddType argument defaults to true, adds GemFab+artifact to types
@@ -95,6 +97,7 @@ A dpack is a JSON file with these fields:
 * `artifacts` is a DAG-JSON link to this type's "artifacts" json file (output of solc/truffle/hardhat).
 
 Note that 'typename' is redundant with key used to name this type in this pack.
+Typenames are mixedcase alphanumeric and underscores, but must start with an uppercase alphabetic.
 
 ### objects
 
@@ -121,7 +124,8 @@ some typenames and CID's will be recorded redundantly in the pack.
 * `artifact` is a DAG-JSON link to this object's type's "artifacts" json file (output of solc/truffle/hardhat)
 
 Note that 'objectname' is redundant with key used to name this object in this pack.
-n
+Typenames are mixedcase alphanumeric and underscores, but must start with an uppercase alphabetic.
+Objectnames are mixedcase alphanumeric and underscores, but must start with a lowercase alphabetic.
 
 
 Discussion
@@ -132,4 +136,3 @@ Much of the Ethereum toolchain ecosystem confuses types and objects just because
 The prime example of this is the keyword `contract` in solidity referring to a contract *class*.
 
 The dpack format makes a clear distinction and is very explicit. You cannot name an object the same as a type.
-g

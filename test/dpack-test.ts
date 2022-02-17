@@ -1,12 +1,61 @@
-const debug = require('debug')('dpack:test')
-const want = require('chai').expect
-const fs = require('fs')
-
-import { PackBuilder } from '../src/builder';
+import { builder, load } from "../index"
 import { Dapp } from '../src/dapp';
+import { PackBuilder } from '../src/builder';
+import { putIpfsJson } from "../src/ipfs-util"
 import * as dpack from '../src/pure'
 
+const debug = require('debug')('dpack:test')
+const fs = require('fs')
 const fbpack = JSON.parse(fs.readFileSync('test/sample-pack.json'))
+const path = require('path');
+const want = require('chai').expect
+
+describe('end to end simple example', ()=>{
+  const packPath = path.join(__dirname, './data/weth_ropsten.dpack.json')
+  let cidStr
+
+  it('create weth pack', async () => {
+    const contractAddress = '0xc778417E063141139Fce010982780140Aa0cD5Ab'
+    const artifact = require('./data/weth-ropsten-artifact.json')
+
+    // After compiling and deploying a contract we have the contract.address and json artifact containing the ABI and
+    // bytecode. These are used to create a pack:
+    const pb = new builder('ropsten');
+    await pb.packObject({
+      objectname: 'weth',
+      address: contractAddress,
+      typename: 'WETH9',
+      artifact: artifact
+    }, true)
+
+    await pb.packObject({
+      objectname: 'weth9',
+      address: contractAddress,
+      typename: 'WETH9',
+      artifact: artifact
+    }, false)
+
+    const pack = await pb.build();
+
+    // The pack can then be saved as a json file, or added to IPFS to be shared as a single CID for the whole protocol:
+    fs.writeFileSync(packPath, JSON.stringify(pack, null, 2));
+    cidStr = (await putIpfsJson(pack)).toString()
+  })
+
+  it('use weth pack', async () => {
+    const jsonObj = require('./data/weth_ropsten.dpack.json')
+
+    // Loading a pack gives ethers contracts allowing users to interact with them or deploy them on
+    // another network. Packs can be loaded from a CID string, a file path string, or a json object.
+    const dappFromPack = await load(jsonObj)
+    const dappFromPath = await load(packPath)
+    const dappFromCID  = await load(cidStr)
+
+    // All methods give the same pack
+    let packStrings = [JSON.stringify(dappFromPack), JSON.stringify(dappFromPath), JSON.stringify(dappFromCID)];
+    (new Set(packStrings)).size == 1
+  })
+});
 
 describe('pure api', ()=>{
   it('blank', ()=>{
@@ -46,15 +95,18 @@ describe('PackBuilder', ()=>{
 
 describe('Dapp', ()=>{
   it('Dapp loadFromPack sample-pack', async () => {
-    const pack = require('./sample-pack.json')
+    const pack = require('./data/weth_ropsten.dpack.json')
     const dapp = await Dapp.loadFromPack(pack);
     debug(Object.keys(dapp));
-    want(dapp.types).exists
-    want(dapp.types.Feedbase).exists
-    want(dapp.objects).exists
-    want(dapp.objects.feedbase).exists
 
-    want(dapp.objects.feedbase.push).exists
-    want(dapp.types.Feedbase.deploy).exists
+    want(dapp._objects).exists
+    want(dapp._objects.weth).exists
+    want(dapp._objects.weth.deposit).exists
+    want(dapp.weth).exists
+    want(dapp.weth.deposit).exists
+
+    want(dapp._types).exists
+    want(dapp._types.WETH9).exists
+    want(dapp._types.WETH9.deploy).exists
   })
 });

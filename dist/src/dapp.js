@@ -37,38 +37,52 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.Dapp = void 0;
+var util_1 = require("./util");
 var ipfs_util_1 = require("./ipfs-util");
 var debug = require('debug')('dpack');
+var default_ethers = require('ethers');
 var Dapp = /** @class */ (function () {
     function Dapp() {
     }
-    Dapp.loadFromPack = function (pack, signer, ethers) {
+    Dapp.loadFromPack = function (pack, ethers) {
         if (ethers === void 0) { ethers = undefined; }
         return __awaiter(this, void 0, void 0, function () {
-            var dapp, _i, _a, key, obj, cid, artifact, abi, addr, instance, _b, _c, key, typ, cid, artifact, abi, code, deployer;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
+            var dapp, signer, _a, _i, _b, key, obj, cid, artifact, abi, addr, instance, _c, _d, key, typ, cid, artifact, abi, code, deployer;
+            return __generator(this, function (_e) {
+                switch (_e.label) {
                     case 0:
                         dapp = new Dapp();
-                        dapp.objects = {};
-                        dapp.types = {};
-                        dapp._pack = pack;
                         if (ethers != undefined) {
                             dapp._ethers = ethers;
                         }
                         else {
-                            dapp._ethers = require('ethers');
+                            dapp._ethers = default_ethers;
                         }
-                        _i = 0, _a = Object.keys(dapp._pack.objects);
-                        _d.label = 1;
+                        _e.label = 1;
                     case 1:
-                        if (!(_i < _a.length)) return [3 /*break*/, 4];
-                        key = _a[_i];
+                        _e.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, dapp._ethers.getSigners()];
+                    case 2:
+                        signer = (_e.sent())[0];
+                        return [3 /*break*/, 4];
+                    case 3:
+                        _a = _e.sent();
+                        signer = dapp._ethers.Wallet.createRandom();
+                        return [3 /*break*/, 4];
+                    case 4:
+                        dapp._objects = {};
+                        dapp._types = {};
+                        dapp._pack = pack;
+                        _i = 0, _b = Object.keys(dapp._pack.objects);
+                        _e.label = 5;
+                    case 5:
+                        if (!(_i < _b.length)) return [3 /*break*/, 8];
+                        key = _b[_i];
                         obj = dapp._pack.objects[key];
                         cid = obj.artifact['/'];
                         return [4 /*yield*/, (0, ipfs_util_1.getIpfsJson)(cid)];
-                    case 2:
-                        artifact = _d.sent();
+                    case 6:
+                        artifact = _e.sent();
                         abi = artifact.abi;
                         addr = obj.address;
                         instance = new dapp._ethers.Contract(addr, abi, signer);
@@ -76,34 +90,36 @@ var Dapp = /** @class */ (function () {
                         // instance.address already exists
                         instance.typename = obj.typename;
                         instance.artifact = obj.artifact;
-                        dapp.objects[key] = instance;
-                        _d.label = 3;
-                    case 3:
+                        dapp._objects[key] = instance;
+                        (0, util_1.need)(dapp[key] == undefined, 'Panic: name collision on dapp object.');
+                        dapp[key] = instance;
+                        _e.label = 7;
+                    case 7:
                         _i++;
-                        return [3 /*break*/, 1];
-                    case 4:
-                        _b = 0, _c = Object.keys(dapp._pack.types);
-                        _d.label = 5;
-                    case 5:
-                        if (!(_b < _c.length)) return [3 /*break*/, 8];
-                        key = _c[_b];
+                        return [3 /*break*/, 5];
+                    case 8:
+                        _c = 0, _d = Object.keys(dapp._pack.types);
+                        _e.label = 9;
+                    case 9:
+                        if (!(_c < _d.length)) return [3 /*break*/, 12];
+                        key = _d[_c];
                         typ = dapp._pack.types[key];
                         cid = typ.artifact['/'];
                         return [4 /*yield*/, (0, ipfs_util_1.getIpfsJson)(cid)];
-                    case 6:
-                        artifact = _d.sent();
+                    case 10:
+                        artifact = _e.sent();
                         abi = artifact.abi;
                         code = artifact.bytecode;
                         deployer = new dapp._ethers.ContractFactory(abi, code);
                         deployer = deployer.connect(signer);
                         deployer.typename = typ.typename;
                         deployer.artifact = typ.artifact;
-                        dapp.types[key] = deployer;
-                        _d.label = 7;
-                    case 7:
-                        _b++;
-                        return [3 /*break*/, 5];
-                    case 8: return [2 /*return*/, dapp];
+                        dapp._types[key] = deployer;
+                        _e.label = 11;
+                    case 11:
+                        _c++;
+                        return [3 /*break*/, 9];
+                    case 12: return [2 /*return*/, dapp];
                 }
             });
         });

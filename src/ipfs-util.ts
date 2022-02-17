@@ -12,8 +12,7 @@ export async function getIpfsJson (cid: string): Promise<any> {
   for await (const chunk of blob) {
     s += chunk
   }
-  const json = JSON.parse(s)
-  return json
+  return JSON.parse(s)
 }
 
 export async function putIpfsJson (obj: any, pin: boolean = false): Promise<string> {
@@ -31,4 +30,13 @@ export async function putIpfsJson (obj: any, pin: boolean = false): Promise<stri
 export async function pinIpfsCid (cid: string): Promise<void> {
   await node.pin.add(cid)
   console.log(`pinned ${cid}`)
+}
+
+export function isCid (cidStr: string): boolean {
+  try {
+    IPFS.CID.parse(cidStr)
+    return true
+  } catch {
+    return false
+  }
 }

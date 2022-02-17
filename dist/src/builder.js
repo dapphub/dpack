@@ -54,6 +54,8 @@ var PackBuilder = /** @class */ (function () {
     function PackBuilder(network) {
         (0, util_1.need)(network, 'new PackBuilder(network) - network must be defined');
         (0, util_1.need)(typeof (network) === 'string', 'new PackBuilder(network) - network must be a string');
+        (0, util_1.need)(network !== 'mainnet', 'You may not use \'mainnet\' as a network name. You might mean \'ethereum\'.');
+        (0, util_1.need)(network !== '', 'Network name cannot be empty.');
         this._pack = (0, pure_1.blank)(network);
         (0, pure_1.assertValidPack)(this._pack);
     }
