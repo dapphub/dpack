@@ -1,8 +1,9 @@
 const debug = require('debug')('dpack')
 
 const IPFS = require('ipfs-http-client')
-debug('starting node')
-const node = IPFS.create('/ip4/127.0.0.1/tcp/5001')
+const nodeAddress = process.env["IPFS_NODE_ADDRESS"] ?? '/ip4/127.0.0.1/tcp/5001'
+debug(`starting node ${nodeAddress}`)
+const node = IPFS.create(nodeAddress)
 debug('started node')
 
 export async function getIpfsJson (cid: string): Promise<any> {

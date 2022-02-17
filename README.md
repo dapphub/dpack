@@ -19,7 +19,8 @@ we can compare addresses with our eyes without having to copy/diff them.
 
 `npm i dapphub/dpack`
 
-It currently requires `ipfs daemon` to be running.
+It currently requires `ipfs daemon` to be running and will connect to the default address unless a target is specified
+with the environment variable IPFS_NODE_ADDRESS.
 
 Basic Usage
 ---
