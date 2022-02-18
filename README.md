@@ -3,26 +3,29 @@
 
 A dpack is a file with a collection of EVM addresses and artifacts (ABIs).
 
+The most important part of dpack is the `dpack-1` file format.
+It has a simple and final spec that one person can learn in one sitting.
+New features will be deferred until the next version, which will be backwards
+compatible.
+
 This repo is a lightweight javascript package which lets you
 - assemble dpacks from your deployment info
 - easily load and instantiate bindings for dapps
 
-This is one piece of the secure software supply chain puzzle for web3/defi.
-You still have to figure out which pack you want, and make sure it's legit.
+For the time being, we are distributing dpack via npm:
 
-**NEVER TRUST A MUTABLE OR CENTRALIZED REGISTRY AS YOUR SOURCE OF TRUTH FOR PACKS.
-NOT GITHUB, NOT NPM.** This means that for the time being, you must manually verify your packs!
-Fortunately, the dpack format is designed so that you can *easily compare packs at a glance*, like
-we can compare addresses with our eyes without having to copy/diff them.
+`npm i @etherpacks/dpack  # WAIT! Read the next paragraph!`
 
-`dpack` is in alpha / active development. It is currently distributed via this repo, which means we are 'pre-bootstrap'. Eventually we want the equivalent of nix packages with hashes in dmap to secure binary distributions.
-
-`npm i dapphub/dpack`
-
-It currently requires `ipfs daemon` to be running.
+**WARNING**: Please take a minute to reflect on the nature of the software supply chain.
+What good is dpack if you are loading it via npm? Why not just stick the info in a package.json?
+There is no 'partially secured', we are either bootstrapped into a secure software supply chain, or not.
+If you are using `npm` as currently architected, you are not bootstrapped. But we have to start somewhere,
+so here we are.
 
 Basic Usage
 ---
+
+`ipfs daemon` must be running. `dpack` will connect to the default IPFS RPC URL unless one is specified with the environment variable `IPFS_RPC_URL`.
 
 Loading a dpack:
 ```

@@ -42,12 +42,14 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
+var _a;
 exports.__esModule = true;
 exports.isCid = exports.pinIpfsCid = exports.putIpfsJson = exports.getIpfsJson = void 0;
 var debug = require('debug')('dpack');
 var IPFS = require('ipfs-http-client');
-debug('starting node');
-var node = IPFS.create('/ip4/127.0.0.1/tcp/5001');
+var nodeAddress = (_a = process.env["IPFS_RPC_URL"]) !== null && _a !== void 0 ? _a : '/ip4/127.0.0.1/tcp/5001';
+debug("starting node ".concat(nodeAddress));
+var node = IPFS.create(nodeAddress);
 debug('started node');
 function getIpfsJson(cid) {
     var e_1, _a;
