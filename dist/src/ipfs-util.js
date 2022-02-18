@@ -47,7 +47,7 @@ exports.__esModule = true;
 exports.isCid = exports.pinIpfsCid = exports.putIpfsJson = exports.getIpfsJson = void 0;
 var debug = require('debug')('dpack');
 var IPFS = require('ipfs-http-client');
-var nodeAddress = (_a = process.env["IPFS_NODE_ADDRESS"]) !== null && _a !== void 0 ? _a : '/ip4/127.0.0.1/tcp/5001';
+var nodeAddress = (_a = process.env["IPFS_RPC_URL"]) !== null && _a !== void 0 ? _a : '/ip4/127.0.0.1/tcp/5001';
 debug("starting node ".concat(nodeAddress));
 var node = IPFS.create(nodeAddress);
 debug('started node');
