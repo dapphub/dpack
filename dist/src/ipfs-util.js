@@ -44,7 +44,7 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
 };
 var _a;
 exports.__esModule = true;
-exports.isCid = exports.pinIpfsCid = exports.putIpfsJson = exports.getIpfsJson = void 0;
+exports.isCid = exports.isV0CID = exports.pinIpfsCid = exports.putIpfsJson = exports.getIpfsJson = void 0;
 var debug = require('debug')('dpack');
 var IPFS = require('ipfs-http-client');
 var nodeAddress = (_a = process.env["IPFS_RPC_URL"]) !== null && _a !== void 0 ? _a : '/ip4/127.0.0.1/tcp/5001';
@@ -58,7 +58,9 @@ function getIpfsJson(cid) {
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    debug("get ".concat(cid));
+                    if (isV0CID(cid)) {
+                        console.log("\nWARN: Detected a V0 CID string. This warning will become an error very soon.\nPlease repack the pack containing ".concat(cid, "\n"));
+                    }
                     return [4 /*yield*/, node.cat(cid)];
                 case 1:
                     blob = _b.sent();
@@ -118,7 +120,7 @@ function putIpfsJson(obj, pin) {
                     _a.label = 3;
                 case 3:
                     debug("put ".concat(cid));
-                    return [2 /*return*/, cid];
+                    return [2 /*return*/, cid.toV1().toString()];
             }
         });
     });
@@ -128,16 +130,26 @@ function pinIpfsCid(cid) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, node.pin.add(cid)];
+                case 0:
+                    if (isV0CID(cid)) {
+                        console.log("\nWARN: Detected a V0 CID string. This warning will become an error very soon.\nPlease repack the pack containing ".concat(cid, "\n"));
+                    }
+                    return [4 /*yield*/, node.pin.add(cid)];
                 case 1:
                     _a.sent();
-                    console.log("pinned ".concat(cid));
+                    debug("pinned ".concat(cid));
                     return [2 /*return*/];
             }
         });
     });
 }
 exports.pinIpfsCid = pinIpfsCid;
+// 'If a CID is 46 characters starting with "Qm", it's a CIDv0'
+// https://docs.ipfs.io/concepts/content-addressing/#identifier-formats
+function isV0CID(cidStr) {
+    return (cidStr.length == 46 && cidStr.slice(0, 2) == 'Qm');
+}
+exports.isV0CID = isV0CID;
 function isCid(cidStr) {
     try {
         IPFS.CID.parse(cidStr);
