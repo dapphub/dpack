@@ -15,21 +15,16 @@ export class Dapp {
     const dapp = new Dapp()
     let signer
 
-    if (ethers != undefined) {
-      dapp._ethers = ethers
-    } else {
-      dapp._ethers = default_ethers
-    }
+    dapp._objects = {}
+    dapp._types = {}
+    dapp._pack = pack
+    dapp._ethers = ethers ?? default_ethers
 
     try {
       [signer] = await dapp._ethers.getSigners()
     } catch {
       signer = dapp._ethers.Wallet.createRandom()
     }
-
-    dapp._objects = {}
-    dapp._types = {}
-    dapp._pack = pack
 
     for (const key of Object.keys(dapp._pack.objects)) {
       const obj = dapp._pack.objects[key]
