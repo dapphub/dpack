@@ -18,7 +18,7 @@ export class Dapp {
     dapp._objects = {}
     dapp._types = {}
     dapp._pack = pack
-    dapp._ethers = ethers != undefined ? ethers : default_ethers
+    dapp._ethers = ethers ?? default_ethers
 
     try {
       [signer] = await dapp._ethers.getSigners()
