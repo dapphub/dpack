@@ -53,7 +53,7 @@ describe('end to end simple example', ()=>{
 
     // All methods give the same pack
     let packStrings = [JSON.stringify(dappFromPack), JSON.stringify(dappFromPath), JSON.stringify(dappFromCID)];
-    (new Set(packStrings)).size == 1
+    want((new Set(packStrings)).size).to.equal(1)
   })
 });
 
