@@ -1,12 +1,12 @@
 {
   "name": "@etherpacks/dpack",
-  "version": "0.0.24",
+  "version": "0.0.26",
   "author": "nikolai mushegian <mail@nikolai.fyi>",
   "license": "GPL-3.0",
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc",
-    "test": "ipfs add -r test/data && npm run build && ts-mocha test/*.ts --timeout=10000",
+    "test": "npm run build && ts-mocha test/*.ts --timeout=10000",
     "fmt": "ts-standard --fix src index.ts"
   },
   "dependencies": {

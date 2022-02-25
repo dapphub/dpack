@@ -33,7 +33,7 @@ export class Dapp {
       const abi = artifact.abi
       const addr = obj.address
       const instance = new dapp._ethers.Contract(addr, abi, signer)
-      instance.objectname = obj.typename
+      instance.objectname = obj.objectname
       // instance.address already exists
       instance.typename = obj.typename
       instance.artifact = obj.artifact

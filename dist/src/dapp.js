@@ -52,12 +52,10 @@ var Dapp = /** @class */ (function () {
                 switch (_e.label) {
                     case 0:
                         dapp = new Dapp();
-                        if (ethers != undefined) {
-                            dapp._ethers = ethers;
-                        }
-                        else {
-                            dapp._ethers = default_ethers;
-                        }
+                        dapp._objects = {};
+                        dapp._types = {};
+                        dapp._pack = pack;
+                        dapp._ethers = ethers !== null && ethers !== void 0 ? ethers : default_ethers;
                         _e.label = 1;
                     case 1:
                         _e.trys.push([1, 3, , 4]);
@@ -70,9 +68,6 @@ var Dapp = /** @class */ (function () {
                         signer = dapp._ethers.Wallet.createRandom();
                         return [3 /*break*/, 4];
                     case 4:
-                        dapp._objects = {};
-                        dapp._types = {};
-                        dapp._pack = pack;
                         _i = 0, _b = Object.keys(dapp._pack.objects);
                         _e.label = 5;
                     case 5:
@@ -86,7 +81,7 @@ var Dapp = /** @class */ (function () {
                         abi = artifact.abi;
                         addr = obj.address;
                         instance = new dapp._ethers.Contract(addr, abi, signer);
-                        instance.objectname = obj.typename;
+                        instance.objectname = obj.objectname;
                         // instance.address already exists
                         instance.typename = obj.typename;
                         instance.artifact = obj.artifact;
