@@ -1,14 +1,16 @@
-import { builder, load } from "../index"
+import {builder, getIpfsJson, load} from "../index"
 import { Dapp } from '../src/dapp';
 import { PackBuilder } from '../src/builder';
-import { putIpfsJson } from "../src/ipfs-util"
+import {hashIpfsJson, putIpfsJson} from "../src/ipfs-util"
 import * as pure from '../src/pure'
 
 const debug = require('debug')('dpack:test')
 const fs = require('fs')
 const samplepack= JSON.parse(fs.readFileSync('test/sample-pack.json'))
 const path = require('path');
-const want = require('chai').expect
+const chai = require('chai')
+chai.use(require('chai-as-promised'))
+const want = chai.expect
 
 describe('end to end simple example', ()=>{
   const packPath = path.join(__dirname, './data/weth_ropsten.dpack.json')
@@ -16,10 +18,14 @@ describe('end to end simple example', ()=>{
 
   it('create weth pack', async () => {
     const contractAddress = '0xc778417E063141139Fce010982780140Aa0cD5Ab'
-    const artifact = require('./data/weth-ropsten-artifact.json')
+    const artifactPath = path.join(__dirname, './data/weth-ropsten-artifact.json')
+    const artifact = require(artifactPath)
 
     // After compiling and deploying a contract we have the contract.address and json artifact containing the ABI and
     // bytecode. These are used to create a pack:
+    debug('checking artifact not already added')
+    const artCid = await hashIpfsJson(artifact)
+    await want(getIpfsJson(artCid)).to.be.rejectedWith(Error)
     const pb = new builder('ropsten');
     await pb.packObject({
       objectname: 'weth',
@@ -39,6 +45,9 @@ describe('end to end simple example', ()=>{
 
     // The pack can then be saved as a json file, or added to IPFS to be shared as a single CID for the whole protocol:
     fs.writeFileSync(packPath, JSON.stringify(pack, null, 2));
+    debug('checking pack not already added')
+    const packCid = await hashIpfsJson(pack)
+    await want(getIpfsJson(packCid)).to.be.rejectedWith(Error)
     cidStr = (await putIpfsJson(pack)).toString()
   })
 

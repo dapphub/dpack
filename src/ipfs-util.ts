@@ -34,6 +34,12 @@ export async function putIpfsJson (obj: any, pin: boolean = false): Promise<stri
   return cid.toV1().toString()
 }
 
+export async function hashIpfsJson(obj: any): Promise<string> {
+  const str = JSON.stringify(obj)
+  const { cid } = await node.add(str, {onlyHash: true})
+  return cid.toV1().toString()
+}
+
 export async function pinIpfsCid (cid: string): Promise<void> {
   if (isV0CID(cid)) {
     console.log(`
