@@ -8,7 +8,9 @@ const debug = require('debug')('dpack:test')
 const fs = require('fs')
 const samplepack= JSON.parse(fs.readFileSync('test/sample-pack.json'))
 const path = require('path');
-const want = require('chai').expect
+const chai = require('chai')
+chai.use(require('chai-as-promised'))
+const want = chai.expect
 
 describe('end to end simple example', ()=>{
   const packPath = path.join(__dirname, './data/weth_ropsten.dpack.json')
@@ -39,6 +41,7 @@ describe('end to end simple example', ()=>{
 
     // The pack can then be saved as a json file, or added to IPFS to be shared as a single CID for the whole protocol:
     fs.writeFileSync(packPath, JSON.stringify(pack, null, 2));
+    await want(load(packPath)).rejectedWith(Error)
     cidStr = (await putIpfsJson(pack)).toString()
   })
 
