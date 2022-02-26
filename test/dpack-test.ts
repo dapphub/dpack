@@ -14,8 +14,8 @@ const want = chai.expect
 
 let artCid, packCid
 after(async () => {
-  await rmIpfsJson(artCid)
-  await rmIpfsJson(packCid)
+  if( artCid != undefined )  await rmIpfsJson(artCid)
+  if( packCid != undefined ) await rmIpfsJson(packCid)
 })
 
 describe('end to end simple example', ()=>{
