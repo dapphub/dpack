@@ -11,20 +11,15 @@ export class Dapp {
   _types: any
 
   private constructor () {}
-  static async loadFromPack (pack: any, ethers: any = undefined): Promise<Dapp> {
+  static async loadFromPack (pack: any, _ethers: any = undefined, _signer: any = undefined): Promise<Dapp> {
     const dapp = new Dapp()
-    let signer
 
     dapp._objects = {}
     dapp._types = {}
     dapp._pack = pack
-    dapp._ethers = ethers ?? default_ethers
+    dapp._ethers = _ethers ?? default_ethers
+    let signer = _signer ?? dapp._ethers.Wallet.createRandom()
 
-    try {
-      [signer] = await dapp._ethers.getSigners()
-    } catch {
-      signer = dapp._ethers.Wallet.createRandom()
-    }
 
     for (const key of Object.keys(dapp._pack.objects)) {
       const obj = dapp._pack.objects[key]
