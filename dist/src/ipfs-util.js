@@ -109,18 +109,12 @@ function putIpfsJson(obj, pin) {
                 case 0:
                     str = JSON.stringify(obj);
                     debug("adding ".concat(str));
-                    return [4 /*yield*/, node.add(str)];
+                    return [4 /*yield*/, node.add(str, { cidVersion: 1, pin: pin })];
                 case 1:
                     cid = (_a.sent()).cid;
                     debug("added ".concat(str));
-                    if (!pin) return [3 /*break*/, 3];
-                    return [4 /*yield*/, pinIpfsCid(cid)];
-                case 2:
-                    _a.sent();
-                    _a.label = 3;
-                case 3:
                     debug("put ".concat(cid));
-                    return [2 /*return*/, cid.toV1().toString()];
+                    return [2 /*return*/, cid.toString()];
             }
         });
     });
