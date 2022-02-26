@@ -9,8 +9,7 @@ const fs = require('fs')
 const samplepack= JSON.parse(fs.readFileSync('test/sample-pack.json'))
 const path = require('path');
 const want = require('chai').expect
-
-import { ethers } from 'ethers'
+const ethers = require('ethers')
 
 let signer
 before(async () => {
