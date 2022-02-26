@@ -25,13 +25,10 @@ Please repack the pack containing ${cid}
 export async function putIpfsJson (obj: any, pin: boolean = false): Promise<string> {
   const str = JSON.stringify(obj)
   debug(`adding ${str}`)
-  const { cid } = await node.add(str)
+  const { cid } = await node.add(str, {cidVersion:1, pin:pin})
   debug(`added ${str}`)
-  if (pin) {
-    await pinIpfsCid(cid)
-  }
   debug(`put ${cid}`)
-  return cid.toV1().toString()
+  return cid.toString()
 }
 
 export async function pinIpfsCid (cid: string): Promise<void> {
