@@ -40,6 +40,20 @@ export async function hashIpfsJson(obj: any): Promise<string> {
   return cid.toV1().toString()
 }
 
+export async function rmIpfsJson(cid: string): Promise<void> {
+  if (isV0CID(cid)) {
+    console.log(`
+WARN: Detected a V0 CID string. This warning will become an error very soon.
+Please repack the pack containing ${cid}
+`)
+  }
+
+  for await (const r of node.pin.ls(cid)) {
+    await node.pin.rm(r.cid)
+  }
+  for await (const r of node.repo.gc()) {}
+}
+
 export async function pinIpfsCid (cid: string): Promise<void> {
   if (isV0CID(cid)) {
     console.log(`
