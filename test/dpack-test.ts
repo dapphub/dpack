@@ -9,6 +9,12 @@ const fs = require('fs')
 const samplepack= JSON.parse(fs.readFileSync('test/sample-pack.json'))
 const path = require('path');
 const want = require('chai').expect
+const ethers = require('ethers')
+
+let signer
+before(async () => {
+  signer = ethers.Wallet.createRandom()
+})
 
 describe('end to end simple example', ()=>{
   const packPath = path.join(__dirname, './data/weth_ropsten.dpack.json')
@@ -47,13 +53,13 @@ describe('end to end simple example', ()=>{
 
     // Loading a pack gives ethers contracts allowing users to interact with them or deploy them on
     // another network. Packs can be loaded from a CID string, a file path string, or a json object.
-    const dappFromPack = await load(jsonObj)
-    const dappFromPath = await load(packPath)
-    const dappFromCID  = await load(cidStr)
+    const dappFromPack = await load(jsonObj, ethers, signer)
+    const dappFromPath = await load(packPath, ethers, signer)
+    const dappFromCID  = await load(cidStr, ethers, signer)
 
     // All methods give the same pack
     let packStrings = [JSON.stringify(dappFromPack), JSON.stringify(dappFromPath), JSON.stringify(dappFromCID)];
-    (new Set(packStrings)).size == 1
+    want((new Set(packStrings)).size).to.equal(1)
   })
 });
 

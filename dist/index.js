@@ -45,8 +45,9 @@ var ipfs_util_1 = require("./src/ipfs-util");
 exports.getIpfsJson = ipfs_util_1.getIpfsJson;
 exports.putIpfsJson = ipfs_util_1.putIpfsJson;
 var util_1 = require("./src/util");
-var load = function (arg, ethers) {
-    if (ethers === void 0) { ethers = undefined; }
+var load = function (arg, _ethers, _signer) {
+    if (_ethers === void 0) { _ethers = undefined; }
+    if (_signer === void 0) { _signer = undefined; }
     return __awaiter(void 0, void 0, void 0, function () {
         var _a;
         return __generator(this, function (_b) {
@@ -66,7 +67,7 @@ var load = function (arg, ethers) {
                     _b.label = 4;
                 case 4:
                     (0, util_1.need)(typeof arg === 'object' && Object.keys(arg).length, 'Could not find a pack from provided source.');
-                    return [4 /*yield*/, dapp_1.Dapp.loadFromPack(arg, ethers)];
+                    return [4 /*yield*/, dapp_1.Dapp.loadFromPack(arg, _ethers, _signer)];
                 case 5: return [2 /*return*/, _b.sent()];
             }
         });
