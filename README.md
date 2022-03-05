@@ -1,6 +1,12 @@
 `dpack`
 ===
 
+<center>
+  <img alt="a picture of dpack-1, the friendly mascot for the dpack-1 format"
+       src="https://x.mypinata.cloud/ipfs/QmXfxvUMvAWtA1a7VzW2LtJdHGx5jAS85H7hWkPUivLjP8"
+  ></img>
+</center>
+
 A dpack is a file with a collection of EVM addresses and artifacts (ABIs).
 
 The most important part of dpack is the `dpack-1` file format.

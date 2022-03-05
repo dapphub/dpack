@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="mascot.svg"
+   inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.77771465"
+     inkscape:cx="238.51936"
+     inkscape:cy="593.40531"
+     inkscape:window-width="1578"
+     inkscape:window-height="1081"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:1.24886"
+       id="rect31"
+       width="133.85738"
+       height="112.42439"
+       x="0.62443662"
+       y="0.62443" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:Courier;-inkscape-font-specification:'Courier, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="7.6768274"
+       y="37.955166"
+       id="text233"><tspan
+         sodipodi:role="line"
+         id="tspan8853"
+         x="7.6768274"
+         y="37.955166">format:  &quot;dpack-1&quot;</tspan><tspan
+         sodipodi:role="line"
+         id="tspan8855"
+         x="7.6768274"
+         y="51.184292">network: &quot;ethereum&quot;</tspan><tspan
+         sodipodi:role="line"
+         id="tspan8857"
+         x="7.6768274"
+         y="64.413414">types:</tspan><tspan
+         sodipodi:role="line"
+         id="tspan8859"
+         x="7.6768274"
+         y="77.642532">    WETH9: { ... }</tspan><tspan
+         sodipodi:role="line"
+         id="tspan8861"
+         x="7.6768274"
+         y="90.871658">objects:</tspan><tspan
+         sodipodi:role="line"
+         id="tspan8863"
+         x="7.6768274"
+         y="104.10078">    weth:  { ... }</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="198.34019"
+       y="39.804123"
+       id="text1293"><tspan
+         sodipodi:role="line"
+         id="tspan1291"
+         style="stroke-width:0.264583"
+         x="198.34019"
+         y="39.804123" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14.1111px;line-height:1.25;font-family:Courier;-inkscape-font-specification:'Courier, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="9.0376635"
+       y="17.2026"
+       id="text7783"><tspan
+         sodipodi:role="line"
+         id="tspan7781"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14.1111px;font-family:Courier;-inkscape-font-specification:'Courier, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
+         x="9.0376635"
+         y="17.2026">weth_pack.json</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:1.1113"
+       id="rect25023"
+       width="133.90302"
+       height="24.356615"
+       x="0.55565"
+       y="0.64757758" />
+  </g>
+</svg>
