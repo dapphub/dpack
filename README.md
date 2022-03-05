@@ -3,7 +3,7 @@
 
 <center>
   <img alt="a picture of dpack-1, the friendly mascot for the dpack-1 format"
-       src="https://x.mypinata.cloud/ipfs/QmXfxvUMvAWtA1a7VzW2LtJdHGx5jAS85H7hWkPUivLjP8"
+       src="https://x.mypinata.cloud/ipfs/QmZ9RVSRkTsqVg4CHdHfQQxWXmHWrWwoF3Nd2t5E6cz6fN"
   ></img>
 </center>
 
