@@ -47,14 +47,18 @@ exports.__esModule = true;
 exports.isCid = exports.isV0CID = exports.pinIpfsCid = exports.putIpfsJson = exports.getIpfsJson = void 0;
 var debug = require('debug')('dpack');
 var IPFS = require('ipfs-http-client');
-var nodeAddress = (_a = process.env["IPFS_RPC_URL"]) !== null && _a !== void 0 ? _a : '/ip4/127.0.0.1/tcp/5001';
+var nodeAddress = '/ip4/127.0.0.1/tcp/5001';
+try {
+    nodeAddress = (_a = process.env["IPFS_RPC_URL"]) !== null && _a !== void 0 ? _a : '/ip4/127.0.0.1/tcp/5001';
+}
+catch (_b) { }
 debug("starting node ".concat(nodeAddress));
 var node = IPFS.create(nodeAddress);
 debug('started node');
 function getIpfsJson(cid) {
     var e_1, _a;
     return __awaiter(this, void 0, void 0, function () {
-        var blob, s, blob_1, blob_1_1, chunk, e_1_1;
+        var blob, s, utf8decoder, blob_1, blob_1_1, chunk, e_1_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -65,6 +69,7 @@ function getIpfsJson(cid) {
                 case 1:
                     blob = _b.sent();
                     s = '';
+                    utf8decoder = new TextDecoder();
                     _b.label = 2;
                 case 2:
                     _b.trys.push([2, 7, 8, 13]);
@@ -74,7 +79,7 @@ function getIpfsJson(cid) {
                 case 4:
                     if (!(blob_1_1 = _b.sent(), !blob_1_1.done)) return [3 /*break*/, 6];
                     chunk = blob_1_1.value;
-                    s += chunk;
+                    s += utf8decoder.decode(chunk);
                     _b.label = 5;
                 case 5: return [3 /*break*/, 3];
                 case 6: return [3 /*break*/, 13];

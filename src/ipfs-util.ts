@@ -2,7 +2,10 @@ const debug = require('debug')('dpack')
 
 const IPFS = require('ipfs-http-client')
 
-const nodeAddress = process.env["IPFS_RPC_URL"] ?? '/ip4/127.0.0.1/tcp/5001'
+let nodeAddress = '/ip4/127.0.0.1/tcp/5001'
+try {
+  nodeAddress = process.env["IPFS_RPC_URL"] ?? '/ip4/127.0.0.1/tcp/5001'
+} catch {}
 debug(`starting node ${nodeAddress}`)
 const node = IPFS.create(nodeAddress)
 debug('started node')
@@ -16,8 +19,9 @@ Please repack the pack containing ${cid}
   }
   const blob = await node.cat(cid)
   let s = ''
+  let utf8decoder = new TextDecoder()
   for await (const chunk of blob) {
-    s += chunk
+    s += utf8decoder.decode(chunk)
   }
   return JSON.parse(s)
 }
