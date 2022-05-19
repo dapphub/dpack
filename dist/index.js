@@ -37,6 +37,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.putIpfsJson = exports.getIpfsJson = exports.Dapp = exports.PackBuilder = exports.builder = exports.load = void 0;
+var fs_1 = require("fs");
+var jams_js_1 = require("jams.js");
 var builder_1 = require("./src/builder");
 exports.PackBuilder = builder_1.PackBuilder;
 var dapp_1 = require("./src/dapp");
@@ -49,26 +51,23 @@ var load = function (arg, _ethers, _signer) {
     if (_ethers === void 0) { _ethers = undefined; }
     if (_signer === void 0) { _signer = undefined; }
     return __awaiter(void 0, void 0, void 0, function () {
-        var _a;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    if (!(typeof arg === 'string')) return [3 /*break*/, 4];
-                    if (!((0, ipfs_util_1.isCid)(arg))) return [3 /*break*/, 2];
-                    return [4 /*yield*/, (0, ipfs_util_1.getIpfsJson)(arg)];
-                case 1:
-                    _a = _b.sent();
-                    return [3 /*break*/, 3];
-                case 2:
-                    _a = require(arg);
-                    _b.label = 3;
-                case 3:
-                    arg = _a;
-                    _b.label = 4;
-                case 4:
+                    if (typeof arg === "string") {
+                        if ((0, ipfs_util_1.isCid)(arg)) {
+                            arg = (0, ipfs_util_1.getIpfsJson)(arg);
+                        }
+                        else if (arg.split(".").pop() === "jams") {
+                            arg = (0, jams_js_1.jams)((0, fs_1.readFileSync)(arg));
+                        }
+                        else {
+                            arg = require(arg);
+                        }
+                    }
                     (0, util_1.need)(typeof arg === 'object' && Object.keys(arg).length, 'Could not find a pack from provided source.');
                     return [4 /*yield*/, dapp_1.Dapp.loadFromPack(arg, _ethers, _signer)];
-                case 5: return [2 /*return*/, _b.sent()];
+                case 1: return [2 /*return*/, _a.sent()];
             }
         });
     });
