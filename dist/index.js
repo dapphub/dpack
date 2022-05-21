@@ -54,11 +54,11 @@ var load = function (arg, _ethers, _signer) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (typeof arg === "string") {
+                    if (typeof arg === 'string') {
                         if ((0, ipfs_util_1.isCid)(arg)) {
                             arg = (0, ipfs_util_1.getIpfsJson)(arg);
                         }
-                        else if (arg.split(".").pop() === "jams") {
+                        else if (arg.split('.').pop() === 'jams') {
                             arg = (0, jams_js_1.jams)((0, fs_1.readFileSync)(arg));
                         }
                         else {

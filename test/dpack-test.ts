@@ -18,6 +18,7 @@ before(async () => {
 
 describe('end to end simple example', ()=>{
   const packPath = path.join(__dirname, './data/weth_ropsten.dpack.json')
+  const jamsPath = path.join(__dirname, './data/weth_ropsten.dpack.jams')
   let cidStr
 
   it('create weth pack', async () => {
@@ -55,10 +56,11 @@ describe('end to end simple example', ()=>{
     // another network. Packs can be loaded from a CID string, a file path string, or a json object.
     const dappFromPack = await load(jsonObj, ethers, signer)
     const dappFromPath = await load(packPath, ethers, signer)
+    const dappFromJams = await load(jamsPath, ethers, signer)
     const dappFromCID  = await load(cidStr, ethers, signer)
 
     // All methods give the same pack
-    let packStrings = [JSON.stringify(dappFromPack), JSON.stringify(dappFromPath), JSON.stringify(dappFromCID)];
+    let packStrings = [JSON.stringify(dappFromPack), JSON.stringify(dappFromPath), JSON.stringify(dappFromJams), JSON.stringify(dappFromCID)];
     want((new Set(packStrings)).size).to.equal(1)
   })
 });

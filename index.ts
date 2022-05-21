@@ -6,10 +6,10 @@ import { getIpfsJson, putIpfsJson, isCid } from './src/ipfs-util'
 import { need } from './src/util'
 
 export const load = async (arg, _ethers = undefined, _signer = undefined) => {
-  if (typeof arg === "string") {
+  if (typeof arg === 'string') {
     if (isCid(arg)) {
       arg = getIpfsJson(arg)
-    } else if (arg.split(".").pop() === "jams") {
+    } else if (arg.split('.').pop() === 'jams') {
       arg = jams(readFileSync(arg))
     } else {
       arg = require(arg)
