@@ -60,7 +60,8 @@ describe('end to end simple example', ()=>{
     const dappFromCID  = await load(cidStr, ethers, signer)
 
     // All methods give the same pack
-    let packStrings = [JSON.stringify(dappFromPack), JSON.stringify(dappFromPath), JSON.stringify(dappFromJams), JSON.stringify(dappFromCID)];
+    let packStrings = [JSON.stringify(dappFromPack), JSON.stringify(dappFromPath),
+                       JSON.stringify(dappFromJams), JSON.stringify(dappFromCID)];
     want((new Set(packStrings)).size).to.equal(1)
   })
 });

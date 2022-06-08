@@ -38,7 +38,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.putIpfsJson = exports.getIpfsJson = exports.Dapp = exports.PackBuilder = exports.builder = exports.load = void 0;
 var fs_1 = require("fs");
-var jams_js_1 = require("jams.js");
 var builder_1 = require("./src/builder");
 exports.PackBuilder = builder_1.PackBuilder;
 var dapp_1 = require("./src/dapp");
@@ -47,27 +46,35 @@ var ipfs_util_1 = require("./src/ipfs-util");
 exports.getIpfsJson = ipfs_util_1.getIpfsJson;
 exports.putIpfsJson = ipfs_util_1.putIpfsJson;
 var util_1 = require("./src/util");
+var es6loader = require('./es6loader');
 var load = function (arg, _ethers, _signer) {
     if (_ethers === void 0) { _ethers = undefined; }
     if (_signer === void 0) { _signer = undefined; }
     return __awaiter(void 0, void 0, void 0, function () {
+        var jams;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (typeof arg === 'string') {
-                        if ((0, ipfs_util_1.isCid)(arg)) {
-                            arg = (0, ipfs_util_1.getIpfsJson)(arg);
-                        }
-                        else if (arg.split('.').pop() === 'jams') {
-                            arg = (0, jams_js_1.jams)((0, fs_1.readFileSync)(arg));
-                        }
-                        else {
-                            arg = require(arg);
-                        }
-                    }
+                    if (!(typeof arg === 'string')) return [3 /*break*/, 5];
+                    if (!(0, ipfs_util_1.isCid)(arg)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, (0, ipfs_util_1.getIpfsJson)(arg)];
+                case 1:
+                    arg = _a.sent();
+                    return [3 /*break*/, 5];
+                case 2:
+                    if (!(arg.split('.').pop() === 'jams')) return [3 /*break*/, 4];
+                    return [4 /*yield*/, es6loader.loadModule('jams.js', 'jams')];
+                case 3:
+                    jams = _a.sent();
+                    arg = jams((0, fs_1.readFileSync)(arg, { encoding: 'utf8' }));
+                    return [3 /*break*/, 5];
+                case 4:
+                    arg = require(arg);
+                    _a.label = 5;
+                case 5:
                     (0, util_1.need)(typeof arg === 'object' && Object.keys(arg).length, 'Could not find a pack from provided source.');
                     return [4 /*yield*/, dapp_1.Dapp.loadFromPack(arg, _ethers, _signer)];
-                case 1: return [2 /*return*/, _a.sent()];
+                case 6: return [2 /*return*/, _a.sent()];
             }
         });
     });

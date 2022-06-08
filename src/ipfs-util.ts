@@ -19,7 +19,7 @@ Please repack the pack containing ${cid}
   }
   const blob = await node.cat(cid)
   let s = ''
-  let utf8decoder = new TextDecoder()
+  const utf8decoder = new TextDecoder()
   for await (const chunk of blob) {
     s += utf8decoder.decode(chunk)
   }
@@ -29,7 +29,7 @@ Please repack the pack containing ${cid}
 export async function putIpfsJson (obj: any, pin: boolean = false): Promise<string> {
   const str = JSON.stringify(obj)
   debug(`adding ${str}`)
-  const { cid } = await node.add(str, {cidVersion:1, pin:pin})
+  const { cid } = await node.add(str, { cidVersion: 1, pin: pin })
   debug(`added ${str}`)
   debug(`put ${cid}`)
   return cid.toString()
@@ -48,8 +48,8 @@ Please repack the pack containing ${cid}
 
 // 'If a CID is 46 characters starting with "Qm", it's a CIDv0'
 // https://docs.ipfs.io/concepts/content-addressing/#identifier-formats
-export function isV0CID(cidStr : string) : boolean {
-  return (cidStr.length == 46 && cidStr.slice(0,2) == 'Qm')
+export function isV0CID (cidStr: string): boolean {
+  return (cidStr.length == 46 && cidStr.slice(0, 2) == 'Qm')
 }
 
 export function isCid (cidStr: string): boolean {
