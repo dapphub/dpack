@@ -18,7 +18,7 @@ export class Dapp {
     dapp._types = {}
     dapp._pack = pack
     dapp._ethers = _ethers ?? default_ethers
-    let signer = _signer ?? dapp._ethers.Wallet.createRandom()
+    const signer = _signer ?? dapp._ethers.Wallet.createRandom()
 
     for (const key of Object.keys(dapp._pack.objects)) {
       const obj = dapp._pack.objects[key]
