@@ -1,11 +1,11 @@
 {
   "name": "@etherpacks/dpack",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "author": "nikolai mushegian <mail@nikolai.fyi>",
   "license": "GPL-3.0",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "tsc --build --clean && tsc",
+    "build": "tsc --build --clean && tsc && cp es6loader.js dist/",
     "test": "npm run build && ts-mocha test/*.ts --timeout=10000",
     "fmt": "ts-standard --fix src index.ts"
   },
