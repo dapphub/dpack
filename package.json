@@ -1,27 +1,27 @@
 {
   "name": "@etherpacks/dpack",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "author": "nikolai mushegian <mail@nikolai.fyi>",
   "license": "GPL-3.0",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "tsc --build --clean && tsc",
+    "build": "tsc --build --clean && tsc && cp es6loader.js dist",
     "test": "npm run build && ts-mocha test/*.ts --timeout=10000",
     "fmt": "ts-standard --fix src index.ts"
   },
   "dependencies": {
     "ajv": "^6.12.6",
-    "debug": "^4.3.2",
-    "ethers": "^5.4.5",
-    "ipfs-http-client": "^55.0.0",
+    "debug": "^4.3.4",
+    "ethers": "^5.6.9",
+    "ipfs-http-client": "^56.0.3",
     "jams.js": "^0.0.8",
-    "multiformats": "^9.6.4"
+    "multiformats": "^9.7.1"
   },
   "devDependencies": {
-    "@types/mocha": "^9.1.0",
-    "chai": "^4.3.4",
-    "ts-mocha": "^9.0.2",
+    "@types/mocha": "^9.1.1",
+    "chai": "^4.3.6",
+    "ts-mocha": "^10.0.0",
     "ts-standard": "^11.0.0",
-    "typescript": "^4.4.2"
+    "typescript": "^4.7.4"
   }
 }
