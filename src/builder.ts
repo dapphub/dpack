@@ -22,8 +22,8 @@ export class PackBuilder {
     assertValidPack(this._pack)
   }
 
-  async packType (t: any): Promise<PackBuilder> {
-    const cid = (await putIpfsJson(t.artifact)).toString()
+  async packType (t: any, pin: boolean = false): Promise<PackBuilder> {
+    const cid = (await putIpfsJson(t.artifact, pin)).toString()
     const info = copy(t)
     info.artifact = { '/': cid }
     this._pack = _addType(this._pack, info)
@@ -35,8 +35,8 @@ export class PackBuilder {
     return this
   }
 
-  async packObject (o: any, alsoPackType: boolean = true): Promise<PackBuilder> {
-    const cid = (await putIpfsJson(o.artifact)).toString()
+  async packObject (o: any, alsoPackType: boolean = true, pin: boolean = false): Promise<PackBuilder> {
+    const cid = (await putIpfsJson(o.artifact, pin)).toString()
     const info = copy(o)
     info.artifact = { '/': cid }
 
