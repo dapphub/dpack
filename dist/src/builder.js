@@ -59,12 +59,13 @@ var PackBuilder = /** @class */ (function () {
         this._pack = (0, pure_1.blank)(network);
         (0, pure_1.assertValidPack)(this._pack);
     }
-    PackBuilder.prototype.packType = function (t) {
+    PackBuilder.prototype.packType = function (t, pin) {
+        if (pin === void 0) { pin = false; }
         return __awaiter(this, void 0, void 0, function () {
             var cid, info;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, (0, ipfs_util_1.putIpfsJson)(t.artifact)];
+                    case 0: return [4 /*yield*/, (0, ipfs_util_1.putIpfsJson)(t.artifact, pin)];
                     case 1:
                         cid = (_a.sent()).toString();
                         info = (0, util_1.copy)(t);
@@ -80,13 +81,14 @@ var PackBuilder = /** @class */ (function () {
         this._pack = (0, pure_1.addType)(this._pack, t);
         return this;
     };
-    PackBuilder.prototype.packObject = function (o, alsoPackType) {
+    PackBuilder.prototype.packObject = function (o, alsoPackType, pin) {
         if (alsoPackType === void 0) { alsoPackType = true; }
+        if (pin === void 0) { pin = false; }
         return __awaiter(this, void 0, void 0, function () {
             var cid, info, pack;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, (0, ipfs_util_1.putIpfsJson)(o.artifact)];
+                    case 0: return [4 /*yield*/, (0, ipfs_util_1.putIpfsJson)(o.artifact, pin)];
                     case 1:
                         cid = (_a.sent()).toString();
                         info = (0, util_1.copy)(o);
